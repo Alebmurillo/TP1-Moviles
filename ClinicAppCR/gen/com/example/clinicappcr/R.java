@@ -55,10 +55,10 @@ public final class R {
         public static final int txtEmail=0x7f090013;
         public static final int txtPass=0x7f090014;
         public static final int txtUserName=0x7f090018;
-        public static final int view_doctor=0x7f09000d;
-        public static final int view_fecha=0x7f09000e;
-        public static final int view_hora=0x7f09000f;
-        public static final int view_lugar=0x7f090010;
+        public static final int view_doctor=0x7f09000e;
+        public static final int view_fecha=0x7f09000f;
+        public static final int view_hora=0x7f090010;
+        public static final int view_lugar=0x7f09000d;
     }
     public static final class layout {
         public static final int activity_principal=0x7f030000;

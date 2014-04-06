@@ -1,6 +1,7 @@
 package com.example.clinicappcr;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -8,44 +9,61 @@ import org.json.JSONObject;
 
 import android.app.FragmentManager;
 import android.app.ListFragment;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 public class MisCitasFragment extends ListFragment  {
 	
 	Button btMenu; 
+	static final int DIALOG_CONFIRM = 0;
+	protected static final int REQUEST_CODE = 10;
+
+	private CitasAdapter adapter;
+	private ArrayList<Cita> data;
+	
+	
+	// Hashmap for ListView
+    ArrayList<HashMap<String, String>> contactList;
     
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		contactList = new ArrayList<HashMap<String, String>>();
+		// Calling async task to get json
+        new GetContacts().execute();
 		//setContentView(R.layout.activity_post_list);
 		
 		if (savedInstanceState == null){
-	
+			
 			data = new ArrayList<Cita>();
-	    	 
-	    	      data.add(new Cita("1","19/09/2012", "PC" , "false"));
-	    	      data.add(new Cita("2","23/09/2012", "parámetros" , "false"));
-	    	      data.add(new Cita("3","30/09/2012", "Autenticación de Dos Factores ahora mismo" , "false"));
-	    	      data.add(new Cita("4","07/10/2012", "imagen" , "false"));
-	    	      data.add(new Cita("5","21/10/2012", "Comandos" , "false"));
-	    	      data.add(new Cita("6","28/10/2012", "Enlaces" , "false"));
-	    	      data.add(new Cita("7","04/11/2012", "Nueva" , "false"));
-	    	      data.add(new Cita("8","11/11/2012", "Personalizar" , "false"));
-	    	      data.add(new Cita("9","18/11/2012", "Humor" , "false"));
-	    	      data.add(new Cita("10","25/11/2012", "Bastao" , "false"));
-			adapter = new CitasAdapter(getActivity(), data);
+			//getCitas();
+//	    	      data.add(new Cita("1","19/09/2012", "PC" , "false"));
+//	    	      data.add(new Cita("2","23/09/2012", "parámetros" , "false"));
+//	    	      data.add(new Cita("3","30/09/2012", "Autenticación de Dos Factores ahora mismo" , "false"));
+//	    	      data.add(new Cita("4","07/10/2012", "imagen" , "false"));
+//	    	      data.add(new Cita("5","21/10/2012", "Comandos" , "false"));
+//	    	      data.add(new Cita("6","28/10/2012", "Enlaces" , "false"));
+//	    	      data.add(new Cita("7","04/11/2012", "Nueva" , "false"));
+//	    	      data.add(new Cita("8","11/11/2012", "Personalizar" , "false"));
+//	    	      data.add(new Cita("9","18/11/2012", "Humor" , "false"));
+//	    	      data.add(new Cita("10","25/11/2012", "Bastao" , "false"));
+			//adapter = new CitasAdapter(getActivity(), data);
 		} else{
-			data = savedInstanceState.getParcelableArrayList("savedData");
-			adapter = new CitasAdapter(getActivity(), data);
+			//data = savedInstanceState.getParcelableArrayList("savedData");
+			//adapter = new CitasAdapter(getActivity(), data);
 		}
-			setListAdapter(adapter);
+			//setListAdapter(adapter);
 		
 	}
 	
@@ -54,27 +72,7 @@ public class MisCitasFragment extends ListFragment  {
             Bundle savedInstanceState) {      
     	
         View view = inflater.inflate(R.layout.fragment_citas, null); 
-        
-       /* data = new ArrayList<Cita>();
-   	 
-	      data.add(new Cita("","19/09/2012", "PC" , "false"));
-	      data.add(new Cita("","23/09/2012", "parámetros" , "false"));
-	      data.add(new Cita("","30/09/2012", "Autenticación de Dos Factores ahora mismo" , "false"));
-	      data.add(new Cita("","07/10/2012", "imagen" , "false"));
-	      data.add(new Cita("","21/10/2012", "Comandos" , "false"));
-	      data.add(new Cita("","28/10/2012", "Enlaces" , "false"));
-	      data.add(new Cita("","04/11/2012", "Nueva" , "false"));
-	      data.add(new Cita("","11/11/2012", "Personalizar" , "false"));
-	      data.add(new Cita("","18/11/2012", "Humor" , "false"));
-	      data.add(new Cita("","25/11/2012", "Bastao" , "false"));
-	 
-        adapter = new CitasAdapter(getActivity(), data);
-        //ListView a=(ListView) view.findViewById(R.id.list);
-        //ListView a=getListView();
-	    this.setListAdapter(adapter);   	
-	    
-	    */
-	    
+       // getCitas();
         btMenu = (Button) view.findViewById(R.id.button_crear);  
         btMenu.setOnClickListener(new OnClickListener() {  
         	@Override  
@@ -86,14 +84,13 @@ public class MisCitasFragment extends ListFragment  {
 				fragment.show(fm, "crear");        		
 			}  
 		}); 
+		       
 		
-        
-       /* FragmentManager m = getFragmentManager();
-		FragmentTransaction trans =m.beginTransaction();
-		trans.add(R.id.container, new ListaCitasFragment(),"lista");
-		trans.commit();*/
-		
-		Thread thread = new Thread(new Runnable(){
+		return view;  
+	}  
+    
+    private void getCitas(){
+    	Thread thread = new Thread(new Runnable(){
 			@Override
 			public void run() {
 				try {
@@ -102,62 +99,37 @@ public class MisCitasFragment extends ListFragment  {
 					String txt = handler.post("http://192.168.1.3:80/Citas/usuarios_json.php");
 					JSONObject json = new JSONObject(txt);
 
-					//TextView textview = (TextView) view.findViewById(R.id.TextViewTestInfo);
-					//textview.setText(info.toString());
-
 					try {
-						JSONArray info  = json.getJSONArray("emp_info");
-						//System.out.println(info.toString());
-						//textview.setText(info.toString());
+						data = new ArrayList<Cita>();
+						JSONArray listaCitas  = json.getJSONArray("emp_info");
+						System.out.println(listaCitas.toString());
+						for (int j = 0; j < listaCitas.length(); j++) {
+							JSONArray cita = listaCitas.getJSONArray(j);
+
+							
+							String fecha = cita.get(1).toString();
+							String hora = cita.get(2).toString();
+							String doctor = cita.get(3).toString();
+							String lugar = cita.get(5).toString();							
+							
+					    	data.add(new Cita(doctor,lugar,fecha,hora));							
+						}
+						adapter.notifyDataSetChanged();
 					} catch (JSONException e) {
-						//System.out.println("JSON Parser"+ "Error parsing data " + e.toString());
+						System.out.println("JSON Parser"+ "Error parsing data " + e.toString());
 						//textview.setText("JSON Parser"+ "Error parsing data " + e.toString());
-					}
+					}					
 					
-					/*for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                        textview.setText(jsonObject.getString("doctor"));
-                    }*/
-					//JSONObject json = new JSONObject(txt);
-
-					//System.out.println(txt);
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-		});
+		}
+    	);
 		thread.start(); 
 		
-		
-		
-		
-		return view;  
-	}  
+    }
     
-//    
-//    
-//	
-//	@Override
-//	public void onAttach(Activity activity){
-//		super.onAttach(activity);
-//		mContext = (Context) activity.getApplicationContext();
-//	}
-//	
-//	@Override
-//	public void onResume(){
-//		super.onResume();
-//		Log.e("on Resume","On resume");
-//	}
-//	
-//	
-	static final int DIALOG_CONFIRM = 0;
-	protected static final int REQUEST_CODE = 10;
-
-	private CitasAdapter adapter;
-	private ArrayList<Cita> data;
-	
 	
 	
 	
@@ -166,5 +138,95 @@ public class MisCitasFragment extends ListFragment  {
 		outState.putParcelableArrayList("savedData", data);
 		super.onSaveInstanceState(outState);
 	}
+	
+	private ProgressDialog pDialog;
+	
+		 
+		 private class GetContacts extends AsyncTask<Void, Void, Void> {
+			 
+		        @Override
+		        protected void onPreExecute() {
+		            super.onPreExecute();
+		            // Showing progress dialog
+		            pDialog = new ProgressDialog(getActivity());
+		            pDialog.setMessage("Please wait...");
+		            pDialog.setCancelable(false);
+		            pDialog.show();
+		 
+		        }
+		 
+		        @Override
+		        protected Void doInBackground(Void... arg0) {
+		            // Creating service handler class instance
+		            ServiceHandler sh = new ServiceHandler();
+		 
+		            // Making a request to url and getting response
+		            String jsonStr = sh.makeServiceCall("http://192.168.1.3:80/Citas/usuarios_json.php", ServiceHandler.GET);
+		 
+		            Log.d("Response: ", "> " + jsonStr);
+		 
+		            
+		            if (jsonStr != null) {
+		            	
+		                try {
+		                	JSONObject json = new JSONObject(jsonStr);
+		                	//data = new ArrayList<Cita>();
+							JSONArray listaCitas  = json.getJSONArray("emp_info");
+							System.out.println(listaCitas.toString());
+							for (int j = 0; j < listaCitas.length(); j++) {
+								JSONArray cita = listaCitas.getJSONArray(j);
 
-}  
+								
+								String fecha = cita.get(1).toString();
+								String hora = cita.get(2).toString();
+								String doctor = cita.get(3).toString();
+								String lugar = cita.get(5).toString();							
+								
+						    	//data.add(new Cita(doctor,lugar,fecha,hora));		
+		 
+		                        // tmp hashmap for single contact
+		                        HashMap<String, String> contact = new HashMap<String, String>();
+		 
+		                        // adding each child node to HashMap key => value
+		                        contact.put("fecha", fecha);
+		                        contact.put("hora", hora);
+		                        contact.put("doctor", doctor);
+		                        contact.put("lugar", lugar);
+		 
+		                        // adding contact to contact list
+		                        contactList.add(contact);
+		                    }
+		                } catch (JSONException e) {
+		                    e.printStackTrace();
+		                }
+		            } else {
+		                Log.e("ServiceHandler", "Couldn't get any data from the url");
+		            }
+		 
+		            return null;
+		        }
+		 
+		        @Override
+		        protected void onPostExecute(Void result) {
+		            super.onPostExecute(result);
+		            // Dismiss the progress dialog
+		            if (pDialog.isShowing())
+		                pDialog.dismiss();
+		            /**
+		             * Updating parsed JSON data into ListView
+		             * */
+		            
+		            ListAdapter adapter = new SimpleAdapter(
+		                    getActivity(), contactList,
+		                    R.layout.fila_cita, new String[] { "fecha", "hora",
+		                    	"doctor","lugar" }, new int[] { R.id.view_fecha,
+		                            R.id.view_hora, R.id.view_doctor,R.id.view_lugar });
+		 
+		            setListAdapter(adapter);
+		        }
+		 
+		    }
+		 
+		}
+	
+
