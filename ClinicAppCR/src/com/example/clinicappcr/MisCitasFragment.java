@@ -24,7 +24,7 @@ import android.widget.SimpleAdapter;
 
 public class MisCitasFragment extends ListFragment  {
 	
-	Button btMenu; 
+	Button btCrear; 
 	static final int DIALOG_CONFIRM = 0;
 	protected static final int REQUEST_CODE = 10;
 
@@ -86,8 +86,8 @@ public class MisCitasFragment extends ListFragment  {
 		final VentanaCrearCita fragment = new VentanaCrearCita();
 		fragment.setTargetFragment(this, 0);
         
-        btMenu = (Button) view.findViewById(R.id.button_crear);  
-        btMenu.setOnClickListener(new OnClickListener() {  
+        btCrear = (Button) view.findViewById(R.id.button_crear);  
+        btCrear.setOnClickListener(new OnClickListener() {  
         	@Override  
         	public void onClick(View v) {  
 				//FragmentManager fm = getFragmentManager();
