@@ -34,19 +34,15 @@ public class PrincipalActivity extends FragmentActivity {
 		int id = item.getItemId();
 		if (id == R.id.action_crear) {
 			VentanaCrearCita fragment = new VentanaCrearCita();
-			//fragment.mListener =(IContactoCreadoListener)getFragmentManager().findFragmentByTag("lista");
 			fragment.show(getFragmentManager(), "crear");
 			return true;
-
 		}
 		if (id == R.id.action_menu) {
 			toggleMenu(this.getCurrentFocus());  
 			return true;
 
 		}
-
-		return super.onOptionsItemSelected(item);        
-
+		return super.onOptionsItemSelected(item); 
 	}
 
 
@@ -57,9 +53,6 @@ public class PrincipalActivity extends FragmentActivity {
 
 		mLayout = (MainLayout) this.getLayoutInflater().inflate(  
 				R.layout.activity_principal, null);  
-
-
-
 		setContentView(mLayout);  
 
 		lvMenuItems = getResources().getStringArray(R.array.menu_items);  
@@ -81,15 +74,12 @@ public class PrincipalActivity extends FragmentActivity {
 			public void onClick(View v) {  
 
 				VentanaCrearCita fragment = new VentanaCrearCita();
-				//fragment.mListener =(IContactoCreadoListener)getFragmentManager().findFragmentByTag("lista");
 				fragment.show(getFragmentManager(), "crear");
 
 			}  
 		});  
 
-
-		tvTitle = (TextView) findViewById(R.id.activity_main_content_title);  
-
+		tvTitle = (TextView) findViewById(R.id.activity_main_content_title);
 		FragmentManager fm = getFragmentManager();  
 		FragmentTransaction ft = fm.beginTransaction();  
 		MisCitasFragment fragment = new MisCitasFragment();  
