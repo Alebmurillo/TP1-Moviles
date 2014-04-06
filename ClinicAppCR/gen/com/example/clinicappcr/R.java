@@ -34,16 +34,16 @@ public final class R {
         public static final int action_settings=0x7f09001c;
         public static final int activity_main_content_fragment=0x7f090003;
         public static final int activity_main_content_title=0x7f090002;
+        public static final int btnBuscarEspecialistas=0x7f090012;
         public static final int btnLogin=0x7f090015;
         public static final int btnRegister=0x7f090019;
         public static final int btn_guardar=0x7f09000c;
         public static final int button_crear=0x7f090001;
-        public static final int container=0x7f090011;
         public static final int editDoctor=0x7f09000b;
         public static final int editEndDate=0x7f090007;
         public static final int editPlace=0x7f090009;
         public static final int editStartDate=0x7f090005;
-        public static final int layoutCitas=0x7f090012;
+        public static final int entryEspecialistas=0x7f090011;
         public static final int link_to_login=0x7f09001a;
         public static final int link_to_register=0x7f090016;
         public static final int login_error=0x7f090017;
@@ -75,6 +75,7 @@ public final class R {
     }
     public static final class string {
         public static final int  espacio=0x7f060005;
+        public static final int Buscar=0x7f060010;
         public static final int Crear=0x7f06000e;
         public static final int Email=0x7f060003;
         public static final int Guardar=0x7f06000c;

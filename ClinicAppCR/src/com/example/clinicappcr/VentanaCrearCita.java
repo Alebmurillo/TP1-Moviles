@@ -2,8 +2,13 @@ package com.example.clinicappcr;
 
 
 
+import java.io.ObjectOutputStream.PutField;
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +64,8 @@ public class VentanaCrearCita extends DialogFragment {
 			                	handler.addNameValue("endDate", enddate );
 
 			                    String txt = handler.postPairs(handler.getUrlService());  
-			                    System.out.println(txt);
+			                    //System.out.println(txt);
+			                    sendResult(0,doctor,place,startdate,enddate);
 			                } catch (Exception e) {
 			                    e.printStackTrace();
 			                }
@@ -72,12 +78,27 @@ public class VentanaCrearCita extends DialogFragment {
 			}
 
 			
-		});
+		});		
+		
+		return ventanaRoot;		
+	}
+	
+	@Override
+	public void onDismiss(DialogInterface dialog){
 		
 		
-		return ventanaRoot;
-		
-		
+	}
+	
+	private void sendResult(int INT_CODE,String doctor,String place,String startdate,String enddate) {
+	    Intent i = new Intent();
+	    ArrayList<String> array =new ArrayList<String>();
+	    array.add(doctor);
+	    array.add(place);
+	    array.add(startdate);
+	    array.add(enddate);
+	    
+	    i.putStringArrayListExtra("cita", array);
+	    getTargetFragment().onActivityResult(getTargetRequestCode(), INT_CODE, i);
 	}
 		
 }

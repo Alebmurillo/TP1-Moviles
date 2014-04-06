@@ -3,14 +3,34 @@
     android:layout_width="match_parent"  
     android:layout_height="match_parent"  
     android:background="@android:color/holo_green_light"  
-    android:orientation="vertical" >  
-  
-    <TextView  
-        android:layout_width="wrap_content"  
-        android:layout_height="wrap_content"  
-        android:layout_centerInParent="true"  
-        android:text="Layout2"  
-        android:textColor="@android:color/black"  
-        android:textSize="20sp" />  
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/entryEspecialistas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/btnBuscarEspecialistas"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/btnBuscarEspecialistas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/Buscar" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/entryEspecialistas"
+        android:layout_below="@+id/btnBuscarEspecialistas" >
+
+    </ListView>
   
 </RelativeLayout>  
