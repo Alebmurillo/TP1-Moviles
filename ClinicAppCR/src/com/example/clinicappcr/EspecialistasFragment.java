@@ -125,9 +125,8 @@ public class EspecialistasFragment extends ListFragment {
 			 * */
 			adapter = new SimpleAdapter(
 					getActivity(), especialistasList,
-					R.layout.fila_cita, new String[] { "id", "nombre",
-						"tel","especialidad" }, new int[] { R.id.view_fecha,
-						R.id.view_hora, R.id.view_doctor,R.id.view_lugar });
+					R.layout.fila_especialista, new String[] {"nombre",
+						"especialidad","tel" }, new int[] {R.id.view_nDoctor,R.id.view_especialidad, R.id.view_tel });
 			setListAdapter(adapter);
 		}
 

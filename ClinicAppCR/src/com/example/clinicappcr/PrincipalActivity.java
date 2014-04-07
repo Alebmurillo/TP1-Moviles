@@ -83,7 +83,7 @@ public class PrincipalActivity extends FragmentActivity {
 		FragmentManager fm = getFragmentManager();  
 		FragmentTransaction ft = fm.beginTransaction();  
 		MisCitasFragment fragment = new MisCitasFragment();  
-		ft.add(R.id.activity_main_content_fragment, fragment);  
+		ft.add(R.id.activity_main_content_fragment, fragment,"misCitas");  
 		ft.commit();    	
 
 	}  
@@ -123,7 +123,7 @@ public class PrincipalActivity extends FragmentActivity {
 		}  
 
 		if (fragment != null) {  
-			ft.replace(R.id.activity_main_content_fragment, fragment);  
+			ft.replace(R.id.activity_main_content_fragment, fragment,"misCitas");  
 			ft.commit();  
 			tvTitle.setText(selectedItem);  
 		}  

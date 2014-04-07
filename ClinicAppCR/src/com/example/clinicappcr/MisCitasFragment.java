@@ -24,6 +24,8 @@ import android.widget.SimpleAdapter;
 
 public class MisCitasFragment extends ListFragment  {
 	
+	
+	String usuarioActual = "";
 	Button btCrear; 
 	static final int DIALOG_CONFIRM = 0;
 	protected static final int REQUEST_CODE = 10;
@@ -35,17 +37,17 @@ public class MisCitasFragment extends ListFragment  {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//contactList = new ArrayList<HashMap<String, String>>();
+		// Calling async task to get json
 		contactList = new ArrayList<HashMap<String, String>>();
 		// Calling async task to get json
-        //new GetCitas().execute();	
+        new GetCitas().execute();
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
-		contactList = new ArrayList<HashMap<String, String>>();
-		// Calling async task to get json
-        new GetCitas().execute();	
+			
 	}	
 		
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -60,6 +62,7 @@ public class MisCitasFragment extends ListFragment  {
             contact.put("fecha", array.get(2));
             contact.put("hora", array.get(3));
             contactList.add(contact);
+            System.out.println("YA NOTIFIQUE");
             adapter.notifyDataSetChanged();	        
 	    }
 	}
@@ -86,7 +89,6 @@ public class MisCitasFragment extends ListFragment  {
 			            	listaId= new ArrayList<String>();
 			                try {
 			                	JSONObject json = new JSONObject(jsonStr);
-			                	System.out.println(json.toString());
 								JSONArray listaDoctores  = json.getJSONArray("emp_info");
 								for (int j = 0; j < listaDoctores.length(); j++) {
 									JSONArray doctor = listaDoctores.getJSONArray(j);
@@ -120,13 +122,16 @@ public class MisCitasFragment extends ListFragment  {
 		//final VentanaCrearCita fragment = new VentanaCrearCita();
 		//fragment.setTargetFragment(this, 0);
         
+		//
+
         btCrear = (Button) view.findViewById(R.id.button_crear);  
         btCrear.setOnClickListener(new OnClickListener() {  
         	@Override  
         	public void onClick(View v) {
         		FragmentManager fm = getFragmentManager();
         		VentanaCrearCita fragment = new VentanaCrearCita();
-        		fragment.setTargetFragment(getParentFragment(), 0);
+        		//System.out.println(getFragmentManager().findFragmentByTag("misCitas"));
+        		fragment.setTargetFragment(getFragmentManager().findFragmentByTag("misCitas"), 0);
         		Bundle args = new Bundle();
         	    args.putStringArrayList("idDoc", listaId);
         	    args.putStringArrayList("nombreDoc", listaNombresDoc);
@@ -162,7 +167,8 @@ public class MisCitasFragment extends ListFragment  {
 		            // Creating service handler class instance
 		            httpHandler sh = new httpHandler();
 		            // Making a request to url and getting response
-		            String jsonStr = sh.post("http://192.168.1.3:80/Citas/usuarios_json.php");
+		            sh.addNameValue("usuario", usuarioActual);
+		            String jsonStr = sh.postPairs("http://192.168.1.3:80/Citas/citas_json.php");
 
 		            Log.d("Response: ", "> " + jsonStr);		 
 		            
@@ -170,15 +176,17 @@ public class MisCitasFragment extends ListFragment  {
 		            	
 		                try {
 		                	JSONObject json = new JSONObject(jsonStr);
+		                	//System.out.println(json.toString());
+
 							JSONArray listaCitas  = json.getJSONArray("emp_info");
 							for (int j = 0; j < listaCitas.length(); j++) {
 								JSONArray cita = listaCitas.getJSONArray(j);
 
 								
-								String fecha = cita.get(1).toString();
-								String hora = cita.get(2).toString();
-								String doctor = cita.get(3).toString();
-								String lugar = cita.get(5).toString();								
+								String fecha = cita.get(0).toString();
+								String hora = cita.get(1).toString();
+								String doctor = cita.get(2).toString();
+								String lugar = cita.get(3).toString();								
 		 
 		                        // tmp hashmap for single contact
 		                        HashMap<String, String> contact = new HashMap<String, String>();
