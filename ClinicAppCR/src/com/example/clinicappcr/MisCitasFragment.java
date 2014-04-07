@@ -37,16 +37,17 @@ public class MisCitasFragment extends ListFragment  {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//contactList = new ArrayList<HashMap<String, String>>();
-		// Calling async task to get json
 		contactList = new ArrayList<HashMap<String, String>>();
 		// Calling async task to get json
-        new GetCitas().execute();
+		
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
+		contactList = new ArrayList<HashMap<String, String>>();
+		// Calling async task to get json
+        new GetCitas().execute();
 			
 	}	
 		
