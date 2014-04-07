@@ -116,14 +116,17 @@ public class MisCitasFragment extends ListFragment  {
     	
     	
         View view = inflater.inflate(R.layout.fragment_citas, null); 
-        final FragmentManager fm = getFragmentManager();
-		final VentanaCrearCita fragment = new VentanaCrearCita();
-		fragment.setTargetFragment(this, 0);
+        //final FragmentManager fm = getFragmentManager();
+		//final VentanaCrearCita fragment = new VentanaCrearCita();
+		//fragment.setTargetFragment(this, 0);
         
         btCrear = (Button) view.findViewById(R.id.button_crear);  
         btCrear.setOnClickListener(new OnClickListener() {  
         	@Override  
-        	public void onClick(View v) { 
+        	public void onClick(View v) {
+        		FragmentManager fm = getFragmentManager();
+        		VentanaCrearCita fragment = new VentanaCrearCita();
+        		fragment.setTargetFragment(getParentFragment(), 0);
         		Bundle args = new Bundle();
         	    args.putStringArrayList("idDoc", listaId);
         	    args.putStringArrayList("nombreDoc", listaNombresDoc);
