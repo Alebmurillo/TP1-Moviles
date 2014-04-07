@@ -32,11 +32,11 @@ public class PrincipalActivity extends FragmentActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		//
 		int id = item.getItemId();
-		if (id == R.id.action_crear) {
+		/*if (id == R.id.action_crear) {
 			VentanaCrearCita fragment = new VentanaCrearCita();
 			fragment.show(getFragmentManager(), "crear");
 			return true;
-		}
+		}*/
 		if (id == R.id.action_menu) {
 			toggleMenu(this.getCurrentFocus());  
 			return true;
@@ -68,7 +68,7 @@ public class PrincipalActivity extends FragmentActivity {
 
 		});  
 
-		btMenu = (Button) findViewById(R.id.button_crear);  
+		/*btMenu = (Button) findViewById(R.id.button_crear);  
 		btMenu.setOnClickListener(new OnClickListener() {  
 			@Override  
 			public void onClick(View v) {  
@@ -77,7 +77,7 @@ public class PrincipalActivity extends FragmentActivity {
 				fragment.show(getFragmentManager(), "crear");
 
 			}  
-		});  
+		});  */
 
 		tvTitle = (TextView) findViewById(R.id.activity_main_content_title);
 		FragmentManager fm = getFragmentManager();  

@@ -64,9 +64,56 @@ public class MisCitasFragment extends ListFragment  {
 	    }
 	}
 	
+	
+	ArrayList<String> listaNombresDoc;
+	ArrayList<String> listaId;
     @Override  
     public View onCreateView(LayoutInflater inflater, ViewGroup container,  
-            Bundle savedInstanceState) {      
+            Bundle savedInstanceState) { 
+    	
+    	 Thread thread = new Thread(new Runnable(){
+	            @Override
+	            public void run() {
+	                try {
+	                	httpHandler sh= new httpHandler(); 
+	                	sh.addNameValue("especialista", "");
+	                	String jsonStr = sh.postPairs("http://192.168.1.3:80/Citas/doctores_json.php");
+
+			            Log.d("Response: ", "> " + jsonStr);		 
+			            
+			            if (jsonStr != null) {
+			            	listaNombresDoc= new ArrayList<String>();
+			            	listaId= new ArrayList<String>();
+			                try {
+			                	JSONObject json = new JSONObject(jsonStr);
+			                	System.out.println(json.toString());
+								JSONArray listaDoctores  = json.getJSONArray("emp_info");
+								for (int j = 0; j < listaDoctores.length(); j++) {
+									JSONArray doctor = listaDoctores.getJSONArray(j);
+
+									
+									String id = doctor.get(0).toString();
+									String nombre = doctor.get(1).toString();									
+									listaNombresDoc.add(nombre);
+									listaId.add(id);
+			                      
+			                    }
+			                } catch (JSONException e) {
+			                    e.printStackTrace();
+			                }
+			            } else {
+			                Log.e("ServiceHandler", "Couldn't get any data from the url");
+			            }
+
+	                    //System.out.println(txt);
+	                } catch (Exception e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	        });
+
+	        thread.start(); 		       
+    	
     	
         View view = inflater.inflate(R.layout.fragment_citas, null); 
         final FragmentManager fm = getFragmentManager();
@@ -76,7 +123,11 @@ public class MisCitasFragment extends ListFragment  {
         btCrear = (Button) view.findViewById(R.id.button_crear);  
         btCrear.setOnClickListener(new OnClickListener() {  
         	@Override  
-        	public void onClick(View v) {  
+        	public void onClick(View v) { 
+        		Bundle args = new Bundle();
+        	    args.putStringArrayList("idDoc", listaId);
+        	    args.putStringArrayList("nombreDoc", listaNombresDoc);
+        	    fragment.setArguments(args);
 				fragment.show(fm, "crear");        		
 			}  
 		}); 

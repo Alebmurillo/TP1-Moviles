@@ -28,37 +28,36 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int TextViewTestInfo=0x7f090004;
-        public static final int action_crear=0x7f09001d;
-        public static final int action_menu=0x7f09001e;
+        public static final int TextViewTestInfo=0x7f090003;
+        public static final int action_menu=0x7f09001d;
         public static final int action_settings=0x7f09001c;
-        public static final int activity_main_content_fragment=0x7f090003;
-        public static final int activity_main_content_title=0x7f090002;
+        public static final int activity_main_content_fragment=0x7f090002;
+        public static final int activity_main_content_title=0x7f090001;
         public static final int btnBuscarEspecialistas=0x7f090012;
         public static final int btnLogin=0x7f090015;
         public static final int btnRegister=0x7f090019;
-        public static final int btn_guardar=0x7f09000c;
-        public static final int button_crear=0x7f090001;
-        public static final int editDoctor=0x7f09000b;
-        public static final int editEndDate=0x7f090007;
-        public static final int editPlace=0x7f090009;
-        public static final int editStartDate=0x7f090005;
+        public static final int btn_guardar=0x7f09000b;
+        public static final int button_crear=0x7f090010;
+        public static final int editEndDate=0x7f090006;
+        public static final int editPlace=0x7f090008;
+        public static final int editStartDate=0x7f090004;
         public static final int entryEspecialistas=0x7f090011;
         public static final int link_to_login=0x7f09001a;
         public static final int link_to_register=0x7f090016;
         public static final int login_error=0x7f090017;
         public static final int menu_listview=0x7f090000;
         public static final int register_error=0x7f09001b;
-        public static final int textView2=0x7f09000a;
-        public static final int textView3=0x7f090008;
-        public static final int textView4=0x7f090006;
+        public static final int spinner1=0x7f09000a;
+        public static final int textView2=0x7f090009;
+        public static final int textView3=0x7f090007;
+        public static final int textView4=0x7f090005;
         public static final int txtEmail=0x7f090013;
         public static final int txtPass=0x7f090014;
         public static final int txtUserName=0x7f090018;
-        public static final int view_doctor=0x7f09000e;
-        public static final int view_fecha=0x7f09000f;
-        public static final int view_hora=0x7f090010;
-        public static final int view_lugar=0x7f09000d;
+        public static final int view_doctor=0x7f09000d;
+        public static final int view_fecha=0x7f09000e;
+        public static final int view_hora=0x7f09000f;
+        public static final int view_lugar=0x7f09000c;
     }
     public static final class layout {
         public static final int activity_principal=0x7f030000;
