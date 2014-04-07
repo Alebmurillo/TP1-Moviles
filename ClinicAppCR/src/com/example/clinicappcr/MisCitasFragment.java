@@ -24,14 +24,10 @@ import android.widget.SimpleAdapter;
 
 public class MisCitasFragment extends ListFragment  {
 	
-	Button btMenu; 
+	Button btCrear; 
 	static final int DIALOG_CONFIRM = 0;
 	protected static final int REQUEST_CODE = 10;
 
-	//private CitasAdapter adapter;
-	//private ArrayList<Cita> data;
-	
-	
 	// Hashmap for ListView
     ArrayList<HashMap<String, String>> contactList;
     
@@ -48,17 +44,12 @@ public class MisCitasFragment extends ListFragment  {
 	public void onResume() {
 		super.onResume();
 		contactList = new ArrayList<HashMap<String, String>>();
-		System.out.print("onresume ********");
 		// Calling async task to get json
         new GetCitas().execute();	
-	}
-	
+	}	
 		
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    if (requestCode == 0){ //make sure fragment codes match up {
-	    	System.out.println("PRUEBA SIRVIO ********");
-
-	    	System.out.println();
 	    	
 	    	ArrayList<String> array = data.getStringArrayListExtra("cita");
 	    	HashMap<String, String> contact = new HashMap<String, String>();
@@ -68,10 +59,8 @@ public class MisCitasFragment extends ListFragment  {
             contact.put("lugar", array.get(1));
             contact.put("fecha", array.get(2));
             contact.put("hora", array.get(3));
-            System.out.println(contactList.size()+" *********TAMAÒO");
             contactList.add(contact);
-            adapter.notifyDataSetChanged();
-	        
+            adapter.notifyDataSetChanged();	        
 	    }
 	}
 	
@@ -80,20 +69,14 @@ public class MisCitasFragment extends ListFragment  {
             Bundle savedInstanceState) {      
     	
         View view = inflater.inflate(R.layout.fragment_citas, null); 
-       // getCitas();
         final FragmentManager fm = getFragmentManager();
-		//FragmentTransaction ft = fm.beginTransaction(); 
 		final VentanaCrearCita fragment = new VentanaCrearCita();
 		fragment.setTargetFragment(this, 0);
         
-        btMenu = (Button) view.findViewById(R.id.button_crear);  
-        btMenu.setOnClickListener(new OnClickListener() {  
+        btCrear = (Button) view.findViewById(R.id.button_crear);  
+        btCrear.setOnClickListener(new OnClickListener() {  
         	@Override  
         	public void onClick(View v) {  
-				//FragmentManager fm = getFragmentManager();
-				//VentanaCrearCita fragment = new VentanaCrearCita();
-				//fragment.setTargetFragment(this, 0);
-				//fragment.mListener =(IContactoCreadoListener)getFragmentManager().findFragmentByTag("lista");
 				fragment.show(fm, "crear");        		
 			}  
 		}); 
@@ -101,57 +84,8 @@ public class MisCitasFragment extends ListFragment  {
 		
 		return view;  
 	}  
-    
-    /*private void getCitas(){
-    	Thread thread = new Thread(new Runnable(){
-			@Override
-			public void run() {
-				try {
-					httpHandler handler= new httpHandler();		                
-					//con la ip se sabe que es lo que se solicita
-					String txt = handler.post("http://192.168.1.3:80/Citas/usuarios_json.php");
-					JSONObject json = new JSONObject(txt);
-
-					try {
-						//data = new ArrayList<Cita>();
-						JSONArray listaCitas  = json.getJSONArray("emp_info");
-						System.out.println(listaCitas.toString());
-						for (int j = 0; j < listaCitas.length(); j++) {
-							JSONArray cita = listaCitas.getJSONArray(j);
-
-							
-							String fecha = cita.get(1).toString();
-							String hora = cita.get(2).toString();
-							String doctor = cita.get(3).toString();
-							String lugar = cita.get(5).toString();							
-							
-					    	//data.add(new Cita(doctor,lugar,fecha,hora));							
-						}
-						//adapter.notifyDataSetChanged();
-					} catch (JSONException e) {
-						System.out.println("JSON Parser"+ "Error parsing data " + e.toString());
-						//textview.setText("JSON Parser"+ "Error parsing data " + e.toString());
-					}					
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-    	);
-		thread.start(); 
-		
-    }
-    
-	*/
+    	
 	
-	
-	/*@Override
-	public void onSaveInstanceState(Bundle outState) {
-		outState.putParcelableArrayList("savedData", data);
-		super.onSaveInstanceState(outState);
-	}
-	*/
 	private ProgressDialog pDialog;
 	private SimpleAdapter adapter ;
 	
@@ -172,22 +106,17 @@ public class MisCitasFragment extends ListFragment  {
 		        @Override
 		        protected Void doInBackground(Void... arg0) {
 		            // Creating service handler class instance
-		            //ServiceHandler sh = new ServiceHandler();
 		            httpHandler sh = new httpHandler();
 		            // Making a request to url and getting response
-		           // String jsonStr = sh.makeServiceCall("http://192.168.1.3:80/Citas/usuarios_json.php", ServiceHandler.GET);
 		            String jsonStr = sh.post("http://192.168.1.3:80/Citas/usuarios_json.php");
 
-		            Log.d("Response: ", "> " + jsonStr);
-		 
+		            Log.d("Response: ", "> " + jsonStr);		 
 		            
 		            if (jsonStr != null) {
 		            	
 		                try {
 		                	JSONObject json = new JSONObject(jsonStr);
-		                	//data = new ArrayList<Cita>();
 							JSONArray listaCitas  = json.getJSONArray("emp_info");
-							//System.out.println(listaCitas.toString());
 							for (int j = 0; j < listaCitas.length(); j++) {
 								JSONArray cita = listaCitas.getJSONArray(j);
 
@@ -195,8 +124,7 @@ public class MisCitasFragment extends ListFragment  {
 								String fecha = cita.get(1).toString();
 								String hora = cita.get(2).toString();
 								String doctor = cita.get(3).toString();
-								String lugar = cita.get(5).toString();							
-								
+								String lugar = cita.get(5).toString();								
 		 
 		                        // tmp hashmap for single contact
 		                        HashMap<String, String> contact = new HashMap<String, String>();

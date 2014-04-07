@@ -51,19 +51,14 @@ public class VentanaCrearCita extends DialogFragment {
 			            public void run() {
 			                try {
 			                	httpHandler handler= new httpHandler();
-			                	/*List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-			                    pairs.add(new BasicNameValuePair("user", "0" ));
-			                    pairs.add(new BasicNameValuePair("doctor", doctor));
-			                    pairs.add(new BasicNameValuePair("place", place));
-			                    pairs.add(new BasicNameValuePair("initDate",startdate ));
-			                    pairs.add(new BasicNameValuePair("endDate", enddate));*/
+			                	
 			                	handler.addNameValue("user", "0" );
 			                	handler.addNameValue("doctor", doctor );
 			                	handler.addNameValue("place", place );
 			                	handler.addNameValue("initDate",startdate );
 			                	handler.addNameValue("endDate", enddate );
 
-			                    String txt = handler.postPairs(handler.getUrlService());  
+			                    String txt = handler.postPairs(handler.getUrl());  
 			                    //System.out.println(txt);
 			                    sendResult(0,doctor,place,startdate,enddate);
 			                } catch (Exception e) {

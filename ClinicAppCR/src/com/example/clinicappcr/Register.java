@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 public class Register extends Activity {
 
-/*	private TextView lblGotoLogin;
+	private TextView lblGotoLogin;
 	private Button btnRegister;
 	private EditText inputFullName;
 	private EditText inputEmail;
@@ -41,30 +41,13 @@ public class Register extends Activity {
 				//falta registrar usuario
 				Intent itemintent = new Intent(view.getContext(), PrincipalActivity.class);
 				Register.this.startActivity(itemintent);
-				
-				/*usuario.setOnRegisterUsuario(new OnRegisterUsuario() {     
-					@Override
-					public void onRegisterFinish(JSONObject json, String msg) {
-						registerErrorMsg.setText("");
-						Intent itemintent = new Intent(Register.this, MainActivity.class);
-						Register.this.startActivity(itemintent);
-					}     
-					@Override
-					public void onRegisterFail(String msg) {registerErrorMsg.setText(msg);}     
-					@Override
-					public void onRegisterException(Exception e, String msg) {registerErrorMsg.setText(msg);}
-				});                
-				usuario.register(Register.this, name, email, password);
 			}
-		});
 
-		lblGotoLogin = (TextView) findViewById(R.id.link_to_login);
-		lblGotoLogin.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {Intent itemintent = new Intent(v.getContext(), Login.class);
-			Register.this.startActivity(itemintent);}
-		});
-
+			});
 	}
-*/
 }
+
+
+
+
+		

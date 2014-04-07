@@ -1,7 +1,6 @@
 package com.example.clinicappcr;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -42,8 +41,8 @@ public class httpHandler  {
 	public String getStrMessageBodyLoading(){ return strMessageBodyLoading; }
 	public void setStrMessageBodyLoading(String message){ strMessageBodyLoading = message; }
 
-	public String getUrlService(){ return UrlService;}
-	public void setUrlService(String UrlService){this.UrlService = UrlService;}
+	public String getUrl(){ return UrlService;}
+	public void setUrl(String UrlService){this.UrlService = UrlService;}
 
 	public String getResponseBody(){return responseBody;}
 	private void setResponseBody(String ResponseBody){responseBody = ResponseBody;}
@@ -73,12 +72,12 @@ public class httpHandler  {
 	}
 
 	public void executeHttpPost(String UrlService){
-		setUrlService(UrlService);
+		setUrl(UrlService);
 
 		viewOrders = new Runnable(){
 			public void run() {
 				try {
-					executeHttpPostAsync(activity, getUrlService());
+					executeHttpPostAsync(activity, getUrl());
 				} catch (Exception e) {}
 			}
 		};
