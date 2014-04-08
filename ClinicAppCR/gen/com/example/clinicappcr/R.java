@@ -39,7 +39,6 @@ public final class R {
         public static final int btn_guardar=0x7f09000b;
         public static final int button_crear=0x7f090013;
         public static final int editEndDate=0x7f090006;
-        public static final int editPlace=0x7f090008;
         public static final int editStartDate=0x7f090004;
         public static final int entryEspecialistas=0x7f090014;
         public static final int link_to_login=0x7f09001d;
@@ -48,6 +47,7 @@ public final class R {
         public static final int menu_listview=0x7f090000;
         public static final int register_error=0x7f09001e;
         public static final int spinner1=0x7f09000a;
+        public static final int spinner2=0x7f090008;
         public static final int textView2=0x7f090009;
         public static final int textView3=0x7f090007;
         public static final int textView4=0x7f090005;

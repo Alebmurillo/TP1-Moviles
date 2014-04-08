@@ -24,7 +24,7 @@ import android.net.NetworkInfo;
 public class httpHandler  {
 
 	private ArrayList<NameValuePair> nameValuePairs;
-	private static String UrlService = "http://192.168.1.3:80/Citas/test.php";
+	private String UrlService = "http://192.168.0.198:80/Citas/test.php";
 
 
 	private String responseBody = "";
