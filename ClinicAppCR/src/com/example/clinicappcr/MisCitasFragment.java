@@ -7,8 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-
 import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
@@ -22,7 +20,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 
 public class MisCitasFragment extends ListFragment implements ICitaCreadaListener {

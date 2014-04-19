@@ -4,7 +4,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.database.Cursor;
 
 import com.example.clinicappcr.httpHandler.OnExecuteHttpPostAsyncListener;
 
@@ -33,8 +32,8 @@ public class Usuario {
 	private static String KEY_UID = "apiKey";
 	private static String KEY_NAME = "name";
 	private static String KEY_EMAIL = "email";
-	private static String KEY_CREATED_AT = "created_at";
-	private static String KEY_USER = "user";
+	//private static String KEY_CREATED_AT = "created_at";
+	//private static String KEY_USER = "user";
 
 	private static String loginURL = "http://192.168.0.189:80/api/v1/login";
 	private static String registerURL = "http://192.168.0.189:80/api/v1/register";

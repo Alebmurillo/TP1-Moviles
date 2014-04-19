@@ -2,7 +2,6 @@ package com.example.clinicappcr;
 
 
 
-import java.io.ObjectOutputStream.PutField;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +14,6 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +23,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 
 public class VentanaCrearCita extends DialogFragment {
@@ -33,9 +30,9 @@ public class VentanaCrearCita extends DialogFragment {
 	private Spinner mspinnerDoctor,mspinnerClinica;
 	private EditText mEditStartDate;	
 	private EditText mEditEndtDate;
-	private EditText mEditPlace;
-	private Spinner spinner1, spinner2;
-	private String URL="http://192.168.0.189:80/Citas/test.php";
+	//private EditText mEditPlace;
+	//private Spinner spinner1, spinner2;
+	private String URL="http://192.168.0.189:80/api/v1/test";
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
@@ -58,8 +55,8 @@ public class VentanaCrearCita extends DialogFragment {
 
 
 
-		spinner1 = (Spinner) ventanaRoot.findViewById(R.id.spinner1);
-		spinner2 = (Spinner) ventanaRoot.findViewById(R.id.spinner2);
+		mspinnerDoctor = (Spinner) ventanaRoot.findViewById(R.id.spinner1);
+		mspinnerClinica = (Spinner) ventanaRoot.findViewById(R.id.spinner2);
 		listIdDoctores=getArguments().getStringArrayList("idDoc");
 		listDoctores=getArguments().getStringArrayList("nombreDoc");
 		listIdClinicas=getArguments().getStringArrayList("idClinic");
@@ -68,15 +65,15 @@ public class VentanaCrearCita extends DialogFragment {
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_spinner_item, listDoctores);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner1.setAdapter(dataAdapter);
+		mspinnerDoctor.setAdapter(dataAdapter);
 
 		dataAdapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_spinner_item, listClinicas);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner2.setAdapter(dataAdapter);
+		mspinnerClinica.setAdapter(dataAdapter);
 
-		mspinnerDoctor = (Spinner) ventanaRoot.findViewById(R.id.spinner1);
-		mspinnerClinica = (Spinner) ventanaRoot.findViewById(R.id.spinner2);
+		//mspinnerDoctor = (Spinner) ventanaRoot.findViewById(R.id.spinner1);
+		//mspinnerClinica = (Spinner) ventanaRoot.findViewById(R.id.spinner2);
 		mEditStartDate = (EditText) ventanaRoot.findViewById(R.id.editStartDate);
 		mEditEndtDate = (EditText) ventanaRoot.findViewById(R.id.editEndDate);
 		//mEditPlace = (EditText) ventanaRoot.findViewById(R.id.editPlace);
@@ -136,7 +133,7 @@ public class VentanaCrearCita extends DialogFragment {
 
 
 	private ProgressDialog pDialog;
-	private SimpleAdapter adapter ;
+	//private SimpleAdapter adapter ;
 	private class SetCitas extends AsyncTask<Void, Void, ArrayList<String>> {
 
 		@Override
@@ -165,14 +162,14 @@ public class VentanaCrearCita extends DialogFragment {
 			try {
 				httpHandler handler= new httpHandler();
 
-				handler.addNameValue("user", "1" );
+				handler.addNameValue("user", Usuario.getInstance().getUID() );
 				handler.addNameValue("doctor", doctor );
 				handler.addNameValue("place", place );
 				handler.addNameValue("initDate",startdate );
 				handler.addNameValue("endDate", enddate );
 
 				String jsonStr = handler.postPairs(URL);  
-				//System.out.println(txt);
+				//System.out.println(jsonStr);
 				if (jsonStr != null) {
 
 					try {

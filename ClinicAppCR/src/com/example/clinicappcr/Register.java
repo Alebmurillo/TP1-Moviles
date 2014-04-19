@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 public class Register extends Activity implements OnRegisterUsuario {
 
-	private TextView lblGotoLogin;
+	//private TextView lblGotoLogin;
 	private Button btnRegister;
 	private EditText inputFullName;
 	private EditText inputEmail;
@@ -85,6 +85,8 @@ public class Register extends Activity implements OnRegisterUsuario {
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 		alertDialog.setTitle("ERROR");
 		alertDialog.setMessage(msg);
+		registerErrorMsg.setText(msg);
+
 		
 		// Set the Icon for the Dialog
 		alertDialog.show();
@@ -96,6 +98,7 @@ public class Register extends Activity implements OnRegisterUsuario {
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 		alertDialog.setTitle("ERROR");
 		alertDialog.setMessage(msg);
+		registerErrorMsg.setText(msg);
 		
 		// Set the Icon for the Dialog
 		alertDialog.show();

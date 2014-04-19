@@ -4,8 +4,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -90,6 +88,7 @@ public class Login extends Activity implements OnLoginUsuario {
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 		alertDialog.setTitle("ERROR");
 		alertDialog.setMessage(msg);
+		loginErrorMsg.setText(msg);
 		
 		// Set the Icon for the Dialog
 		alertDialog.show();

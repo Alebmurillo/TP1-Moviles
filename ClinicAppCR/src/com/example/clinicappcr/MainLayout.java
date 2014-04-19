@@ -1,16 +1,14 @@
 package com.example.clinicappcr;
 
+import android.content.Context;
+import android.os.Handler;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
-
-import android.content.Context;  
-import android.os.Handler;  
-import android.util.AttributeSet;  
-import android.util.Log;  
-import android.view.MotionEvent;  
-import android.view.View;  
-import android.view.animation.Interpolator;  
-import android.widget.LinearLayout;  
-import android.widget.Scroller;  
+import android.widget.Scroller;
   
 public class MainLayout extends LinearLayout {  
   
