@@ -24,7 +24,7 @@ import android.net.NetworkInfo;
 public class httpHandler  {
 
 	private ArrayList<NameValuePair> nameValuePairs;
-	private String UrlService = "http://192.168.0.198:80/Citas/test.php";
+	private String UrlService = "http://192.168.0.189:80/Citas/test.php";
 
 
 	private String responseBody = "";
@@ -91,13 +91,16 @@ public class httpHandler  {
 	private void executeHttpPostAsync(Activity activity, String UrlService){
 		if(isInternetAllowed(activity)){
 			try{
+				
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(UrlService);
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-				ResponseHandler<String> responseHandler = new BasicResponseHandler();
-				setResponseBody(httpclient.execute(httppost, responseHandler));
-
+				HttpResponse resp = httpclient.execute(httppost);
+				HttpEntity ent = resp.getEntity();
+				String text = EntityUtils.toString(ent);				
+				setResponseBody(text);
+////
+				System.out.println(getResponseBody());
 				activity.runOnUiThread(returnRes);
 			}catch(HttpResponseException hre){
 				ListenerExecuteHttpPostAsync.onErrorHttpPostAsyncListener("Se ha producido un error al conectar con el servidor");

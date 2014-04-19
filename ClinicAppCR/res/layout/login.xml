@@ -7,7 +7,8 @@
              android:layout_width="fill_parent"
              android:layout_height="wrap_content"
              android:hint="@string/Email"
-             android:inputType="textEmailAddress" />
+             android:inputType="textEmailAddress"
+             android:text="a@gmail.com" />
          
          <EditText
              android:id="@+id/txtPass"
@@ -16,7 +17,8 @@
              android:layout_marginBottom="30dip"
              android:layout_marginTop="15dip"
              android:hint="@string/Password"
-             android:inputType="textPassword" />
+             android:inputType="textPassword"
+             android:text="aaaa" />
          
          <Button
              android:id="@+id/btnLogin"

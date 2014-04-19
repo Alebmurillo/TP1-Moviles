@@ -5,6 +5,7 @@ package com.example.clinicappcr;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -55,6 +56,12 @@ public class PrincipalActivity extends FragmentActivity {
 				R.layout.activity_principal, null);  
 		setContentView(mLayout);  
 
+		// 1. get passed intent 
+        Intent intent = getIntent(); 		
+		Bundle bundle = intent.getExtras();		 
+        // 5. get status value from bundle
+        String status = bundle.getString("status");
+		
 		lvMenuItems = getResources().getStringArray(R.array.menu_items);  
 		lvMenu = (ListView) findViewById(R.id.menu_listview);  
 		lvMenu.setAdapter(new ArrayAdapter<String>(this,  

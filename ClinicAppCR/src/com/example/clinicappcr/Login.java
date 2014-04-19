@@ -3,23 +3,27 @@ package com.example.clinicappcr;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.clinicappcr.Usuario.OnLoginUsuario;
 
-public class Login extends Activity {
+
+public class Login extends Activity implements OnLoginUsuario {
 
 	private TextView lblGotoRegister;
 	private Button btnLogin;
 	private EditText inputEmail;
 	private EditText inputPassword;
 	private TextView loginErrorMsg;
-	
+	private Usuario usuario;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,12 +40,13 @@ public class Login extends Activity {
 			public void onClick(View view) {
 				String email = inputEmail.getText().toString();
 				String password = inputPassword.getText().toString();
-
-				Usuario usuario = new Usuario();
+				
+				usuario = Usuario.getInstance();
+				usuario.setOnLoginUsuario(Login.this);
+				usuario.login(Login.this, email, password);
 				//falta comprobar usuario
 
-				Intent itemintent = new Intent(view.getContext(), PrincipalActivity.class);
-				Login.this.startActivity(itemintent);
+				
 			
 			}
 		});
@@ -54,6 +59,41 @@ public class Login extends Activity {
 				Login.this.startActivity(itemintent);
 			}
 		});
+	}
+
+
+	@Override
+	public void onLoginCorrect(JSONObject json, String msg) {
+		
+		
+		// TODO Auto-generated method stub
+		Intent itemintent = new Intent(this, PrincipalActivity.class);
+		//Intent itemintent = new Intent(view.getContext(), MapActivity.class);
+ 
+        // 3. or you can add data to a bundle
+        Bundle extras = new Bundle();
+        extras.putString("nombre", usuario.getName());
+        extras.putString("email", usuario.getEmail());
+        extras.putString("apikey",usuario.getUID());
+ 
+        // 4. add bundle to intent
+        itemintent.putExtras(extras);
+		
+		Login.this.startActivity(itemintent);
+		
+	}
+
+
+	@Override
+	public void onLoginWrong(String msg) {
+		// TODO Auto-generated method stub
+		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+		alertDialog.setTitle("ERROR");
+		alertDialog.setMessage(msg);
+		
+		// Set the Icon for the Dialog
+		alertDialog.show();
+		
 	}
 
 }

@@ -27,7 +27,7 @@ import android.widget.SimpleAdapter;
 
 public class MisCitasFragment extends ListFragment implements ICitaCreadaListener {
 
-	private String URL="http://192.168.0.198:80/Citas/citas_json.php";
+	private String URL="http://192.168.0.189:80/api/v1/citas";
 	String usuarioActual = "";
 	Button btCrear; 
 	static final int DIALOG_CONFIRM = 0;
@@ -141,26 +141,26 @@ public class MisCitasFragment extends ListFragment implements ICitaCreadaListene
 			// Creating service handler class instance
 			httpHandler sh = new httpHandler();
 			// Making a request to url and getting response
-			sh.addNameValue("usuario", usuarioActual);
+			sh.addNameValue("usuario", Usuario.getInstance().getUID());
 			String jsonStr = sh.postPairs(URL);
 
 			Log.d("Response: ", "> " + jsonStr);		 
 
 			if (jsonStr != null) {
+				System.out.println(jsonStr.toString());
 
 				try {
 					JSONObject json = new JSONObject(jsonStr);
-					//System.out.println(json.toString());
+					System.out.println(json.toString());
 
 					JSONArray listaCitas  = json.getJSONArray("emp_info");
 					for (int j = 0; j < listaCitas.length(); j++) {
 						JSONArray cita = listaCitas.getJSONArray(j);
-
-
+						
 						String fecha = cita.get(0).toString();
 						String hora = cita.get(1).toString();
 						String doctor = cita.get(2).toString();
-						String lugar = cita.get(3).toString();								
+						String lugar = cita.get(3).toString();						
 
 						// tmp hashmap for single contact
 						HashMap<String, String> contact = new HashMap<String, String>();
@@ -216,18 +216,14 @@ public class MisCitasFragment extends ListFragment implements ICitaCreadaListene
 
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			System.out.println("BACK");
 
 			try {
-				System.out.println("1");
 				httpHandler sh= new httpHandler(); 
 				sh.addNameValue("especialista", "");
-				String jsonStr = sh.postPairs("http://192.168.0.198:80/Citas/doctores_json.php");
-				System.out.println("2");
+				String jsonStr = sh.postPairs("http://192.168.0.189:80/Citas/doctores_json.php");
 				Log.d("Response: ", "> " + jsonStr);		 
 
 				if (jsonStr != null) {
-					System.out.println("3");
 					listaNombresDoc= new ArrayList<String>();
 					listaId= new ArrayList<String>();
 
@@ -246,7 +242,6 @@ public class MisCitasFragment extends ListFragment implements ICitaCreadaListene
 
 
 						}
-						System.out.println("4");
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
@@ -254,11 +249,9 @@ public class MisCitasFragment extends ListFragment implements ICitaCreadaListene
 					Log.e("ServiceHandler", "Couldn't get any data from the url");
 				}
 				
-				System.out.println("5");
-				jsonStr = sh.post("http://192.168.0.198:80/Citas/clinicas_json.php");
-				System.out.println("6");
+				jsonStr = sh.post("http://192.168.0.189:80/Citas/clinicas_json.php");
 				if (jsonStr != null) {
-					System.out.println(jsonStr);
+					//System.out.println(jsonStr);
 					listaClinicas= new ArrayList<String>();
 					listaIdClinicas= new ArrayList<String>();
 					try {

@@ -35,7 +35,7 @@ public class VentanaCrearCita extends DialogFragment {
 	private EditText mEditEndtDate;
 	private EditText mEditPlace;
 	private Spinner spinner1, spinner2;
-	private String URL="http://192.168.0.198:80/Citas/test.php";
+	private String URL="http://192.168.0.189:80/Citas/test.php";
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
@@ -64,7 +64,7 @@ public class VentanaCrearCita extends DialogFragment {
 		listDoctores=getArguments().getStringArrayList("nombreDoc");
 		listIdClinicas=getArguments().getStringArrayList("idClinic");
 		listClinicas=getArguments().getStringArrayList("nombreClinic");
-
+		
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_spinner_item, listDoctores);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

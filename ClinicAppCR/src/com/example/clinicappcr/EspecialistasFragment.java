@@ -27,7 +27,8 @@ public class EspecialistasFragment extends ListFragment {
 	EditText eSearch;
 	ArrayList<HashMap<String, String>> especialistasList;
 	String searchTxt;
-	private String URL="http://192.168.0.198:80/Citas/doctores_json.php";
+	private String URL="http://192.168.0.189:80/Citas/doctores_json.php";
+	//private String URL="http://192.168.0.189:80/api/v1/doctores_jason";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
