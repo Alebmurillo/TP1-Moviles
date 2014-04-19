@@ -3,10 +3,13 @@ package com.example.clinicappcr;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+
 
 import android.app.ListFragment;
 import android.app.ProgressDialog;
@@ -17,9 +20,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 
 public class EspecialistasFragment extends ListFragment {  
 
@@ -27,27 +32,46 @@ public class EspecialistasFragment extends ListFragment {
 	EditText eSearch;
 	ArrayList<HashMap<String, String>> especialistasList;
 	String searchTxt;
-	private String URL="http://192.168.0.189:80/Citas/doctores_json.php";
-	//private String URL="http://192.168.0.189:80/api/v1/doctores_jason";
-
+	private Spinner spinner1;
+	//private String URL="http://192.168.0.189:80/Citas/doctores_json.php";
+	private String URL="http://192.168.0.189:80/api/v1/doctores_jason";
+	List<String> listaEspecialidades,listaId ;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		especialistasList = new ArrayList<HashMap<String, String>>();	
+
 	}
 
 	@Override  
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,  
 			Bundle savedInstanceState) {  
-		View view = inflater.inflate(R.layout.fragment_especialistas, null);  
+		View view = inflater.inflate(R.layout.fragment_especialistas, null); 
+		
+		listaId=getArguments().getStringArrayList("id");
+		listaEspecialidades=getArguments().getStringArrayList("nombreEspecialidad");
+		
+		spinner1 = (Spinner) view.findViewById(R.id.spinner1);
+		
+		
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_spinner_item, listaEspecialidades);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner1.setAdapter(dataAdapter);
+
+		
+		
+		
 		eSearch = (EditText) view.findViewById(R.id.entryEspecialistas);
 		btBuscar = (Button) view.findViewById(R.id.btnBuscarEspecialistas);  
 		btBuscar.setOnClickListener(new OnClickListener() { 
 			//Busqueda de especialidades
 			@Override  
 			public void onClick(View v) {			
-
-				searchTxt= eSearch.getText().toString();				
+				int posicion =spinner1.getSelectedItemPosition();
+				searchTxt =listaId.get(posicion);
+				//searchTxt= eSearch.getText().toString();				
 				especialistasList = new ArrayList<HashMap<String, String>>();
 				new GetEspecialistas().execute();
 			}  
@@ -132,5 +156,11 @@ public class EspecialistasFragment extends ListFragment {
 		}
 
 	}
+	
+	
+
+	
+	
+	
 
 }

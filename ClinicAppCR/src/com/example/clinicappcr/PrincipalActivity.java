@@ -2,11 +2,21 @@ package com.example.clinicappcr;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +33,8 @@ public class PrincipalActivity extends FragmentActivity {
 	private String[] lvMenuItems;  
 	Button btMenu;  
 	TextView tvTitle;  
+	ArrayList<String> listaEspecialidades,listaId ;
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -72,6 +84,9 @@ public class PrincipalActivity extends FragmentActivity {
 			}  
 
 		});  
+		
+		new GetEspecialidades().execute();
+
 
 		/*btMenu = (Button) findViewById(R.id.button_crear);  
 		btMenu.setOnClickListener(new OnClickListener() {  
@@ -123,7 +138,14 @@ public class PrincipalActivity extends FragmentActivity {
 			fragment = new ClinicasFragment();  
 		}  
 		else if (selectedItem.compareTo("Especialistas") == 0) {  
-			fragment = new EspecialistasFragment();  
+			fragment = new EspecialistasFragment(); 
+
+			//aqui
+			Bundle args = new Bundle();
+			args.putStringArrayList("id", listaId);
+			args.putStringArrayList("nombreEspecialidad", listaEspecialidades);
+			
+			fragment.setArguments(args);
 
 		}  
 
@@ -143,4 +165,74 @@ public class PrincipalActivity extends FragmentActivity {
 			super.onBackPressed();  
 		}  
 	}  
+	
+	
+	
+	
+	private class GetEspecialidades extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+
+			try {
+				httpHandler sh= new httpHandler(); 
+				String jsonStr = sh.post("http://192.168.0.189:80/api/v1/especialidades");
+				Log.d("Response: ", "> " + jsonStr);		 
+
+				if (jsonStr != null) {
+					System.out.println(jsonStr);
+
+					listaEspecialidades= new ArrayList<String>();
+					listaId= new ArrayList<String>();
+					listaEspecialidades.add("Todos");
+					listaId.add("");
+					try {
+						JSONObject json = new JSONObject(jsonStr);
+						JSONArray jsonEspecialidades  = json.getJSONArray("emp_info");
+						for (int j = 0; j < jsonEspecialidades.length(); j++) {
+							JSONArray especialidad = jsonEspecialidades.getJSONArray(j);
+
+
+							String id = especialidad.get(0).toString();
+							String nombre = especialidad.get(1).toString();
+
+							listaEspecialidades.add(nombre);
+							listaId.add(id);
+							//System.out.println("" +nombre+ " "+ id+"");
+
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				} else {
+					Log.e("ServiceHandler", "Couldn't get any data from the url");
+				}					
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			// Dismiss the progress dialog
+			
+			/**
+			 * Updating parsed JSON data into ListView
+			 * */
+
+
+		}
+
+	}
+	
+	
 }  
