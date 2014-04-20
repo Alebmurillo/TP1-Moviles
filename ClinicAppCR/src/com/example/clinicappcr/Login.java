@@ -76,7 +76,6 @@ public class Login extends Activity implements OnLoginUsuario {
  
         // 4. add bundle to intent
         itemintent.putExtras(extras);
-		
 		Login.this.startActivity(itemintent);
 		
 	}

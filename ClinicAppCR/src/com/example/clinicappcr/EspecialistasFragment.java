@@ -68,7 +68,10 @@ public class EspecialistasFragment extends ListFragment {
 		btBuscar.setOnClickListener(new OnClickListener() { 
 			//Busqueda de especialidades
 			@Override  
-			public void onClick(View v) {			
+			public void onClick(View v) {	
+				// Intent itemintent = new Intent(getActivity(), BasicMapDemoActivity.class);
+				//	EspecialistasFragment.this.startActivity(itemintent);
+					
 				int posicion =spinner1.getSelectedItemPosition();
 				searchTxt =listaId.get(posicion);
 				//searchTxt= eSearch.getText().toString();				
