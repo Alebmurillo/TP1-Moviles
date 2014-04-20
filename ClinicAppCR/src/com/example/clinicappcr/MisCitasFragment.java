@@ -404,7 +404,7 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 		contactList.remove(posicionActual);
 		((BaseAdapter) getListAdapter()).notifyDataSetChanged();
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Error")
+        builder.setTitle("Exito")
         .setMessage(msg)
         .setCancelable(false)
         .setNegativeButton("Close",new DialogInterface.OnClickListener() {
