@@ -162,6 +162,44 @@ class DbHandler {
             return NULL;
         }
     }
+     public function verificarCita($doctor,$hora,$fecha){
+        $stmt = $this->conn->prepare("SELECT idAppointment from appointment WHERE doctor = ? AND date= ? AND startTime =?");
+        $stmt->bind_param("sss", $doctor,$fecha,$hora);
+        $stmt->execute();
+        $stmt->store_result();
+        $num_rows = $stmt->num_rows;
+        $stmt->close();
+        return $num_rows > 0;
+                           
+     }
+    public function getConsultorioFromDoctor($doctor){
+        $stmt = $this->conn->prepare("SELECT idconsultorio FROM doctor WHERE iddoctor = ?");
+        $stmt->bind_param("s", $doctor);
+        if ($stmt->execute()) {
+            $stmt->bind_result($consultorio_id);
+            $stmt->fetch();
+            // TODO
+            // $user_id = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
+            return $consultorio_id;
+        } else {
+            return "";
+        }
+    }
+    public function getClinicId($consultorio) {
+        $stmt = $this->conn->prepare("SELECT idClinica FROM consultorio WHERE idClinica = ?");
+        $stmt->bind_param("s", $consultorio);
+        if ($stmt->execute()) {
+            $stmt->bind_result($clinic_id);
+            $stmt->fetch();
+            // TODO
+            // $user_id = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
+            return $clinic_id;
+        } else {
+            return "";
+        }
+    }
 
     /**
      * Fetching user id by api key
@@ -286,6 +324,24 @@ class DbHandler {
             return NULL;
         }
     }
+    
+     public function getEspecialidades() {
+                 
+        $response = array();
+
+       if ($resultado = $this->conn->query("SELECT * FROM especialidadesdoctor ")) {
+            while ($fila = $resultado->fetch_row()) {
+               // printf("(%s,%s)\n", $fila[0], $fila[1]);
+                $tmp = array();
+                $tmp[0] = $fila[0];
+                $tmp[1] = $fila[1];
+                array_push($response, $tmp);
+            }
+            $resultado->close();
+        }
+
+        return $response;
+    }
 
     /**
      * Fetching all user tasks
@@ -319,9 +375,10 @@ class DbHandler {
      * Deleting a task
      * @param String $task_id id of the task to delete
      */
-    public function deleteTask($user_id, $task_id) {
-        $stmt = $this->conn->prepare("DELETE t FROM tasks t, user_tasks ut WHERE t.id = ? AND ut.task_id = t.id AND ut.user_id = ?");
-        $stmt->bind_param("ii", $task_id, $user_id);
+    public function deleteCita($user_id, $cita_id) {
+        //DELETE FROM `cliniccalendar`.`appointment` WHERE `appointment`.`idAppointment` = 30
+        $stmt = $this->conn->prepare("DELETE FROM appointment WHERE idAppointment = ? AND user = ? ");
+        $stmt->bind_param("ss", $cita_id, $user_id);
         $stmt->execute();
         $num_affected_rows = $stmt->affected_rows;
         $stmt->close();

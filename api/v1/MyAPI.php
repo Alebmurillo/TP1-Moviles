@@ -204,7 +204,13 @@ class MyAPI extends API {
         echo json_encode($json);     
     }
 
-    
+    protected function especialidades(){
+        $dba = new DbHandler();
+        $result=$dba->getEspecialidades();
+        $json = array();
+        $json['emp_info'] = $result;       
+        echo json_encode($json);  
+    }
     protected function usuarios_jason() {
         include_once("config.php");
         $con = mysql_connect($server, $db_user, $db_pass)or die("cannot connect");
@@ -343,7 +349,7 @@ class MyAPI extends API {
         }
     }
 
-    protected function crearCita() {
+    /*protected function crearCita() {
         include_once("config.php");
         if (isset($_POST["enviar"])) {
             $conn = mysql_connect($server, $db_user, $db_pass);
@@ -356,7 +362,7 @@ class MyAPI extends API {
             mysql_close($conn);
         }
     }
-
+*/
     protected function showTable() {
         include_once("config.php");
         $table = $_POST["tabla"];
@@ -604,34 +610,89 @@ class MyAPI extends API {
         $rows = mysql_query("SELECT * FROM Usuarios WHERE id = " . $id, $conn);
         $row = mysql_fetch_array($rows, MYSQL_ASSOC);
     }
-
-    protected function test() {
+    
+    protected function eliminarCita() {
+                include_once("config.php");
+        $usr = $_POST['user'];
+        $id = $_POST['id'];
+        $dba = new DbHandler();        
+        $usuario = $dba->getUserId($usr);
+        $bb=$dba->deleteCita($usuario, $id);
+        //echo $bb;
+        if($bb){
+                $conn = mysql_connect($server, $db_user, $db_pass);
+                if (!$conn) {
+                    die('No pudo conectarse: ' . mysql_error());
+                }
+                mysql_select_db($db);
+                $sql = "SELECT appointment.date,appointment.startTime,doctor.nameDoctor,clinica.name,appointment.idAppointment FROM appointment INNER JOIN doctor ON appointment.doctor=doctor.iddoctor INNER JOIN clinica ON appointment.place=clinica.idClinic WHERE appointment.user = " . $usuario . " ";
+                $result = mysql_query($sql);
+                $json = array();
+                 if (mysql_num_rows($result)) {
+                    while ($row = mysql_fetch_row($result)) {
+                        $json['emp_info'][] = $row;
+                        
+                    }
+                }
+                $json['success'] = 1;
+                mysql_close();
+                $json['message'] = "se elimino correctamente";
+                echo json_encode($json);
+        }else{
+            $json = array();
+                $json['success'] = 0;
+                $json['message'] = "no se elimino ninguna cita";
+                echo json_encode($json);
+        }
+        
+        
+    }
+    
+    protected function crearCita() {
         include_once("config.php");
         $usr = $_POST['user'];
         $doc = $_POST['doctor'];
-        $place = $_POST['place'];
-        $initDate = $_POST['initDate'];
-        $endDate = $_POST['endDate'];
+        //$place = $_POST['place'];
+        $date = $_POST['fecha'];
+        $time = $_POST['hora'];
         
-        $dba = new DbHandler();
+        $dba = new DbHandler();        
         $usuario = $dba->getUserId($usr);
+        //echo "usuario ".$usuario."-";
+        
+        $consultorio=$dba->getConsultorioFromDoctor($doc);
+        //echo "consultorio ". $consultorio."-";
+        $clinica= $dba->getClinicId($consultorio);
+        
+        //echo "clinica ".$clinica."-";
         if ($usuario != "") {
-            $conn = mysql_connect($server, $db_user, $db_pass);
-            if (!$conn) {
-                die('No pudo conectarse: ' . mysql_error());
-            }
-            mysql_select_db($db);
-            mysql_query("INSERT INTO appointment (startTime, endTime, doctor, user, place) VALUES('" . $initDate . "','" . $endDate . "'," . $doc . "," . $usuario . "," . $place . ")");
-            $sql = "SELECT appointment.date,appointment.startTime,doctor.nameDoctor,clinica.name,appointment.idAppointment FROM appointment INNER JOIN doctor ON appointment.doctor=doctor.iddoctor INNER JOIN clinica ON appointment.place=clinica.idClinic WHERE appointment.user = ".$usuario." ";
-            $result = mysql_query($sql);
-            $json = array();
-            if (mysql_num_rows($result)) {
-                while ($row = mysql_fetch_row($result)) {
-                    $json['emp_info'][] = $row;
+            if(!$dba->verificarCita($doc,$time,$date)) {
+                $conn = mysql_connect($server, $db_user, $db_pass);
+                if (!$conn) {
+                    die('No pudo conectarse: ' . mysql_error());
                 }
+                mysql_select_db($db);
+                mysql_query("INSERT INTO appointment (date, startTime, doctor, user, place) VALUES('" . $date . "','" . $time . "'," . $doc . "," . $usuario . "," . $clinica . ")");
+                $sql = "SELECT appointment.date,appointment.startTime,doctor.nameDoctor,clinica.name,appointment.idAppointment FROM appointment INNER JOIN doctor ON appointment.doctor=doctor.iddoctor INNER JOIN clinica ON appointment.place=clinica.idClinic WHERE appointment.user = " . $usuario . " ";
+                $result = mysql_query($sql);
+                $json = array();
+                if (mysql_num_rows($result)) {
+                    while ($row = mysql_fetch_row($result)) {
+                        $json['emp_info'][] = $row;
+                        $json['success'] = 1;
+                    }
+                }
+                mysql_close();
+                echo json_encode($json);
+            }else{
+                $json = array();
+                $json['success'] = 0;
+                $json['message'] = "Ya existe una cita con ese horario y doctor";
+                echo json_encode($json);
+                
             }
-            mysql_close();
-            echo json_encode($json);
+
+            
         }else{
             $json = array();
             $json['success'] = 0;
