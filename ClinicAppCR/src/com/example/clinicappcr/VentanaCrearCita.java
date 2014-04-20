@@ -2,7 +2,9 @@ package com.example.clinicappcr;
 
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,15 +23,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class VentanaCrearCita extends DialogFragment {
 
-	private Spinner mspinnerDoctor,mspinnerClinica;
-	private EditText mEditStartDate;	
-	private EditText mEditEndtDate;
+	private Spinner mspinnerDoctor,spinnerfechas,spinnerhoras;
+	//private EditText mEditStartDate;	
+	//private EditText mEditEndtDate;
 	//private EditText mEditPlace;
 	//private Spinner spinner1, spinner2;
 	private String URL="http://192.168.0.189:80/api/v1/test";
@@ -46,21 +51,48 @@ public class VentanaCrearCita extends DialogFragment {
 
 	List<String> listDoctores ;
 	List<String> listIdDoctores ;
-	List<String> listClinicas ;
-	List<String> listIdClinicas ;
+	ArrayList<String> listFechas ;
+	List<String> listHoras ;
+	//List<String> listClinicas ;
+	//List<String> listIdClinicas ;
+	// private TextView tvfechaactual;
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View ventanaRoot= inflater.inflate(R.layout.crear_cita, null);
 		//mListener;
-
-
-
+		Calendar cal = Calendar.getInstance(); 
+		// tvfechaactual = (TextView)ventanaRoot.findViewById(R.id.textView1);
+			SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd"); 
+	        String formattedDate1 = df1.format(cal.getTime());
+	        //tvfechaactual.setText(formattedDate1);
+	        listFechas= new ArrayList<String>();
+	        listHoras= new ArrayList<String>();
+	        listFechas.add(formattedDate1);
+	        
+	        for (int i =0; i<15;i++){
+	            cal.add(Calendar.DATE, 1);
+	            String newdate = df1.format(cal.getTime());
+	            System.out.println(newdate);
+	            listFechas.add(newdate);	        	
+	        }
+	        for (int i =8; i<18;i++){
+	            StringBuilder Builder = new StringBuilder();
+	            Builder.append('0');
+	            Builder.append(String.valueOf(i));
+	            Builder.append(":00:00");
+	            //System.out.println(Builder.toString());
+	            listHoras.add(Builder.toString());	        	
+	        }
+	        
+	        listFechas.add(formattedDate1);
+	        spinnerhoras = (Spinner) ventanaRoot.findViewById(R.id.spinner3);
 		mspinnerDoctor = (Spinner) ventanaRoot.findViewById(R.id.spinner1);
-		mspinnerClinica = (Spinner) ventanaRoot.findViewById(R.id.spinner2);
+		spinnerfechas = (Spinner) ventanaRoot.findViewById(R.id.spinner2);
 		listIdDoctores=getArguments().getStringArrayList("idDoc");
 		listDoctores=getArguments().getStringArrayList("nombreDoc");
-		listIdClinicas=getArguments().getStringArrayList("idClinic");
-		listClinicas=getArguments().getStringArrayList("nombreClinic");
+		//listIdClinicas=getArguments().getStringArrayList("idClinic");
+		//listClinicas=getArguments().getStringArrayList("nombreClinic");
+		
 		
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_spinner_item, listDoctores);
@@ -68,14 +100,33 @@ public class VentanaCrearCita extends DialogFragment {
 		mspinnerDoctor.setAdapter(dataAdapter);
 
 		dataAdapter = new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_spinner_item, listClinicas);
+				android.R.layout.simple_spinner_item, listFechas);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mspinnerClinica.setAdapter(dataAdapter);
+		spinnerfechas.setAdapter(dataAdapter);
+		
+		dataAdapter = new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_spinner_item, listHoras);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerhoras.setAdapter(dataAdapter);
 
+		mspinnerDoctor.setOnItemSelectedListener(new OnItemSelectedListener() {	        
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				//tvfechaactual.setText(spinnerfechas.getSelectedItem().toString());				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+	    });
 		//mspinnerDoctor = (Spinner) ventanaRoot.findViewById(R.id.spinner1);
-		//mspinnerClinica = (Spinner) ventanaRoot.findViewById(R.id.spinner2);
-		mEditStartDate = (EditText) ventanaRoot.findViewById(R.id.editStartDate);
-		mEditEndtDate = (EditText) ventanaRoot.findViewById(R.id.editEndDate);
+		//spinnerfechas = (Spinner) ventanaRoot.findViewById(R.id.spinner2);
+		//mEditStartDate = (EditText) ventanaRoot.findViewById(R.id.editStartDate);
+		//mEditEndtDate = (EditText) ventanaRoot.findViewById(R.id.edithora);
 		//mEditPlace = (EditText) ventanaRoot.findViewById(R.id.editPlace);
 
 		ventanaRoot.findViewById(R.id.btn_guardar).setOnClickListener(new OnClickListener() {					
@@ -101,14 +152,14 @@ public class VentanaCrearCita extends DialogFragment {
 
 	}
 
-	private void sendResult(int INT_CODE,String doctor,String place,String startdate,String enddate) {
+	private void sendResult(int INT_CODE,String doctor,String place,String startdate,String hora) {
 
 
 		ArrayList<String> array =new ArrayList<String>();
 		array.add(doctor);
 		array.add(place);
 		array.add(startdate);
-		array.add(enddate);
+		array.add(hora);
 
 
 		HashMap<String, String> contact = new HashMap<String, String>();
@@ -121,7 +172,7 @@ public class VentanaCrearCita extends DialogFragment {
 
 		if(mListener != null){
 			mListener.citaCreada(contact);
-			System.out.println("LLAMANDO INTERFACE");
+			//System.out.println("LLAMANDO INTERFACE");
 
 		}    
 
@@ -151,30 +202,29 @@ public class VentanaCrearCita extends DialogFragment {
 		protected ArrayList<String> doInBackground(Void... arg0) {
 
 			int posicion =mspinnerDoctor.getSelectedItemPosition();
-			int posicionClinic=mspinnerClinica.getSelectedItemPosition();
+			int posicionClinic=spinnerfechas.getSelectedItemPosition();
 			ArrayList<String> result = new ArrayList<String>();
 			String doctor =listIdDoctores.get(posicion);
-			String place =listIdClinicas.get(posicionClinic);
-			String startdate = mEditStartDate.getText().toString();
+			//String place =listIdClinicas.get(posicionClinic);
+			String startdate = spinnerfechas.getSelectedItem().toString();
 			//final String place =mEditPlace.getText().toString();
-			String enddate = mEditEndtDate.getText().toString();
+			String hora = spinnerhoras.getSelectedItem().toString();
 
 			try {
 				httpHandler handler= new httpHandler();
 
 				handler.addNameValue("user", Usuario.getInstance().getUID() );
 				handler.addNameValue("doctor", doctor );
-				handler.addNameValue("place", place );
-				handler.addNameValue("initDate",startdate );
-				handler.addNameValue("endDate", enddate );
+				//handler.addNameValue("place", place );
+				handler.addNameValue("fecha",startdate );
+				handler.addNameValue("hora", hora );
 
 				String jsonStr = handler.postPairs(URL);  
 				//System.out.println(jsonStr);
 				if (jsonStr != null) {
-
 					try {
 						JSONObject json = new JSONObject(jsonStr);
-						System.out.println(json.toString());
+						//System.out.println(json.toString());
 
 						JSONArray listaCitas  = json.getJSONArray("emp_info");
 						int last =listaCitas.length()-1;
@@ -183,14 +233,14 @@ public class VentanaCrearCita extends DialogFragment {
 
 
 						String fecha = cita.get(0).toString();
-						String hora = cita.get(1).toString();
+						String hora1 = cita.get(1).toString();
 						String doctor1 = cita.get(2).toString();
 						String lugar = cita.get(3).toString();	
 						
 						result.add(doctor1);
 						result.add(lugar);
 						result.add(fecha);
-						result.add(hora);
+						result.add(hora1);
 						
 
 
@@ -213,6 +263,7 @@ public class VentanaCrearCita extends DialogFragment {
 		@Override
 		protected void onPostExecute(ArrayList<String>  result) {
 			super.onPostExecute(result);
+			//System.out.print(result);
 			
 			sendResult(0,result.get(0),result.get(1),result.get(2),result.get(3));
 			// Dismiss the progress dialog

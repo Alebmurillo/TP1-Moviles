@@ -64,7 +64,7 @@ public class EspecialistasFragment extends ListFragment {
 		
 		
 		eSearch = (EditText) view.findViewById(R.id.entryEspecialistas);
-		btBuscar = (Button) view.findViewById(R.id.btnBuscarEspecialistas);  
+		btBuscar = (Button) view.findViewById(R.id.btnBuscar);  
 		btBuscar.setOnClickListener(new OnClickListener() { 
 			//Busqueda de especialidades
 			@Override  
