@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -26,9 +27,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 public class VentanaCrearCita extends DialogFragment {
 
@@ -72,7 +71,7 @@ public class VentanaCrearCita extends DialogFragment {
 	        for (int i =0; i<15;i++){
 	            cal.add(Calendar.DATE, 1);
 	            String newdate = df1.format(cal.getTime());
-	            System.out.println(newdate);
+	            //System.out.println(newdate);
 	            listFechas.add(newdate);	        	
 	        }
 	        for (int i =8; i<18;i++){
@@ -132,15 +131,11 @@ public class VentanaCrearCita extends DialogFragment {
 		ventanaRoot.findViewById(R.id.btn_guardar).setOnClickListener(new OnClickListener() {					
 			@Override
 			public void onClick(View v) {
-				//GUARDAR LA CITA
-
-				
+				//GUARDAR LA CITA			
 				new SetCitas().execute();
-				dismiss();
-
+				
+				
 			}
-
-
 		});		
 
 		return ventanaRoot;		
@@ -225,25 +220,24 @@ public class VentanaCrearCita extends DialogFragment {
 					try {
 						JSONObject json = new JSONObject(jsonStr);
 						//System.out.println(json.toString());
+						if((Integer.parseInt(json.getString("success")) == 1)){
+							JSONArray listaCitas  = json.getJSONArray("emp_info");
+							int last =listaCitas.length()-1;
 
-						JSONArray listaCitas  = json.getJSONArray("emp_info");
-						int last =listaCitas.length()-1;
+							JSONArray cita = listaCitas.getJSONArray(last);
 
-						JSONArray cita = listaCitas.getJSONArray(last);
-
-
-						String fecha = cita.get(0).toString();
-						String hora1 = cita.get(1).toString();
-						String doctor1 = cita.get(2).toString();
-						String lugar = cita.get(3).toString();	
-						
-						result.add(doctor1);
-						result.add(lugar);
-						result.add(fecha);
-						result.add(hora1);
-						
-
-
+							String fecha = cita.get(0).toString();
+							String hora1 = cita.get(1).toString();
+							String doctor1 = cita.get(2).toString();
+							String lugar = cita.get(3).toString();	
+							
+							result.add(doctor1);
+							result.add(lugar);
+							result.add(fecha);
+							result.add(hora1);
+						}	else{
+							result=null;
+						}
 
 					} catch (JSONException e) {
 						e.printStackTrace();
@@ -264,11 +258,29 @@ public class VentanaCrearCita extends DialogFragment {
 		protected void onPostExecute(ArrayList<String>  result) {
 			super.onPostExecute(result);
 			//System.out.print(result);
-			
-			sendResult(0,result.get(0),result.get(1),result.get(2),result.get(3));
-			// Dismiss the progress dialog
+			if(result!=null){
+				System.out.println("***************"+result+"");
+				sendResult(0,result.get(0),result.get(1),result.get(2),result.get(3));
+				// Dismiss the progress dialog				
+				dismiss();
+
+			}else{
+				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		        builder.setTitle("Error")
+		        .setMessage("Horario no disponible")
+		        .setCancelable(false)
+		        .setNegativeButton("Close",new DialogInterface.OnClickListener() {
+		            public void onClick(DialogInterface dialog, int id) {
+		                dialog.cancel();
+		            }
+		        });
+		        AlertDialog alert = builder.create();
+		        alert.show();
+		    
+			}
 			if (pDialog.isShowing())
 				pDialog.dismiss();
+			
 		}
 
 	}
