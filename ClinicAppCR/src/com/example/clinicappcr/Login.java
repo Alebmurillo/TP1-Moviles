@@ -1,5 +1,7 @@
 package com.example.clinicappcr;
 
+import java.util.Arrays;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -72,6 +74,7 @@ public class Login extends Activity implements OnLoginUsuario, OnLoginFacebook, 
 		if(session!=null){
 			session.close();
 		}
+		btnFLogin.setReadPermissions(Arrays.asList("email"));
 		btnFLogin.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
             @Override
             public void onUserInfoFetched(GraphUser user) {
@@ -91,7 +94,8 @@ public class Login extends Activity implements OnLoginUsuario, OnLoginFacebook, 
 					//System.out.println(id);
 					String gender=user.asMap().get("gender").toString();
 					//System.out.println(gender);
-					String email=user.getUsername().toString().concat("@clinic.com");
+					//String email=user.getUsername().toString().concat("@clinic.com");
+					String email=user.asMap().get("email").toString();
 					//System.out.println(email);
 					usuario = Usuario.getInstance();
 					usuario.setOnRegisterFacebook(Login.this);
@@ -209,7 +213,7 @@ public class Login extends Activity implements OnLoginUsuario, OnLoginFacebook, 
 		String nombre=user.getFirstName().toString();		
 		String id=user.getId().toString();
 		String gender=user.asMap().get("gender").toString();		
-		String email=user.getUsername().toString().concat("@clinic.com");
+		String email=user.asMap().get("email").toString();
 		System.out.println("REGISTRANDO "+email + "  pass= " +id);
 		
 		usuario = Usuario.getInstance();
