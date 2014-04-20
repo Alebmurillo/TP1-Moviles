@@ -39,7 +39,8 @@ public class ClinicasFragment extends ListFragment {
 	String searchTxt;
 	private Spinner spinner1;
 	//private String URL="http://192.168.0.189:80/clinicas/clinicaes_json.php";
-	private String URL="http://192.168.0.189:80/api/v1/clinicas_jason";
+	private String URL="http://192.168.0.189:80/api/v1/clinicas_json";
+	private String URLclinicas="http://192.168.0.189:80/api/v1/clinicas_json";
 	List<String> listaClinicas,listaIdClinicas,listaLatitud,listaLongitud ;
 	ArrayList<HashMap<String, String>> clinicList;
 
@@ -107,7 +108,7 @@ public class ClinicasFragment extends ListFragment {
 			Log.d("Response: ", "> " + jsonStr);
 			
 			
-			jsonStr = sh.post("http://192.168.0.189:80/api/v1/clinicas_json");
+			jsonStr = sh.post(URLclinicas);
 			if (jsonStr != null) {
 				System.out.println(jsonStr);
 				try {
@@ -127,6 +128,7 @@ public class ClinicasFragment extends ListFragment {
 						String latitud = clinica.get(2).toString();
 						String longitud = clinica.get(3).toString();	
 						listaClinicas.add(nombreClinic);
+						System.out.println(nombreClinic+"-------"+idclinic);
 						listaIdClinicas.add(idclinic);
 						listaLatitud.add(latitud);
 						listaLongitud.add(longitud);

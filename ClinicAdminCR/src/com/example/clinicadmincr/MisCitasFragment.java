@@ -25,6 +25,8 @@ public class MisCitasFragment extends ListFragment implements
 		ICitaCreadaListener {
 
 	private String URL = "http://192.168.0.189:80/api/v1/citas";
+	private String URLdoctores ="http://192.168.0.189:80/Citas/doctores_json.php";
+	private String URLclinicas ="http://192.168.0.189:80/Citas/clinicas_json.php";
 	String usuarioActual = "";
 	Button btCrear;
 	static final int DIALOG_CONFIRM = 0;
@@ -210,7 +212,7 @@ public class MisCitasFragment extends ListFragment implements
 				httpHandler sh = new httpHandler();
 				sh.addNameValue("especialista", "");
 				String jsonStr = sh
-						.postPairs("http://192.168.0.189:80/Citas/doctores_json.php");
+						.postPairs(URLdoctores);
 				Log.d("Response: ", "> " + jsonStr);
 
 				if (jsonStr != null) {
@@ -239,7 +241,7 @@ public class MisCitasFragment extends ListFragment implements
 				}
 
 				jsonStr = sh
-						.post("http://192.168.0.189:80/Citas/clinicas_json.php");
+						.post(URLclinicas);
 				if (jsonStr != null) {
 					// System.out.println(jsonStr);
 					listaClinicas = new ArrayList<String>();
