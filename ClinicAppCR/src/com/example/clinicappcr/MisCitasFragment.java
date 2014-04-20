@@ -402,6 +402,8 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 		// TODO Auto-generated method stub
 		ListView lv = getListView();
 		contactList.remove(posicionActual);
+		listIdCitas.remove(posicionActual);
+
 		((BaseAdapter) getListAdapter()).notifyDataSetChanged();
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Exito")

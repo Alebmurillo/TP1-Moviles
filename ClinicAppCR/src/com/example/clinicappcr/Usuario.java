@@ -7,9 +7,7 @@ import android.app.Activity;
 
 import com.example.clinicappcr.httpHandler.OnExecuteHttpPostAsyncListener;
 
-public class Usuario {
-
-	
+public class Usuario {	
 	
    private static Usuario instance = null;
    protected Usuario() {
@@ -45,6 +43,8 @@ public class Usuario {
 
 	public void login(Activity activity, String email, String password) {
 		this.activity = activity;
+		System.out.println(email);
+		System.out.println( password);
 		httpHandler httpclient = new httpHandler(activity);
 		httpclient.addNameValue("tag", login_tag);
 		httpclient.addNameValue("email", email);
@@ -83,10 +83,62 @@ public class Usuario {
 
 		httpclient.executeHttpPost(loginURL);
 	}
+	
+	
+	
+	public void loginFacebook(Activity activity, String email, String password) {
+		this.activity = activity;
+		System.out.println(email);
+		System.out.println( password);
+		httpHandler httpclient = new httpHandler(activity);
+		httpclient.addNameValue("tag", login_tag);
+		httpclient.addNameValue("email", email);
+		httpclient.addNameValue("password", password);
+		httpclient.setOnExecuteHttpPostAsyncListener(new OnExecuteHttpPostAsyncListener() {
+					private Exception Exception;
+
+					@Override
+					public void onExecuteHttpPostAsyncListener(
+							String ResponseBody) {
+						try {
+							JSONObject json = new JSONObject(ResponseBody);
+							if (json.getString(KEY_SUCCESS) != null) {
+								if ((Integer.parseInt(json.getString(KEY_SUCCESS)) == 1)) {
+									if (Usuario.this.saveLogin(	Usuario.this.activity, json)){
+										ListenerLoginFacebook.onLoginFacebookFinish(json, "Login correcto");
+									}else{
+										//ListenerLoginFacebook
+												//.onLoginFacebookFail("Login incorrecto");
+									}
+								} else {
+									ListenerLoginFacebook
+									.onLoginFacebookFail(json.getString("message"));
+									
+								}
+							} else {
+								ListenerLoginFacebook
+								.onLoginFacebookException(Exception,"Login error");
+							}
+						} catch (JSONException e) {
+							ListenerLoginFacebook
+							.onLoginFacebookException(e, "Login response error");
+						}
+					}
+
+					@Override
+					public void onErrorHttpPostAsyncListener(String message) {
+					}
+				});
+
+		httpclient.executeHttpPost(loginURL);
+	}
+	
 
 	
 	public void register(Activity activity, String username, String email, String password, String sexo) {
 		this.activity = activity;
+		System.out.println(email);
+		System.out.println( password);
 		httpHandler httpclient = new httpHandler(activity);
 		httpclient.addNameValue("tag", register_tag);
 		httpclient.addNameValue("nombre", username);
@@ -101,6 +153,7 @@ public class Usuario {
 							String ResponseBody) {
 						try {
 							JSONObject json = new JSONObject(ResponseBody);
+							System.out.println("----------"+json.toString());
 							if (json.getString(KEY_SUCCESS) != null) {
 								if ((Integer.parseInt(json
 										.getString(KEY_SUCCESS)) == 1)) {
@@ -112,7 +165,7 @@ public class Usuario {
 												.onRegisterFail("Estas registrado pero no puedes loguearte ahora");
 								} else
 									ListenerRegisterUsuario
-											.onRegisterFail("Error durante el registro");
+											.onRegisterFail(json.getString("message"));
 							} else {
 								ListenerRegisterUsuario
 										.onRegisterFail("Error durante el registro");
@@ -184,6 +237,22 @@ public class Usuario {
 		// dblogin.close();
 
 	}
+	
+	
+	public interface OnLoginFacebook {
+		void onLoginFacebookFinish(JSONObject json, String msg);
+
+		void onLoginFacebookException(Exception e, String msg);
+
+		void onLoginFacebookFail(String msg);
+	}
+
+	private OnLoginFacebook ListenerLoginFacebook;
+
+	public void setOnRegisterFacebook(OnLoginFacebook l) {
+		ListenerLoginFacebook = l;
+	}
+	
 
 	public interface OnRegisterUsuario {
 		void onRegisterFinish(JSONObject json, String msg);
