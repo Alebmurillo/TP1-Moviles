@@ -162,9 +162,9 @@ class DbHandler {
             return NULL;
         }
     }
-     public function verificarCita($doctor,$hora,$fecha){
-        $stmt = $this->conn->prepare("SELECT idAppointment from appointment WHERE doctor = ? AND date= ? AND startTime =?");
-        $stmt->bind_param("sss", $doctor,$fecha,$hora);
+     public function verificarCita($doctor,$hora,$fecha,$usuario){
+        $stmt = $this->conn->prepare("SELECT idAppointment from appointment WHERE (doctor = ? OR user = ?)AND date= ? AND startTime =?");
+        $stmt->bind_param("ssss", $doctor,$usuario,$fecha,$hora);
         $stmt->execute();
         $stmt->store_result();
         $num_rows = $stmt->num_rows;

@@ -666,7 +666,7 @@ class MyAPI extends API {
         
         //echo "clinica ".$clinica."-";
         if ($usuario != "") {
-            if(!$dba->verificarCita($doc,$time,$date)) {
+            if(!$dba->verificarCita($doc,$time,$date,$usuario)) {
                 $conn = mysql_connect($server, $db_user, $db_pass);
                 if (!$conn) {
                     die('No pudo conectarse: ' . mysql_error());
