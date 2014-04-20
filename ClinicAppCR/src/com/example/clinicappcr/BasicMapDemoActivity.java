@@ -16,11 +16,13 @@
 
 package com.example.clinicappcr;
 
+import com.google.android.gms.internal.ar;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.R.string;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -35,11 +37,18 @@ public class BasicMapDemoActivity extends FragmentActivity {
      * Note that this may be null if the Google Play services APK is not available.
      */
     private GoogleMap mMap;
+    String latitud;
+	String longitud;
+	String nombreMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.basic_demo);
+         Bundle arguments = getIntent().getExtras();
+        latitud = arguments.getString("latitud");
+        longitud = arguments.getString("longitud");
+        nombreMarker=arguments.getString("nombre");
         setUpMapIfNeeded();
     }
 
@@ -84,6 +93,10 @@ public class BasicMapDemoActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(34, 45)).title("Marker"));
+    	double lat=Double.parseDouble(latitud);
+    	double lon=Double.parseDouble(longitud);
+    	System.out.println(""+lat + ","+lon+"");
+    	LatLng pos = new LatLng(lat, lon);
+        mMap.addMarker(new MarkerOptions().position(pos).title(nombreMarker));
     }
 }

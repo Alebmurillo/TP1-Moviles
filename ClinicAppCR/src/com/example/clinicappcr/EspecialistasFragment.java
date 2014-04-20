@@ -11,8 +11,10 @@ import org.json.JSONObject;
 
 
 
+
 import android.app.ListFragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,8 +71,7 @@ public class EspecialistasFragment extends ListFragment {
 			//Busqueda de especialidades
 			@Override  
 			public void onClick(View v) {	
-				// Intent itemintent = new Intent(getActivity(), BasicMapDemoActivity.class);
-				//	EspecialistasFragment.this.startActivity(itemintent);
+				
 					
 				int posicion =spinner1.getSelectedItemPosition();
 				searchTxt =listaId.get(posicion);

@@ -8,9 +8,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,8 +21,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 
@@ -34,7 +40,7 @@ public class ClinicasFragment extends ListFragment {
 	private Spinner spinner1;
 	//private String URL="http://192.168.0.189:80/clinicas/clinicaes_json.php";
 	private String URL="http://192.168.0.189:80/api/v1/clinicas_jason";
-	List<String> listaClinicas,listaIdClinicas ;
+	List<String> listaClinicas,listaIdClinicas,listaLatitud,listaLongitud ;
 	ArrayList<HashMap<String, String>> clinicList;
 
 	
@@ -59,8 +65,9 @@ public class ClinicasFragment extends ListFragment {
 	@Override  
 	 public View onCreateView(LayoutInflater inflater, ViewGroup container,  
 	   Bundle savedInstanceState) {  
-	  View view = inflater.inflate(R.layout.fragment_clinicas, null);  
+	   View view = inflater.inflate(R.layout.fragment_clinicas, null);  
 	 
+	  
 		btBuscar = (Button) view.findViewById(R.id.btnBuscar);  
 		btBuscar.setOnClickListener(new OnClickListener() { 
 			//Busqueda de especialidades
@@ -106,18 +113,23 @@ public class ClinicasFragment extends ListFragment {
 				try {
 					JSONObject json = new JSONObject(jsonStr);
 					JSONArray jsonlistaClinicas  = json.getJSONArray("emp_info");
-					System.out.println("vamos bien");
+
 					listaClinicas= new ArrayList<String>();
 					listaIdClinicas= new ArrayList<String>();
+					listaLatitud= new ArrayList<String>();
+					listaLongitud= new ArrayList<String>();
 					for (int j = 0; j < jsonlistaClinicas.length(); j++) {
-						System.out.println("bien la "+j+"");
 
 						JSONArray clinica = jsonlistaClinicas.getJSONArray(j);
 						System.out.println(clinica.toString());
 						String idclinic = clinica.get(0).toString();
 						String nombreClinic = clinica.get(1).toString();	
+						String latitud = clinica.get(2).toString();
+						String longitud = clinica.get(3).toString();	
 						listaClinicas.add(nombreClinic);
-						listaIdClinicas.add(idclinic);					
+						listaIdClinicas.add(idclinic);
+						listaLatitud.add(latitud);
+						listaLongitud.add(longitud);
 						System.out.println("aqui bien");
 
 						// tmp hashmap for single clinic
@@ -153,8 +165,38 @@ public class ClinicasFragment extends ListFragment {
 			adapter = new SimpleAdapter(
 					getActivity(), clinicList,
 					R.layout.fila_clinica, new String[] { "nombre" }, new int[] { R.id.view_lugar });
-
+			
 			setListAdapter(adapter);
+			 ListView lv = getListView();
+			   lv.setOnItemClickListener(new OnItemClickListener() {
+				   @Override
+				   public void onItemClick(AdapterView<?> parent, View view,
+				     int position, long id) {
+					   Intent itemintent = new Intent(getActivity(), BasicMapDemoActivity.class);
+						
+					   Bundle extras = new Bundle();
+				        extras.putString("latitud",listaLatitud.get(position) );
+				        extras.putString("longitud", listaLongitud.get(position));
+				        extras.putString("nombre", listaClinicas.get(position));
+				 
+				        // 4. add bundle to intent
+				        itemintent.putExtras(extras);
+					   
+					   ClinicasFragment.this.startActivity(itemintent);
+					   /*AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+				        builder.setTitle("Error")
+				        .setMessage(String.valueOf(position))
+				        .setCancelable(false)
+				        .setNegativeButton("Close",new DialogInterface.OnClickListener() {
+				            public void onClick(DialogInterface dialog, int id) {
+				                dialog.cancel();
+				            }
+				        });
+				        AlertDialog alert = builder.create();
+				        alert.show();*/
+				    
+				   }
+				 }); 
 			
 		}
 		

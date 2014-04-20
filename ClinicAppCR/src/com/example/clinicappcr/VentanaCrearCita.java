@@ -36,7 +36,7 @@ public class VentanaCrearCita extends DialogFragment {
 	//private EditText mEditEndtDate;
 	//private EditText mEditPlace;
 	//private Spinner spinner1, spinner2;
-	private String URL="http://192.168.0.189:80/api/v1/test";
+	private String URL="http://192.168.0.189:80/api/v1/crearCita";
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
@@ -147,7 +147,7 @@ public class VentanaCrearCita extends DialogFragment {
 
 	}
 
-	private void sendResult(int INT_CODE,String doctor,String place,String startdate,String hora) {
+	private void sendResult(int INT_CODE,String doctor,String place,String startdate,String hora, String id) {
 
 
 		ArrayList<String> array =new ArrayList<String>();
@@ -155,6 +155,7 @@ public class VentanaCrearCita extends DialogFragment {
 		array.add(place);
 		array.add(startdate);
 		array.add(hora);
+		array.add(id);
 
 
 		HashMap<String, String> contact = new HashMap<String, String>();
@@ -164,6 +165,8 @@ public class VentanaCrearCita extends DialogFragment {
 		contact.put("lugar", array.get(1));
 		contact.put("fecha", array.get(2));
 		contact.put("hora", array.get(3));
+		System.out.println(array.get(4));
+		contact.put("id", array.get(4));
 
 		if(mListener != null){
 			mListener.citaCreada(contact);
@@ -230,11 +233,13 @@ public class VentanaCrearCita extends DialogFragment {
 							String hora1 = cita.get(1).toString();
 							String doctor1 = cita.get(2).toString();
 							String lugar = cita.get(3).toString();	
+							String id = cita.get(4).toString();	
 							
 							result.add(doctor1);
 							result.add(lugar);
 							result.add(fecha);
 							result.add(hora1);
+							result.add(id);
 						}	else{
 							result=null;
 						}
@@ -260,7 +265,7 @@ public class VentanaCrearCita extends DialogFragment {
 			//System.out.print(result);
 			if(result!=null){
 				System.out.println("***************"+result+"");
-				sendResult(0,result.get(0),result.get(1),result.get(2),result.get(3));
+				sendResult(0,result.get(0),result.get(1),result.get(2),result.get(3),result.get(4));
 				// Dismiss the progress dialog				
 				dismiss();
 
