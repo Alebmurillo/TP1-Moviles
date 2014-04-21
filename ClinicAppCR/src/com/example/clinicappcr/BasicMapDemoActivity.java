@@ -16,15 +16,31 @@
 
 package com.example.clinicappcr;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
 import com.google.android.gms.internal.ar;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.R.string;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * This shows how to create a simple activity with a map and a marker on the map.
@@ -32,7 +48,12 @@ import android.support.v4.app.FragmentActivity;
  * Notice how we deal with the possibility that the Google Play services APK is not
  * installed/enabled/updated on a user's device.
  */
-public class BasicMapDemoActivity extends FragmentActivity {
+public class BasicMapDemoActivity extends FragmentActivity
+	implements
+	ConnectionCallbacks,
+	OnConnectionFailedListener,
+	LocationListener,
+	OnMyLocationButtonClickListener  {
     /**
      * Note that this may be null if the Google Play services APK is not available.
      */
@@ -40,7 +61,18 @@ public class BasicMapDemoActivity extends FragmentActivity {
     String latitud;
 	String longitud;
 	String nombreMarker;
+    private LocationClient mLocationClient;
+    private TextView mMessageView;
+    private UiSettings mUiSettings;
+    int currentLeft = 150;
+    int currentTop = 0;
+    int currentRight = 0;
+    int currentBottom = 0;
 
+    private static final LocationRequest REQUEST = LocationRequest.create()
+            .setInterval(5000)         // 5 seconds
+            .setFastestInterval(16)    // 16ms = 60fps
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,53 +82,116 @@ public class BasicMapDemoActivity extends FragmentActivity {
         longitud = arguments.getString("longitud");
         nombreMarker=arguments.getString("nombre");
         setUpMapIfNeeded();
+        
+      
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+        setUpLocationClientIfNeeded();
+        mLocationClient.connect();
     }
-
-    /**
-     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-     * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mMap} is not null.
-     * <p>
-     * If it isn't installed {@link SupportMapFragment} (and
-     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-     * install/update the Google Play services APK on their device.
-     * <p>
-     * A user can return to this FragmentActivity after following the prompt and correctly
-     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-     * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-     * method in {@link #onResume()} to guarantee that it will be called.
-     */
+    public void onPause() {
+        super.onPause();
+        if (mLocationClient != null) {
+            mLocationClient.disconnect();
+        }
+    }
     private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
+    	if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
+                mMap.setMyLocationEnabled(true);
+                mMap.setOnMyLocationButtonClickListener(this);
+                mMap.setPadding(currentLeft, currentTop, currentRight, currentBottom);
                 setUpMap();
             }
         }
     }
+    private void setUpLocationClientIfNeeded() {
+        if (mLocationClient == null) {
+            mLocationClient = new LocationClient(
+                    getApplicationContext(),
+                    this,  // ConnectionCallbacks
+                    this); // OnConnectionFailedListener
+        }
+    }
+    public void openWaze(View view) {
+    	 try
+         {
+             String url = "waze://?ll="+ latitud  + ","+ longitud+"&z=10";
+             Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( url ) );
+            startActivity( intent );
+         }
+         catch ( ActivityNotFoundException ex  )
+         {
+           Intent intent =
+             new Intent( Intent.ACTION_VIEW, Uri.parse( "market://details?id=com.waze" ) );
+           startActivity(intent);
+         }
 
-    /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
-     * <p>
-     * This should only be called once and when we are sure that {@link #mMap} is not null.
-     */
+    }
     private void setUpMap() {
     	double lat=Double.parseDouble(latitud);
     	double lon=Double.parseDouble(longitud);
     	System.out.println(""+lat + ","+lon+"");
     	LatLng pos = new LatLng(lat, lon);
         mMap.addMarker(new MarkerOptions().position(pos).title(nombreMarker));
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 18));
     }
+
+	@Override
+	public boolean onMyLocationButtonClick() {
+		 Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+	        // Return false so that we don't consume the event and the default behavior still occurs
+	        // (the camera animates to the user's current position).
+	        return false;
+	}
+	
+	
+	 /**
+     * Button to get current Location. This demonstrates how to get the current Location as required
+     * without needing to register a LocationListener.
+     */
+    public void showMyLocation(View view) {
+        if (mLocationClient != null && mLocationClient.isConnected()) {
+            String msg = "Location = " + mLocationClient.getLastLocation();
+            
+            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+	@Override
+	public void onLocationChanged(Location arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onConnected(Bundle connectionHint) {
+	        mLocationClient.requestLocationUpdates(
+	                REQUEST,
+	                this);  // LocationListener
+	    }
+
+	    /**
+	     * Callback called when disconnected from GCore. Implementation of {@link ConnectionCallbacks}.
+	     */
+	    @Override
+	    public void onDisconnected() {
+	        // Do nothing
+	    }
+
 }

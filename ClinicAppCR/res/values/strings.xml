@@ -20,8 +20,8 @@
     <string name="Buscar">Buscar</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="Sexo">Sexo</string>
-    
-  <string name="basic_map_demo_label">Basic Map</string>
+    <string name="vr_normal_button">Ir con Waze</string>
+  <string name="basic_map_demo_label">Mapa de Clinica</string>
   <string name="basic_map_demo_description">Launches a map</string>
 
 </resources>
