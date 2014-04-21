@@ -21,7 +21,7 @@ class MyAPI extends API {
      * function: authenticate
      * autentica elapikey en el header del request
      */
-    protected function authenticate() {
+    private function authenticate() {
         // Getting request headers
         $headers = apache_request_headers();
         $response = array();
@@ -209,21 +209,13 @@ class MyAPI extends API {
         $json['emp_info'] = $result;       
         echo json_encode($json);  
     }
-    protected function usuarios_jason() {
-        include_once("config.php");
-        $con = mysql_connect($server, $db_user, $db_pass)or die("cannot connect");
-        mysql_select_db($db)or die("cannot select DB");
-        $sql = "SELECT * FROM appointment";
-        $result = mysql_query($sql);
-        $json = array();
-        if (mysql_num_rows($result)) {
-            while ($row = mysql_fetch_row($result)) {
-                $json['emp_info'][] = $row;
-            }
-        }
-        mysql_close();
-        echo json_encode($json);
-    }
+    
+     /**
+     * url: /getDoctores
+     * method: POST    obtiene los doctores de cierta especialidad
+     * parametros: especialista
+     * method:GET obtiene todas los doctores
+     */
     protected function getDoctores() {
         $especialista = "";
         if (isset($_POST['especialista'])) {
@@ -236,7 +228,12 @@ class MyAPI extends API {
         $json['emp_info'] = $doctoresListas;
         echo json_encode($json);
     }
-
+     /**
+     * url: /eliminarCita
+     * method: POST    elimina una cita
+     * parametros: user(apikey)  id 
+     * method:GET obtiene todas los doctores
+     */
     protected function eliminarCita() {
         include_once("config.php");
         $usr = $_POST['user'];
@@ -286,7 +283,12 @@ class MyAPI extends API {
             }
         }
     }
-    
+    /**
+     * url: /crearCita
+     * method: POST    crea una cita
+     * parametros: user(apikey)  doctor  fecha hora
+     * 
+     */
     protected function crearCita() {
         include_once("config.php");
         $usr = $_POST['user'];
@@ -339,8 +341,12 @@ class MyAPI extends API {
         }
     }
     
-    
-
+   /**
+     * url: /clinicas_json
+     * method: get    obtiene todas las clinicas
+     * 
+     * 
+     */
     
     protected function clinicas_json() {
         include_once("config.php");
