@@ -2,8 +2,19 @@
 include '../login/db_connect.php';
 include '../login/functions.php';
 sec_session_start(); //Nuestra manera personalizada segura de iniciar sesión php.
+if(isset($_POST['email'], $_POST['name'], $_POST['p'])) {
+   $email = $_POST['email'];
+   $password = $_POST['p']; //La contraseña con hash
+   $name = $_POST['name']; //La contraseña con hash
+   if(login_create($mysqli, $name, $email, $password) == true) {
+        //Inicio de sesión exitosa
+        echo '¡Has iniciado sesion!';
 
-if(isset($_POST['email'], $_POST['p'])) {
+   } else {
+        //Inicio de sesión fallida
+        header('Location: ../Login/login.php?error=1');
+}}
+elseif(isset($_POST['email'], $_POST['p'])) {
    $email = $_POST['email'];
    $password = $_POST['p']; //La contraseña con hash
    if(login($email, $password, $mysqli) == true) {
@@ -12,9 +23,11 @@ if(isset($_POST['email'], $_POST['p'])) {
 
    } else {
         //Inicio de sesión fallida
-        header('Location: ./login.php?error=1');
+        header('Location: ../Login/login.php?error=1');
    }
+  
 } 
+
 else {
    //Las variaciones publicadas correctas no se enviaron a esta página
 echo 'Solicitud no válida';
@@ -41,8 +54,10 @@ echo 'Solicitud no válida';
 		<div id="menu">
 			<ul>
                             <li class="active"><a href="../index.html" accesskey="1" title="">Homepage</a></li>
-                            <li><a href="../Login/logout.php" accesskey="3" title="">Log out</a></li>
+                            <?php if (login_check($mysqli)){ ?>
+                            <li><a href="../Login/logout.php" accesskey="3" title="">Log out</a></li>                        
                             
+                            <?php }?>
 			</ul>
 		</div>
 	</div>
@@ -68,7 +83,6 @@ echo 'Solicitud no válida';
                                     <li><a href="crear.php?table=clinic" class="button">Clinic</a></li>
                                     <li><a href="crear.php?table=date" class="button">Date</a></li>
                                     <li><a href="crear.php?table=room" class="button">Room</a></li>
-                                    <li><a href="crear.php?table=user" class="button">Mobile User</a></li>
                                     <li><a href="crear.php?table=doctor" class="button">Doctor</a></li>
                                 </ul>
                            </div>
@@ -78,11 +92,10 @@ echo 'Solicitud no válida';
                         <div class="box">
                                 <h3>Edit</h3> 
                                 <ul class="actions">
-                                    <li><a href="#" class="button">Clinic</a></li>
-                                    <li><a href="#" class="button">Date</a></li>
-                                    <li><a href="#" class="button">Room</a></li>
-                                    <li><a href="#" class="button">Mobile User</a></li>
-                                    <li><a href="#" class="button">Doctor</a></li>
+                                    <li><a href="update.php?table=clinic" class="button">Clinic</a></li>
+                                    <li><a href="update.php?table=date" class="button">Date</a></li>
+                                    <li><a href="update.php?table=room" class="button">Room</a></li>
+                                    <li><a href="update.php?table=doctor" class="button">Doctor</a></li>
                                 </ul>
                                 </div>
                         </div>

@@ -28,8 +28,6 @@ if(isset($_GET['error'])) {
 		<div id="menu">
 			<ul>
 				<li class="active"><a href="../index.html" accesskey="1" title="">Homepage</a></li>
-				<li><a href="#" accesskey="3" title="">About Us</a></li>
-				<li><a href="#" accesskey="5" title="">Contact Us</a></li>
 			</ul>
 		</div>
 	</div>

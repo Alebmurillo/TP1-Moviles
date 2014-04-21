@@ -1,8 +1,9 @@
 <?php
 
-function crearCita() {
+function crearCita() {    
    include("../config.php");
-        echo "nect";
+   
+   //pedir doctor y llamar a un generar
         $conn = mysql_connect($server,  $db_user, $db_pass);
         if  (!$conn) 
         {
@@ -40,23 +41,8 @@ function crearCita() {
                         echo $row['id'];
        ?>
         </select>
-          <br>Consultorio
-        <select name='consultorio'>
         <?php
-        $rows = mysql_query( "SELECT idConsultorio, idClinica, numConsultorio, name FROM consultorio, clinica WHERE idClinica=idClinic GROUP BY idConsultorio", $conn );
-
-        while($row = mysql_fetch_array($rows, MYSQL_ASSOC))
-                        {
-
-        echo "<option value=".$row['idConsultorio'].">";
-                        echo $row['numConsultorio']."     ".$row['name'];
-
-                        echo "</option>";
-
-                        }
-                        echo $row['id'];
-                        mysql_close($conn);
-       echo " </select><br>Fecha:<input type='date' name='date' size='9' value='' /> <br> Hora inicial:<input type='time' name='startTime' size='9' value='' /> Hora Final: <input type='time' name='endTime' size='9' value='' /> <time datetime='YYYY-MM-DDThh:mm:ssTZD'> <br><li><input class='button' type='submit' name='enviarCita' value='Guardar'></li>";
+       echo " <br>Fecha:<input type='date' name='date' size='9' value='' /> <br> Hora inicial:<input type='time' name='startTime' size='9' value='' /> Hora Final: <input type='time' name='endTime' size='9' value='' /> <time datetime='YYYY-MM-DDThh:mm:ssTZD'> <br><li><input class='button' type='submit' name='enviarCita' value='Guardar'></li>";
 
 
 }
@@ -95,10 +81,49 @@ function crearConsultorio(){
 }
 function crearDoctor(){
     include("../config.php");
+    $conn = mysql_connect($server,  $db_user, $db_pass);
+        if  (!$conn) 
+        {
+            echo "ERROORRR";
+            die('No pudo conectarse: ' . mysql_error());
+        }
+        mysql_select_db($db);
     ?>
     <form method="post" action="crearDoctor.php">
                         Nombre
         		<input type="text" name="nombre" />
+                         <br>Usuario
+                        <select name='user'>
+                        <?php                        
+                        $rows = mysql_query( "SELECT idUser, nameUser FROM user", $conn );
+
+                        while($row = mysql_fetch_array($rows, MYSQL_ASSOC))
+                                        {
+
+                        echo "<option value=".$row['idUser'].">";
+                                        echo $row['nameUser'];
+                                        echo "</option>";
+
+                                        }
+                                        echo $row['id'];
+                       ?>
+                        </select>
+                            <br>Room
+                        <select name='room'>
+                            <?php                        
+                        $rows = mysql_query( "SELECT name,idConsultorio, numConsultorio FROM clinica, consultorio WHERE idClinic = idClinica group by idConsultorio", $conn );
+
+                        while($row = mysql_fetch_array($rows, MYSQL_ASSOC))
+                                        {
+
+                        echo "<option value=".$row['idConsultorio'].">";
+                                        echo $row['name']."-Room:".$row['numConsultorio'];
+                                        echo "</option>";
+
+                                        }
+                                        echo $row['id'];
+                       ?>
+                        </select>
 			<br>Celular
 			<input type="text" name="celular" />
 			<br>Telefono
@@ -150,7 +175,14 @@ function enviarCita(){
         die('No pudo conectarse: ' . mysql_error());
     }
     mysql_select_db($db);
-    mysql_query("INSERT INTO appointment (date, startTime, endTime, doctor, user, place) VALUES('". mysql_real_escape_string($_POST['date'])."','". mysql_real_escape_string($_POST['startTime'])."','". mysql_real_escape_string($_POST['endTime'])."',". mysql_real_escape_string($_POST['doctor']).",". mysql_real_escape_string($_POST['user']).",". mysql_real_escape_string($_POST['consultorio']).") ");
+    echo "INSERT INTO appointment (date, startTime, endTime, doctor, user, place) SELECT * FROM ('". mysql_real_escape_string($_POST['date'])."','". mysql_real_escape_string($_POST['startTime'])."','00000000',". mysql_real_escape_string($_POST['doctor']).",". mysql_real_escape_string($_POST['user']).",0 ) AS tmp WHERE NOT EXISTS ( SELECT tartTime,doctor FROM appointment WHERE startTime ='". mysql_real_escape_string($_POST['startTime'])."' AND doctor =". mysql_real_escape_string($_POST['doctor'])." )LIMIT 1";
+
+    //mysql_query("INSERT INTO appointment (date, startTime, endTime, doctor, user, place) VALUES('". mysql_real_escape_string($_POST['date'])."','". mysql_real_escape_string($_POST['startTime'])."','". mysql_real_escape_string($_POST['endTime'])."',". mysql_real_escape_string($_POST['doctor']).",". mysql_real_escape_string($_POST['user']).",". mysql_real_escape_string($_POST['consultorio']).") ");
+    if (mysql_query("INSERT INTO appointment (date, startTime, endTime, doctor, user, place) SELECT * FROM ( SELECT '". mysql_real_escape_string($_POST['date'])."','". mysql_real_escape_string($_POST['startTime'])."','00:00',". mysql_real_escape_string($_POST['doctor']).",". mysql_real_escape_string($_POST['user']).",0 ) AS tmp WHERE NOT EXISTS ( SELECT startTime,doctor FROM appointment WHERE startTime ='". mysql_real_escape_string($_POST['startTime'])."' AND doctor =". mysql_real_escape_string($_POST['doctor'])." )LIMIT 1"))
+                {
+        echo "Insertado";
+                }
+    else {echo "Hora Ocupada por otro usuario";}
     echo "Insertado";
     mysql_close($conn);}
 function enviarClinica(){
@@ -160,8 +192,10 @@ function enviarClinica(){
     {
         die('No pudo conectarse: ' . mysql_error());
     }
-    mysql_select_db($db);
-    mysql_query("INSERT INTO clinica (name, latitud, longitud) VALUES('". mysql_real_escape_string($_POST['nombre'])."',". mysql_real_escape_string($_POST['latitud']).",". mysql_real_escape_string($_POST['longitud']).") ");
+   mysql_select_db($db);
+   mysql_query("INSERT INTO clinica ( name, latitud, longitud ) SELECT * FROM ( SELECT '". mysql_real_escape_string($_POST['nombre'])."','". mysql_real_escape_string($_POST['latitud'])."','". mysql_real_escape_string($_POST['longitud'])."') AS tmp WHERE NOT EXISTS ( SELECT name, latitud, longitud FROM clinica WHERE name ='". mysql_real_escape_string($_POST['nombre'])."' AND latitud ='". mysql_real_escape_string($_POST['latitud'])."' AND longitud ='". mysql_real_escape_string($_POST['longitud'])."')LIMIT 1");
+
+    
     echo "Insertado";
 mysql_close($conn);}
 function enviarUsuario(){
@@ -184,7 +218,7 @@ function enviarDoctor(){
             die('No pudo conectarse: ' . mysql_error());
             }
             mysql_select_db($db);
-            mysql_query("INSERT INTO doctor (nameDoctor, cel, tel, especialidad) VALUES('". mysql_real_escape_string($_POST['nombre'])."',". mysql_real_escape_string($_POST['celular']).",". mysql_real_escape_string($_POST['telefono']).",". mysql_real_escape_string($_POST['especialidad']).") ");
+            mysql_query("INSERT INTO doctor (nameDoctor, cel, tel, especialidad, idConsultorio, iduser) VALUES('". mysql_real_escape_string($_POST['nombre'])."',". mysql_real_escape_string($_POST['celular']).",". mysql_real_escape_string($_POST['telefono']).",". mysql_real_escape_string($_POST['especialidad']).",". mysql_real_escape_string($_POST['room']).",". mysql_real_escape_string($_POST['user']).") ");
             echo "Insertado";
             mysql_close($conn);
     
@@ -197,10 +231,9 @@ function enviarConsultorio(){
             die('No pudo conectarse: ' . mysql_error());
             }
             mysql_select_db($db);
-            mysql_query("INSERT INTO consultorio (IdClinica, numConsultorio) VALUES(". mysql_real_escape_string($_POST['tipo']).",". mysql_real_escape_string($_POST['num_consultorio']).") ");
+            mysql_query("INSERT INTO consultorio ( idClinica, numconsultorio ) SELECT * FROM ( SELECT ". mysql_real_escape_string($_POST['tipo']).",". mysql_real_escape_string($_POST['num_consultorio']).") AS tmp WHERE NOT EXISTS ( SELECT idClinica, numconsultorio FROM consultorio WHERE idClinica =". mysql_real_escape_string($_POST['tipo'])." AND numconsultorio =". mysql_real_escape_string($_POST['num_consultorio']).")LIMIT 1");
             echo "Insertado";
             echo $_POST['tipo'];
             mysql_close($conn);
-            
 }
     ?>

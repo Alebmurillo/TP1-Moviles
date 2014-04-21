@@ -1,10 +1,5 @@
 <script type="text/javascript" src="sha512.js"></script>
 <script type="text/javascript" src="forms.js"></script>
-<?php
-if(isset($_GET['error'])) {
-   echo 'Error Logging In!';
-}
-?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -43,22 +38,16 @@ if(isset($_GET['error'])) {
 <div id="page" class="container">
     
 <div class="title">
-	    <h2>Login</h2>
+	    <h2>Create Web Administrator</h2>
 	</div>
-	<?php
-        include 'functions.php';
-        sec_session_start();
-        //Desconfigura todos los valores de sesión
-        $_SESSION = array();
-        //Obtén parámetros de sesión
-        $params = session_get_cookie_params();
-        //Borra la cookie actual
-        setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
-        //Destruye sesión
-        session_destroy();
-        header('Location: ../');
-        echo "Logged out";
-?>
+		<ul class="actions">
+                    <form action="../Sesion/indexSesion.php" method="post" name="login_form">
+                Name: <input type="text" name="name" /><br />
+                Email: <input type="text" name="email" /><br />
+                Password: <input type="password" name="password" id="password"/><br />
+                <li><input class="button" type="button" value="Create" onclick="formhash(this.form, this.form.password);" /></li>
+        </form>
+    </ul>
   </div>
         
 </div>
@@ -67,5 +56,3 @@ if(isset($_GET['error'])) {
 </div>
 </body>
 </html>
-
-

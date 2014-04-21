@@ -1,3 +1,10 @@
+<?php
+include("functionsModify.php");
+include("../Login/functions.php");
+include("../Login/db_connect.php");
+?>
+
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -28,7 +35,6 @@
 	</div>
 	<div id="banner">
 		<div class="container">                    
-        <img src="../Style/images/landscape.png" alt="" width="1000" height="300" />
 			<div class="title">
 				<h2>Clinic Cloud Calendar</h2>
 				<span class="byline">Lema bonito que luis debe inventar</span> </div>
@@ -36,42 +42,27 @@
 		</div>
 	</div>
  <div id="page" class="container">
-    
-<div class="title">
-    <h2> Welcome</h2>
-		<form method="post" action="crear.php">
-                    <ul class="actions">
-                       <?php
-                        include 'db_connect.php';
-                        include 'functions.php';
-                        sec_session_start(); //Nuestra manera personalizada segura de iniciar sesión php.
-
-                        if(isset($_POST['email'], $_POST['p'])) {
-                           $email = $_POST['email'];
-                           $password = $_POST['p']; //La contraseña con hash
-                           if(login($email, $password, $mysqli) == true) {
-                                //Inicio de sesión exitosa
-                                echo '¡Has iniciado sesion!';
-                             
-                           } else {
-                                //Inicio de sesión fallida
-                                header('Location: ../Login/login.php?error=1');
-                           }
-                        } else {
-                           //Las variaciones publicadas correctas no se enviaron a esta página
-                        echo 'Solicitud no válida';
-}
-?>
-                       </ul>
-		</form>
-                    	</div>
-	</div>
+    <form method="post" action="update.php">
+             </div>
+    <center>
+                    <?php
+                    sec_session_start();
+           if (login_check($mysqli)){
+               if(isset($_GET['table'])){
+                   if($_GET['table']== 'user') {showUpdateUser();}
+                   if($_GET['table']== 'clinic') {showUpdateClinic();}
+                   if($_GET['table']== 'doctor') {showUpdateDoctor();}
+                   if($_GET['table']== 'date') {showUpdateAppointment();}
+                   if($_GET['table']== 'room') {showUpdateRoom();}
+                    }
+                    }
+                else{echo "login";}
+                    ?>
+	</form>
+   	</div>
 </div>
 <div id="copyright" class="container">
 	<p>Copyright (c) 2014 CloudCalendars.com. All rights reserved. | Photos by <a href="http://fotogrph.com/">Fotogrph</a> | Design by <a href="http://www.freecsstemplates.org/" rel="nofollow">FreeCSSTemplates.org</a>.</p>
 </div>
 </body>
 </html>>
-
-
-
