@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>  
 <resources>  
     <string-array name="menu_items">  
-        <item >Mis Citas</item>  
-        <item >Clinicas</item> 
+        <item >Doctor Citas</item>  
+        <item >Consultorios</item> 
         <item >Especialistas</item>   
     </string-array>  
 </resources>  

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.clinicadmincr.R;
 
-public class ClinicasFragment extends Fragment {
+public class ConsultoriosFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

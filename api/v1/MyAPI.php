@@ -111,6 +111,27 @@ class MyAPI extends API {
         }
         echo json_encode($response);
     }
+    
+    /**
+     * url: /login
+     * method: POST
+     * parametros: email password
+     */
+    protected function loginDoctor() {
+        // reading post params
+        $email = $_POST['email'];
+        $db = new DbHandler();
+        $this->validateEmail($email);
+        if( $db->isDoctorByEmail($email)){
+            $this->login();
+        }else{
+                $response["success"] = 0;
+                $response['error'] = true;
+                $response['message'] = "No es un doctor";
+                echo json_encode($response);
+        }        
+    }
+    
     /**
      * url: /register
      * method: POST
@@ -173,6 +194,8 @@ class MyAPI extends API {
         //}
     }
     
+    
+    
   
     
     /**
@@ -195,6 +218,22 @@ class MyAPI extends API {
         $json['emp_info'] = $citasListas;       
         echo json_encode($json);  
     }
+    
+    protected function getCitasDoctor(){
+        $doctor_id="";
+        if (isset($_POST["usuario"])) {
+                   $apiKey = $_POST['usuario'];
+                   $dba = new DbHandler();        
+                   $doctor_id = $dba->getDoctorId($apiKey);                   
+        }                 
+        //echo $doctor_id;
+         $dba = new DbHandler();        
+         $citasListas = $dba->getCitasDoctor($doctor_id);
+         $json = array();
+        $json['emp_info'] = $citasListas;       
+        echo json_encode($json);  
+    }
+    
     
     /**
      * url: /especialidades

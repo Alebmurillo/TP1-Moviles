@@ -37,7 +37,6 @@ public class ClinicasFragment extends ListFragment {
 	EditText eSearch;
 	ArrayList<HashMap<String, String>> especialistasList;
 	String searchTxt;
-	private Spinner spinner1;
 	private String URLclinicas="http://192.168.0.189:80/api/v1/clinicas_json";
 	List<String> listaClinicas,listaIdClinicas,listaLatitud,listaLongitud ;
 	ArrayList<HashMap<String, String>> clinicList;
@@ -67,15 +66,7 @@ public class ClinicasFragment extends ListFragment {
 	   View view = inflater.inflate(R.layout.fragment_clinicas, null);  
 	 
 	  
-		btBuscar = (Button) view.findViewById(R.id.btnBuscar);  
-		btBuscar.setOnClickListener(new OnClickListener() { 
-			//Busqueda de especialidades
-			@Override  
-			public void onClick(View v) {			
-				especialistasList = new ArrayList<HashMap<String, String>>();
-				new GetClinicas().execute();
-			}  
-		}); 
+		
 		return view;  
 	}  
 

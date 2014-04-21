@@ -144,6 +144,22 @@ class DbHandler {
             return NULL;
         }
     }
+   
+    public function isDoctorByEmail($email) {
+        //all doctors= SELECT user.nameUser, user.email, user.api_key FROM user INNER JOIN doctor ON doctor.iduser=user.idUser
+        $stmt = $this->conn->prepare("SELECT user.nameUser, user.email, user.api_key FROM user INNER JOIN doctor ON doctor.iduser=user.idUser WHERE email = ? ");
+        
+        $stmt->bind_param("s", $email);
+        
+        $stmt->execute();
+        $stmt->store_result();
+        $num_rows = $stmt->num_rows;
+        $stmt->close();
+        return $num_rows > 0;
+    }
+    
+    
+    
 
     /**
      * Fetching user api key
@@ -208,6 +224,26 @@ class DbHandler {
         $stmt->bind_result($fecha);            
         $stmt->fetch();
         return $fecha;
+    }
+    
+    /**
+     * Fetching user id by api key
+     * @param String $api_key user api key
+     */
+    public function getDoctorId($api_key) {
+        $stmt = $this->conn->prepare("SELECT doctor.iddoctor FROM doctor INNER JOIN user ON doctor.iduser=user.idUser WHERE user.api_key = ? ");
+
+        $stmt->bind_param("s", $api_key);
+        if ($stmt->execute()) {
+            $stmt->bind_result($user_id);
+            $stmt->fetch();
+            // TODO
+            // $user_id = $stmt->get_result()->fetch_assoc();
+            $stmt->close();
+            return $user_id;
+        } else {
+            return "";
+        }
     }
     
     /**
@@ -338,6 +374,34 @@ class DbHandler {
             return NULL;
         }            
     }
+    
+    public function getCitasDoctor($doctor_id) {
+        if ($doctor_id == "") {
+            $stmt = $this->conn->prepare("SELECT appointment.date,appointment.startTime,user.nameUser,clinica.name,appointment.idAppointment FROM appointment INNER JOIN user ON appointment.user=user.idUser INNER JOIN clinica ON appointment.place=clinica.idClinic  ");
+        } else{
+            $stmt = $this->conn->prepare("SELECT appointment.date,appointment.startTime,user.nameUser,clinica.name,appointment.idAppointment FROM appointment INNER JOIN user ON appointment.user=user.idUser INNER JOIN clinica ON appointment.place=clinica.idClinic WHERE appointment.doctor = ? ");
+            $stmt->bind_param("i", $doctor_id);            
+        }        
+         $response = array();
+         $result=$stmt->execute();
+          if ($result) {
+              $stmt->bind_result($date, $start, $doctor, $clinica,$id);     
+            while ($fila = $stmt->fetch()) {
+                $res = array();
+                array_push($res, $id);
+                array_push($res, $date);
+                array_push($res, $start);
+                array_push($res, $doctor);
+                array_push($res, $clinica);               
+                array_push($response, $res);
+            }
+            $stmt->close();
+            return $response;
+        } else {
+            return NULL;
+        }            
+    }
+
 
     
     

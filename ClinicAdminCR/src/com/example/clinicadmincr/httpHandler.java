@@ -13,16 +13,18 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-public class httpHandler {
+public class httpHandler  {
 
 	private ArrayList<NameValuePair> nameValuePairs;
-	private String UrlService = "http://192.168.0.189:80/Citas/test.php";
+	private String UrlService;
+
 
 	private String responseBody = "";
 
@@ -31,134 +33,105 @@ public class httpHandler {
 	private Runnable viewOrders;
 
 	private String strMessageHeadLoading = "Por favor espera";
+	public String getStrMessageHeadLoading(){ return strMessageHeadLoading; }
+	public void setStrMessageHeadLoading(String message){ strMessageHeadLoading = message; }
 
-	public String getStrMessageHeadLoading() {
-		return strMessageHeadLoading;
-	}
+	private String strMessageBodyLoading  = "Enviando información...";
+	public String getStrMessageBodyLoading(){ return strMessageBodyLoading; }
+	public void setStrMessageBodyLoading(String message){ strMessageBodyLoading = message; }
 
-	public void setStrMessageHeadLoading(String message) {
-		strMessageHeadLoading = message;
-	}
+	public String getUrl(){ return UrlService;}
+	public void setUrl(String UrlService){this.UrlService = UrlService;}
 
-	private String strMessageBodyLoading = "Enviando información...";
+	public String getResponseBody(){return responseBody;}
+	private void setResponseBody(String ResponseBody){responseBody = ResponseBody;}
 
-	public String getStrMessageBodyLoading() {
-		return strMessageBodyLoading;
-	}
 
-	public void setStrMessageBodyLoading(String message) {
-		strMessageBodyLoading = message;
-	}
-
-	public String getUrl() {
-		return UrlService;
-	}
-
-	public void setUrl(String UrlService) {
-		this.UrlService = UrlService;
-	}
-
-	public String getResponseBody() {
-		return responseBody;
-	}
-
-	private void setResponseBody(String ResponseBody) {
-		responseBody = ResponseBody;
-	}
-
-	public httpHandler() {
-		// this.activity = activity;
+	public httpHandler(){
+		//this.activity = activity;
 		nameValuePairs = new ArrayList<NameValuePair>();
 	}
-
-	public httpHandler(Activity activity) {
+	public httpHandler(Activity activity){
 		this.activity = activity;
 		nameValuePairs = new ArrayList<NameValuePair>();
 	}
 
-	private boolean isInternetAllowed(Activity activity) {
-		ConnectivityManager cm = (ConnectivityManager) activity
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+	private boolean isInternetAllowed(Activity activity){
+		ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo ni = cm.getActiveNetworkInfo();
-		if (ni != null && ni.isAvailable() && ni.isConnected()) {
+		if (ni!=null && ni.isAvailable() && ni.isConnected()) {
 			return true;
 		} else {
-			return false;
-		}
+			return false; 
+		}     
+	}  
+
+	public void addNameValue(String name, String value){
+		nameValuePairs.add(new BasicNameValuePair(name,value));
 	}
 
-	public void addNameValue(String name, String value) {
-		nameValuePairs.add(new BasicNameValuePair(name, value));
-	}
-
-	public void executeHttpPost(String UrlService) {
+	public void executeHttpPost(String UrlService){
 		setUrl(UrlService);
 
-		viewOrders = new Runnable() {
+		viewOrders = new Runnable(){
 			public void run() {
 				try {
 					executeHttpPostAsync(activity, getUrl());
-				} catch (Exception e) {
-				}
+				} catch (Exception e) {}
 			}
 		};
-		Thread thread = new Thread(null, viewOrders, "Background");
+		Thread thread =  new Thread(null, viewOrders, "Background");
 		thread.start();
-		m_ProgressDialog = ProgressDialog.show(activity,
-				getStrMessageHeadLoading(), getStrMessageBodyLoading(), true);
+		m_ProgressDialog = ProgressDialog.show(activity, getStrMessageHeadLoading(), getStrMessageBodyLoading(), true);
 
 	}
 
-	private void executeHttpPostAsync(Activity activity, String UrlService) {
-		if (isInternetAllowed(activity)) {
-			try {
 
+	private void executeHttpPostAsync(Activity activity, String UrlService){
+		if(isInternetAllowed(activity)){
+			try{
+				
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(UrlService);
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse resp = httpclient.execute(httppost);
 				HttpEntity ent = resp.getEntity();
-				String text = EntityUtils.toString(ent);
+				String text = EntityUtils.toString(ent);				
 				setResponseBody(text);
-				// //
+////
 				System.out.println(getResponseBody());
 				activity.runOnUiThread(returnRes);
-			} catch (HttpResponseException hre) {
-				ListenerExecuteHttpPostAsync
-						.onErrorHttpPostAsyncListener("Se ha producido un error al conectar con el servidor");
-			} catch (Exception e) {
-				ListenerExecuteHttpPostAsync
-						.onErrorHttpPostAsyncListener("Se ha producido un error");
+			}catch(HttpResponseException hre){
+				ListenerExecuteHttpPostAsync.onErrorHttpPostAsyncListener("Se ha producido un error al conectar con el servidor");
+			}catch(Exception e){
+				ListenerExecuteHttpPostAsync.onErrorHttpPostAsyncListener("Se ha producido un error");
 			}
-		} else {
-			ListenerExecuteHttpPostAsync
-					.onErrorHttpPostAsyncListener("No es posible realizar la conexión. Comprueba tu conexión de datos.");
+		} else{
+			ListenerExecuteHttpPostAsync.onErrorHttpPostAsyncListener("No es posible realizar la conexión. Comprueba tu conexión de datos.");
 		}
 	}
 
 	private Runnable returnRes = new Runnable() {
 		public void run() {
 			m_ProgressDialog.dismiss();
-			ListenerExecuteHttpPostAsync
-					.onExecuteHttpPostAsyncListener(getResponseBody());
+			ListenerExecuteHttpPostAsync.onExecuteHttpPostAsyncListener(getResponseBody());
 		}
-	};
+	};	
 
-	public interface OnExecuteHttpPostAsyncListener {
+	public interface OnExecuteHttpPostAsyncListener{
 		void onExecuteHttpPostAsyncListener(String ResponseBody);
-
 		void onErrorHttpPostAsyncListener(String message);
 	}
 
 	private OnExecuteHttpPostAsyncListener ListenerExecuteHttpPostAsync;
 
-	public void setOnExecuteHttpPostAsyncListener(
-			OnExecuteHttpPostAsyncListener l) {
-		ListenerExecuteHttpPostAsync = l;
-	}
+	public void setOnExecuteHttpPostAsyncListener(OnExecuteHttpPostAsyncListener l){ListenerExecuteHttpPostAsync = l;}
 
-	public String post(String posturl) {
-		try {
+
+
+
+	public String post(String posturl){
+		try{
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(posturl);
 			HttpResponse resp = httpclient.execute(httppost);
@@ -166,14 +139,15 @@ public class httpHandler {
 			String text = EntityUtils.toString(ent);
 
 			return text;
-		} catch (Exception e) {
+		}
+		catch(Exception e)
+		{
 			System.out.println(e);
 			return e.toString();
 		}
 	}
-
-	public String postPairs(String posturl) {
-		try {
+	public String postPairs(String posturl){
+		try{
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(posturl);
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -182,9 +156,12 @@ public class httpHandler {
 			String text = EntityUtils.toString(ent);
 
 			return text;
-		} catch (Exception e) {
+		}
+		catch(Exception e)
+		{
 			System.out.println(e);
 			return e.toString();
 		}
 	}
 }
+
