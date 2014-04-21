@@ -66,16 +66,7 @@ class MyAPI extends API {
         return TRUE;
     }
 
-    /**
-     * Example of an Endpoint
-     */
-    protected function example() {
-        if ($this->method == 'GET') {
-            return "Your name is " . $this->User;
-        } else {
-            return "Only accepts GET requests";
-        }
-    }
+   
     /**
      * url: /login
      * method: POST
@@ -178,7 +169,7 @@ class MyAPI extends API {
      * parametros: usuario (apikey) 
      * method:GET obtiene todas las citas de la tabla
      */
-    protected function citas() { 
+   /* protected function citas() { 
         include_once 'config.php';        
        $usuario = "";
         if (isset($_POST["usuario"])) {
@@ -202,6 +193,27 @@ class MyAPI extends API {
         }
         mysql_close();        
         echo json_encode($json);     
+    }*/
+    
+    /**
+     * url: /citas
+     * method: POST    obtiene las citas de un usuario
+     * parametros: usuario (apikey) 
+     * method:GET obtiene todas las citas de la tabla
+     */
+    protected function getCitas(){
+        $usuario="";
+        if (isset($_POST["usuario"])) {
+                   $apiKey = $_POST['usuario'];
+                   $dba = new DbHandler();        
+                   $usuario = $dba->getUserId($apiKey);                   
+        }                 
+        
+         $dba = new DbHandler();        
+         $citasListas = $dba->getCitas($usuario);
+         $json = array();
+        $json['emp_info'] = $citasListas;       
+        echo json_encode($json);  
     }
 
     protected function especialidades(){
@@ -226,6 +238,18 @@ class MyAPI extends API {
         mysql_close();
         echo json_encode($json);
     }
+    protected function getDoctores(){
+        $especialista="";        
+        if (isset($_POST['especialista'])) {
+            $especialista = $_POST['especialista'];                                     
+        }                 
+        
+         $dba = new DbHandler();        
+         $doctoresListas = $dba->getDoctores($especialista);
+         $json = array();
+        $json['emp_info'] = $doctoresListas;       
+        echo json_encode($json);  
+    }
     protected function doctores_json() {
         include_once("config.php");
         $especialista = $_POST['especialista'];
@@ -248,368 +272,8 @@ class MyAPI extends API {
         echo json_encode($json);
     }
 
-    protected function editarDoctor() {
-
-        include_once("config.php");
-        $table = $_GET["table"];
-        $name = $_GET["id"];
-        $conn = mysql_connect($server, $db_user, $db_pass);
-        if (!$conn) {
-            die('No pudo conectarse: ' . mysql_error());
-        }
-        mysql_select_db($db);
-
-        $result = mysql_query("SELECT * FROM {$table}");
-        if (!$result) {
-            die("Query to show fields from table failed");
-        }
-
-        $fields_num = mysql_num_fields($result);
-        echo "<center>";
-        echo "<h1>{$name}</h1>";
-        echo "<table border='1.5'><tr>";
-        // printing table headers
-        $field = mysql_fetch_field($result);
-        echo "<td>EDITAR</td>";
-        for ($i = 1; $i < $fields_num; $i++) {
-            $field = mysql_fetch_field($result);
-            echo "<td>{$field->name}</td>";
-        }
-        echo "</tr>\n";
-        // printing table rows
-        while ($row = mysql_fetch_row($result)) {
-
-
-            // $row is array... foreach( .. ) puts every element
-            // of $row to $cell variable
-            $varId = 0;
-            foreach ($row as $cell) {
-                if ($varId == 0) {
-                    echo "<tr>";
-                    echo "
-                <td>
-            <a href='usuario_detalle.php?id=<?=" . $cell . "?>&instruccion=U'>Update</a>
-
-            <a href='usuario_detalle.php?id=<?=" . $cell . "?>&instruccion=D'>Delete</a>
-            \n
-            </td>";
-
-                    $varId = 1;
-                } else {
-                    echo "<td>$cell</td>";
-                }
-            }
-        }
-        mysql_free_result($result);
-    }
-
-
-    protected function crearDoctor() {
-        if (isset($_POST["enviar"])) {
-            include_once("config.php");
-            $conn = mysql_connect($server, $db_user, $db_pass);
-            if (!$conn) {
-                die('No pudo conectarse: ' . mysql_error());
-            }
-            mysql_select_db($db);
-            mysql_query("INSERT INTO doctor (nameDoctor, cel, tel, especialidad) VALUES('" . $_POST['nombre'] . "'," . $_POST['celular'] . "," . $_POST['telefono'] . "," . $_POST['especialidad'] . ") ");
-            echo "Insertado";
-            echo "INSERT INTO doctor (nameDoctor, cel, tel, especialidad) VALUES('" . $_POST['nombre'] . "'," . $_POST['celular'] . "," . $_POST['telefono'] . "," . $_POST['especialidad'] . ") ";
-            mysql_close($conn);
-        }
-    }
-
-    protected function crearConsultorio() {
-        include_once("config.php");
-        if (isset($_POST["enviar"])) {
-            $conn = mysql_connect($server, $db_user, $db_pass);
-            if (!$conn) {
-                die('No pudo conectarse: ' . mysql_error());
-            }
-            mysql_select_db($db);
-            mysql_query("INSERT INTO consultorio (IdClinica, numConsultorio) VALUES(" . $_POST['tipo'] . "," . $_POST['num_consultorio'] . ") ");
-            echo "Insertado";
-            echo $_POST['tipo'];
-            mysql_close($conn);
-        }
-    }
-
-    protected function crearClinica() {
-        if (isset($_POST["enviar"])) {
-            include_once("config.php");
-            $conn = mysql_connect($server, $db_user, $db_pass);
-            if (!$conn) {
-                die('No pudo conectarse: ' . mysql_error());
-            }
-            mysql_select_db($db);
-            mysql_query("INSERT INTO clinica (name, latitud, longitud) VALUES('" . $_POST['nombre'] . "'," . $_POST['latitud'] . "," . $_POST['longitud'] . ") ");
-            echo "Insertado";
-            mysql_close($conn);
-        }
-    }
-
-    /*protected function crearCita() {
-        include_once("config.php");
-        if (isset($_POST["enviar"])) {
-            $conn = mysql_connect($server, $db_user, $db_pass);
-            if (!$conn) {
-                die('No pudo conectarse: ' . mysql_error());
-            }
-            mysql_select_db($db);
-            mysql_query("INSERT INTO appointment (date, startTime, endTime, doctor, user, place) VALUES('" . $_POST['date'] . "','" . $_POST['startTime'] . "','" . $_POST['endTime'] . "'," . $_POST['doctor'] . "," . $_POST['user'] . "," . $_POST['consultorio'] . ") ");
-            echo "Insertado";
-            mysql_close($conn);
-        }
-    }
-*/
-    protected function showTable() {
-        include_once("config.php");
-        $table = $_POST["tabla"];
-        $conn = mysql_connect($server, $db_user, $db_pass);
-        if (!$conn) {
-            die('No pudo conectarse: ' . mysql_error());
-        }
-        mysql_select_db($db);
-
-        $result = mysql_query("SELECT * FROM {$table}");
-        if (!$result) {
-            die("Query to show fields from table failed");
-        }
-
-        $fields_num = mysql_num_fields($result);
-        echo "<center>";
-        echo "<h1>Tabla {$table}</h1>";
-        echo "<table border='0'><tr>";
-        // printing table headers
-        for ($i = 0; $i < $fields_num; $i++) {
-            $field = mysql_fetch_field($result);
-            echo "<td>{$field->name}</td>";
-        }
-        echo "</tr>\n";
-        // printing table rows
-        while ($row = mysql_fetch_row($result)) {
-            echo "<tr>";
-
-            // $row is array... foreach( .. ) puts every element
-            // of $row to $cell variable
-            foreach ($row as $cell)
-                echo "<td>$cell</td>";
-
-
-            echo "</tr>\n";
-        }
-        mysql_free_result($result);
-    }
-
-    protected function indexMantenimiento() {
-        include_once("config.php");
-        $con = mysql_connect($server, $db_user, $db_pass)or die("cannot connect");
-        mysql_select_db($db)or die("cannot select DB");
-        $sql = "SHOW TABLES FROM $db";
-
-        $result = mysql_query($sql);
-
-        if (!$result) {
-            echo "DB Error, could not list tables\n";
-            echo 'MySQL Error: ' . mysql_error();
-            exit;
-        }
-        echo "<select name='tabla'>";
-        while ($row = mysql_fetch_row($result)) {
-            echo "<option value='" . $row[0] . "' > {$row[0]} </option>";
-        }
-        echo "</select>";
-        mysql_free_result($result);
-    }
-
-    protected function usuario_detalle() {
-        include_once("config.php");
-        $id = $_GET['id'];
-        $instruccion = $_GET['instruccion'];
-
-        $conn = mysql_connect($server, $db_user, $db_pass);
-        if (!$conn) {
-            die('No pudo conectarse: ' . mysql_error());
-        }
-        mysql_select_db($db);
-        $rows = mysql_query("SELECT * FROM Usuarios WHERE id = " . $id, $conn);
-        $row = mysql_fetch_array($rows, MYSQL_ASSOC);
-    }
-
-    protected function updateConsultorio() {
-        include_once("config.php");
-        $id = $_GET['id'];
-        $conn = mysql_connect($server, $db_user, $db_pass);
-        if (!$conn) {
-            die('No pudo conectarse: ' . mysql_error());
-        }
-        mysql_select_db($db);
-        $rows = mysql_query("SELECT idConsultorio, numConsultorio, name, idClinic FROM consultorio, clinica WHERE idClinic = idclinica and idConsultorio = " . $id, $conn);
-        $row = mysql_fetch_array($rows, MYSQL_ASSOC);
-    }
-
-    protected function updateCita() {
-        include_once("config.php");
-        $id = $_GET['id'];
-        echo $id;
-        $conn = mysql_connect($server, $db_user, $db_pass);
-        if (!$conn) {
-            die('No pudo conectarse: ' . mysql_error());
-        }
-        mysql_select_db($db);
-        $rows = mysql_query("SELECT idAppointment, date, startTime, endTime, place, doctor, user FROM appointment,doctor,user, clinica, consultorio WHERE idClinic = idclinica and user =idUser  and doctor =idDoctor and place = idConsultorio and idAppointment=" . $id, $conn);
-        $row = mysql_fetch_array($rows, MYSQL_ASSOC);
-    }
-
-    protected function listar_usaurios() {
-        include_once("config.php");
-        $instruccion = $_POST["instruccion"];
-        $conn = mysql_connect($server, $db_user, $db_pass);
-        if (!$conn) {
-            die('No pudo conectarse: ' . mysql_error());
-        }
-        mysql_select_db($db);
-        if (isset($_POST["enviar"])) {
-            if ($instruccion == "I") {
-                mysql_query("INSERT INTO Usuarios (nombre, tipo, fecha_nacimiento) VALUES('" . $_POST['nombre'] . "'," . $_POST['tipo'] . ",'" . $_POST['fecha_nacimiento'] . "') ");
-            } else if ($instruccion == "U") {
-                mysql_query("UPDATE Usuarios SET nombre = '" . $_POST['nombre'] . "', tipo=" . $_POST['tipo'] . ",fecha_nacimiento='" . $_POST['fecha_nacimiento'] . "' WHERE id=" . $_POST['id']);
-            } else if ($instruccion == "D") {
-                mysql_query("DELETE FROM Usuarios WHERE id = " . $_POST['id'], $conn);
-            }
-        }
-        $rows = mysql_query("SELECT id, nombre FROM Usuarios", $conn);
-    }
-
-    protected function editarConsultorio() {
-        include_once("config.php");
-        $table = "consultorio";
-        $name = "Editar Consultorio";
-        $conn = mysql_connect($server, $db_user, $db_pass);
-        if (!$conn) {
-            die('No pudo conectarse: ' . mysql_error());
-        }
-        mysql_select_db($db);
-        if (isset($_POST["enviar"])) {
-            mysql_query("UPDATE consultorio SET  numConsultorio=" . $_POST['numConsultorio'] . ", idClinica =" . $_POST['clinic'] . " WHERE idConsultorio=" . $_POST['id']);
-        } else if (isset($_GET["eliminar"])) {
-
-            $indexDelete = $_GET["id"];
-            $querry = mysql_query("DELETE FROM {$table} WHERE idconsultorio = " . $indexDelete);
-        }
-        $result = mysql_query("SELECT idConsultorio, numConsultorio, name FROM {$table}, clinica WHERE idClinic = idclinica");
-        if (!$result) {
-            die("Query to show fields from table failed");
-        }
-
-        $fields_num = mysql_num_fields($result);
-        echo "<center>";
-        echo "<h1>{$name}</h1>";
-        echo "<table border='1.5'><tr>";
-        // printing table headers
-        $field = mysql_fetch_field($result);
-        echo "<td>EDITAR</td>";
-        echo "<td>Numero de consultorio</td><td>Clinica</td>";
-        echo "</tr>\n";
-        // printing table rows
-        while ($row = mysql_fetch_row($result)) {
-
-
-            // $row is array... foreach( .. ) puts every element
-            // of $row to $cell variable
-            $varId = 0;
-            foreach ($row as $cell) {
-                if ($varId == 0) {
-                    echo "<tr>";
-                    echo "
-                <td>
-            <a href='updateConsultorio.php?id=" . $cell . "'>Update</a>
-
-            <a href='editarConsultorio.php?id=" . $cell . "&eliminar=t'>Delete</a>
-            \n
-            </td>";
-
-                    $varId = 1;
-                } else {
-                    echo "<td>$cell</td>";
-                }
-            }
-        }
-        mysql_free_result($result);
-    }
-
-    protected function editarCita() {
-        include_once("config.php");
-        $table = "appointment";
-        $name = "Editar Cita";
-
-        $conn = mysql_connect($server, $db_user, $db_pass);
-        if (!$conn) {
-            die('No pudo conectarse: ' . mysql_error());
-        }
-        mysql_select_db($db);
-        if (isset($_POST["enviar"])) {
-            mysql_query("UPDATE appointment SET date='" . $_POST['date'] . "', startTime ='" . $_POST['stime'] . "', endTime='" . $_POST['etime'] . "',doctor=" . $_POST['doctor'] . ",user=" . $_POST['user'] . ",place=" . $_POST['consultorio'] . " WHERE idAppointment=" . $_POST['id']);
-        } else if (isset($_GET["eliminar"])) {
-            $indexDelete = $_GET["id"];
-            $querry = mysql_query("DELETE FROM {$table} WHERE idAppointment = " . $indexDelete);
-        }
-
-        $result = mysql_query("SELECT idAppointment, date, startTime, endTime, nameDoctor, nameUser,name,numConsultorio FROM appointment,doctor,user, clinica, consultorio WHERE idClinic = idclinica and user =idUser  and doctor =idDoctor and place = idConsultorio");
-        if (!$result) {
-            die("Query to show fields from table failed");
-        }
-
-        $fields_num = mysql_num_fields($result);
-        echo "<center>";
-        echo "<h1>{$name}</h1>";
-        echo "<table border='1.5'><tr>";
-        // printing table headers
-        $field = mysql_fetch_field($result);
-        echo "<td>EDITAR</td>";
-        echo "<td>Fecha</td><td>Hora de inicio</td><td>Hora de final</td><td>Doctor</td><td>Usuario</td><td>Clinica</td><td>Consultorio</td>";
-        echo "</tr>\n";
-        // printing table rows
-        while ($row = mysql_fetch_row($result)) {
-
-
-            // $row is array... foreach( .. ) puts every element
-            // of $row to $cell variable
-            $varId = 0;
-            foreach ($row as $cell) {
-                if ($varId == 0) {
-                    echo "<tr>";
-                    echo "
-                <td>
-            <a href='updateCita.php?id=" . $cell . "&eliminar=t'>Update</a>
-
-            <a href='editarCita.php?id=" . $cell . "&eliminar=t'>Delete</a>
-            \n
-            </td>";
-
-                    $varId = 1;
-                } else {
-                    echo "<td>$cell</td>";
-                }
-            }
-        }
-        mysql_free_result($result);
-    }
-
-    protected function cambioConsultorio() {
-        include_once("config.php");
-        $id = $_GET['id'];
-        $instruccion = $_GET['instruccion'];
-
-        $conn = mysql_connect($server, $db_user, $db_pass);
-        if (!$conn) {
-            die('No pudo conectarse: ' . mysql_error());
-        }
-        mysql_select_db($db);
-        $rows = mysql_query("SELECT * FROM Usuarios WHERE id = " . $id, $conn);
-        $row = mysql_fetch_array($rows, MYSQL_ASSOC);
-    }
     
+      
     protected function eliminarCita() {
                 include_once("config.php");
         $usr = $_POST['user'];

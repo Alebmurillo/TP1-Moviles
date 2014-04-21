@@ -34,9 +34,9 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 		ICitaCreadaListener {
 
-	private String URL = "http://192.168.0.189:80/api/v1/citas";
-	private String deleteURL = "http://192.168.0.189:80/api/v1/eliminarcita";
-	private String URLdoctores="http://192.168.0.189:80/api/v1/doctores_json";
+	private String URLcitas = "http://192.168.0.189:80/api/v1/getCitas";
+	private String URLdeleteCitas = "http://192.168.0.189:80/api/v1/eliminarcita";
+	private String URLdoctores="http://192.168.0.189:80/api/v1/getDoctores";
 	private String URLclinicas="http://192.168.0.189:80/api/v1/clinicas_json";
 	String usuarioActual = "";
 	Button btCrear;
@@ -148,7 +148,7 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 			httpHandler sh = new httpHandler();
 			// Making a request to url and getting response
 			sh.addNameValue("usuario", Usuario.getInstance().getUID());
-			String jsonStr = sh.postPairs(URL);
+			String jsonStr = sh.postPairs(URLcitas);
 
 			Log.d("Response: ", "> " + jsonStr);
 
@@ -390,7 +390,7 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 					}
 				});
 
-		httpclient.executeHttpPost(deleteURL);
+		httpclient.executeHttpPost(URLdeleteCitas);
 	}
 
 	private OnDeleteCita ListenerCitaEliminada;

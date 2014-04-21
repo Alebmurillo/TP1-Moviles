@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 
 
+
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -34,9 +35,8 @@ public class EspecialistasFragment extends ListFragment {
 	EditText eSearch;
 	ArrayList<HashMap<String, String>> especialistasList;
 	String searchTxt;
-	private Spinner spinner1;
-	//private String URL="http://192.168.0.189:80/Citas/doctores_json.php";
-	private String URL="http://192.168.0.189:80/api/v1/doctores_json";
+	private Spinner spinner1;	
+	private String URL="http://192.168.0.189:80/api/v1/getDoctores";
 	List<String> listaEspecialidades,listaId ;
 	
 	@Override

@@ -273,32 +273,61 @@ class DbHandler {
             return NULL;
         }
     }
-    
+    public function getDoctores($especialista){  
+ 
+        if ($especialista == "") {
+           $stmt = $this->conn->prepare("SELECT iddoctor,nameDoctor,tel,cel,facebook,especialidad, idconsultorio FROM doctor ");
+        } else{
+            $stmt = $this->conn->prepare("SELECT iddoctor,nameDoctor,tel,cel,facebook,especialidad, idconsultorio FROM doctor WHERE especialidad = ? ");
+            $stmt->bind_param("s", $especialista);            
+        }
+        
+         $response = array();
+         $result=$stmt->execute();
+          if ($result) {
+            $stmt->bind_result($iddoctor,$nameDoctor,$tel,$cel,$facebook,$especialidad,$idconsultorio);
+            while ($fila = $stmt->fetch()) {
+                $res = array();
+                array_push($res, $iddoctor);
+                array_push($res, $nameDoctor);
+                array_push($res, $tel);
+                array_push($res, $cel);
+                array_push($res, $facebook); 
+                array_push($res, $especialidad);   
+                array_push($response, $res);
+            }
+            $stmt->close();
+            return $response;
+        } else {
+            return NULL;
+        }  
+    }
 
     public function getCitas($user_id) {
         if ($user_id == "") {
-           $stmt = $this->conn->prepare("SELECT * FROM appointment ");
+           $stmt = $this->conn->prepare("SELECT appointment.date,appointment.startTime,doctor.nameDoctor,clinica.name,appointment.idAppointment FROM appointment INNER JOIN doctor ON appointment.doctor=doctor.iddoctor INNER JOIN clinica ON appointment.place=clinica.idClinic ");
         } else{
             $stmt = $this->conn->prepare("SELECT appointment.date,appointment.startTime,doctor.nameDoctor,clinica.name,appointment.idAppointment FROM appointment INNER JOIN doctor ON appointment.doctor=doctor.iddoctor INNER JOIN clinica ON appointment.place=clinica.idClinic WHERE appointment.user = ? ");
-            $stmt->bind_param("s", $user_id);            
-        }
-           $result=$stmt->execute();
-        if ($result) {
-            $res = array();
-            $stmt->bind_result($date, $start, $doctor, $clinica,$id);
-            // TODO
-            // $task = $stmt->get_result()->fetch_assoc();
-            $stmt->fetch();
-            $res["id"] = $id;
-            $res["date"] = $date;
-            $res["start"] = $start;
-            $res["doctor"] = $doctor;
-            $res["clinica"] = $clinica;
+            $stmt->bind_param("i", $user_id);            
+        }        
+         $response = array();
+         $result=$stmt->execute();
+          if ($result) {
+              $stmt->bind_result($date, $start, $doctor, $clinica,$id);     
+            while ($fila = $stmt->fetch()) {
+                $res = array();
+                array_push($res, $id);
+                array_push($res, $date);
+                array_push($res, $start);
+                array_push($res, $doctor);
+                array_push($res, $clinica);               
+                array_push($response, $res);
+            }
             $stmt->close();
-            return $res;
+            return $response;
         } else {
             return NULL;
-        }
+        }            
     }
 
     /**
