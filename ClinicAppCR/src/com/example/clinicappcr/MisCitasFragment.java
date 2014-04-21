@@ -35,7 +35,7 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 		ICitaCreadaListener {
 
 	private String URLcitas = "http://192.168.0.189:80/api/v1/getCitas";
-	private String URLdeleteCitas = "http://192.168.0.189:80/api/v1/eliminarcita";
+	private String URLdeleteCitas = "http://192.168.0.189:80/api/v1/eliminarCita";
 	private String URLdoctores="http://192.168.0.189:80/api/v1/getDoctores";
 	private String URLclinicas="http://192.168.0.189:80/api/v1/clinicas_json";
 	String usuarioActual = "";
@@ -157,17 +157,17 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 				listIdCitas = new ArrayList<String>();
 				try {
 					JSONObject json = new JSONObject(jsonStr);
-					System.out.println(json.toString());
+					System.out.println("CITAS= "+json.toString());
 
 					JSONArray listaCitas = json.getJSONArray("emp_info");
 					for (int j = 0; j < listaCitas.length(); j++) {
 						JSONArray cita = listaCitas.getJSONArray(j);
-
-						String fecha = cita.get(0).toString();
-						String hora = cita.get(1).toString();
-						String doctor = cita.get(2).toString();
-						String lugar = cita.get(3).toString();
-						String idcita = cita.get(4).toString();
+						String idcita = cita.get(0).toString();
+						String fecha = cita.get(1).toString();
+						String hora = cita.get(2).toString();
+						String doctor = cita.get(3).toString();
+						String lugar = cita.get(4).toString();
+						
 
 						// tmp hashmap for single contact
 						HashMap<String, String> contact = new HashMap<String, String>();
@@ -356,6 +356,7 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 		httpHandler httpclient = new httpHandler(activity);
 		httpclient.addNameValue("user", Usuario.getInstance().getUID());
 		httpclient.addNameValue("id", idCita);
+		System.out.println("ESTA ES LA ID=   "+idCita);
 		// httpclient.addNameValue("hora", hora);
 		httpclient
 				.setOnExecuteHttpPostAsyncListener(new OnExecuteHttpPostAsyncListener() {
@@ -373,11 +374,11 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 								} else {
 									// no se elimnno
 									ListenerCitaEliminada
-											.onDeleteWrong("error al eliminar");
+									.onDeleteWrong(json.getString("message"));
 								}
 							} else {
 								ListenerCitaEliminada
-										.onDeleteWrong("no se logro eliminar");
+								.onDeleteWrong("error al eliminar");
 							}
 						} catch (JSONException e) {
 							ListenerCitaEliminada
@@ -444,7 +445,7 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 	@Override
 	public void onConfirmDelete() {
 		// TODO Auto-generated method stub
-		
+		System.out.println("POSICION ACTUAL=  " + posicionActual);
 		MisCitasFragment.this.eliminarCita(getActivity(),
 				listIdCitas.get(posicionActual));
 

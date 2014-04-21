@@ -200,7 +200,16 @@ class DbHandler {
             return "";
         }
     }
-
+    
+    public function getFechaCita($cita_id){
+        $stmt = $this->conn->prepare("SELECT date FROM appointment WHERE idAppointment = ?");
+        $stmt->bind_param("s", $cita_id);
+        $stmt->execute();
+        $stmt->bind_result($fecha);            
+        $stmt->fetch();
+        return $fecha;
+    }
+    
     /**
      * Fetching user id by api key
      * @param String $api_key user api key

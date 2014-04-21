@@ -66,6 +66,14 @@ class MyAPI extends API {
         return TRUE;
     }
 
+    private function compararFechas($fecha1,$fecha2){
+        //$fecha2 = $_POST['f2'];
+        //$fecha1 = $_POST['f1'];
+        $datetime1 = date_create($fecha1);
+        $datetime2 = date_create($fecha2);
+        $interval = date_diff($datetime1, $datetime2);
+        return $interval->format('%R%a')>0;
+    }
    
     /**
      * url: /login
@@ -77,6 +85,7 @@ class MyAPI extends API {
         $email = $_POST['email'];
         $password = $_POST['password'];
         $db = new DbHandler();
+        $this->validateEmail($email);
         // check for correct email and password
         if ($db->checkLogin($email, $password)) {
             // get the user by email
@@ -115,6 +124,7 @@ class MyAPI extends API {
         $name = filter_input(INPUT_POST, 'nombre');
                 //$_POST['nombre'];
         $email = $_POST['email'];
+        $this->validateEmail($email);
         $password = $_POST['password'];
 
         $sex = $_POST['sexo'];
@@ -163,37 +173,7 @@ class MyAPI extends API {
         //}
     }
     
-    /**
-     * url: /citas
-     * method: POST    obtiene las citas de un usuario
-     * parametros: usuario (apikey) 
-     * method:GET obtiene todas las citas de la tabla
-     */
-   /* protected function citas() { 
-        include_once 'config.php';        
-       $usuario = "";
-        if (isset($_POST["usuario"])) {
-                   $apiKey = $_POST['usuario'];
-                   $dba = new DbHandler();        
-                   $usuario = $dba->getUserId($apiKey);                   
-        }                 
-        $con = mysql_connect($server, $db_user, $db_pass)or die("cannot connect");
-        mysql_select_db($db)or die("cannot select DB");
-        if ($usuario!= "") {
-            $sql = "SELECT appointment.date,appointment.startTime,doctor.nameDoctor,clinica.name,appointment.idAppointment FROM appointment INNER JOIN doctor ON appointment.doctor=doctor.iddoctor INNER JOIN clinica ON appointment.place=clinica.idClinic WHERE appointment.user='".$usuario."'";
-        } else {
-            $sql = "SELECT appointment.date,appointment.startTime,doctor.nameDoctor,clinica.name,appointment.idAppointment FROM appointment INNER JOIN doctor ON appointment.doctor=doctor.iddoctor INNER JOIN clinica ON appointment.place=clinica.idClinic ";
-        }
-        $result = mysql_query($sql);       
-        $json = array();
-        if (mysql_num_rows($result)) {
-            while ($row = mysql_fetch_row($result)) {
-                $json['emp_info'][] = $row;
-            }
-        }
-        mysql_close();        
-        echo json_encode($json);     
-    }*/
+  
     
     /**
      * url: /citas
@@ -215,7 +195,13 @@ class MyAPI extends API {
         $json['emp_info'] = $citasListas;       
         echo json_encode($json);  
     }
-
+    
+    /**
+     * url: /especialidades
+     * method: POST    obtiene las especialidades
+     * parametros: usuario (apikey) 
+     * method:GET obtiene todas las citas de la tabla
+     */
     protected function especialidades(){
         $dba = new DbHandler();
         $result=$dba->getEspecialidades();
@@ -238,51 +224,31 @@ class MyAPI extends API {
         mysql_close();
         echo json_encode($json);
     }
-    protected function getDoctores(){
-        $especialista="";        
+    protected function getDoctores() {
+        $especialista = "";
         if (isset($_POST['especialista'])) {
-            $especialista = $_POST['especialista'];                                     
-        }                 
-        
-         $dba = new DbHandler();        
-         $doctoresListas = $dba->getDoctores($especialista);
-         $json = array();
-        $json['emp_info'] = $doctoresListas;       
-        echo json_encode($json);  
-    }
-    protected function doctores_json() {
-        include_once("config.php");
-        $especialista = $_POST['especialista'];
+            $especialista = $_POST['especialista'];
+        }
 
-        $con = mysql_connect($server, $db_user, $db_pass)or die("cannot connect");
-        mysql_select_db($db)or die("cannot select DB");
-        if ($especialista != "") {
-            $sql = "SELECT * FROM doctor WHERE especialidad='" . $especialista . "'";
-        } else {
-            $sql = "SELECT * FROM doctor";
-        }
-        $result = mysql_query($sql);
+        $dba = new DbHandler();
+        $doctoresListas = $dba->getDoctores($especialista);
         $json = array();
-        if (mysql_num_rows($result)) {
-            while ($row = mysql_fetch_row($result)) {
-                $json['emp_info'][] = $row;
-            }
-        }
-        mysql_close();
+        $json['emp_info'] = $doctoresListas;
         echo json_encode($json);
     }
 
-    
-      
     protected function eliminarCita() {
-                include_once("config.php");
+        include_once("config.php");
         $usr = $_POST['user'];
         $id = $_POST['id'];
-        $dba = new DbHandler();        
+        $dba = new DbHandler();
         $usuario = $dba->getUserId($usr);
-        $bb=$dba->deleteCita($usuario, $id);
-        //echo $bb;
-        if($bb){
+        $hoy = date("Y-m-d");
+        $fecha = $dba->getFechaCita($id);
+        if($this->compararFechas($hoy, $fecha)) {
+            $bb = $dba->deleteCita($usuario, $id);
+            //echo $bb;
+            if ($bb) {
                 $conn = mysql_connect($server, $db_user, $db_pass);
                 if (!$conn) {
                     die('No pudo conectarse: ' . mysql_error());
@@ -291,24 +257,34 @@ class MyAPI extends API {
                 $sql = "SELECT appointment.date,appointment.startTime,doctor.nameDoctor,clinica.name,appointment.idAppointment FROM appointment INNER JOIN doctor ON appointment.doctor=doctor.iddoctor INNER JOIN clinica ON appointment.place=clinica.idClinic WHERE appointment.user = " . $usuario . " ";
                 $result = mysql_query($sql);
                 $json = array();
-                 if (mysql_num_rows($result)) {
+                if (mysql_num_rows($result)) {
                     while ($row = mysql_fetch_row($result)) {
                         $json['emp_info'][] = $row;
-                        
                     }
                 }
                 $json['success'] = 1;
                 mysql_close();
                 $json['message'] = "se elimino correctamente";
                 echo json_encode($json);
-        }else{
-            $json = array();
+            } else {
+                $json = array();
                 $json['success'] = 0;
                 $json['message'] = "no se elimino ninguna cita";
                 echo json_encode($json);
+            }
+        }else{
+            if(!$fecha){
+                $json = array();
+                $json['success'] = 0;
+                $json['message'] = "cita no existe";
+                echo json_encode($json);
+            }else{
+                $json = array();
+                $json['success'] = 0;
+                $json['message'] = "fecha cercana, no se puede eliminar cita";
+                echo json_encode($json);
+            }
         }
-        
-        
     }
     
     protected function crearCita() {
