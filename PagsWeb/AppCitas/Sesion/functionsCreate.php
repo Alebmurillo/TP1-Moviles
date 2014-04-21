@@ -1,5 +1,5 @@
 <?php
-
+//imprime en la pagina el menu de creacion de cita
 function crearCita() {    
    include("../config.php");
    
@@ -46,6 +46,7 @@ function crearCita() {
 
 
 }
+//imprime en la pagina el menu de creacion de consultorio
 function crearConsultorio(){
     include("../config.php");
     ?>
@@ -79,6 +80,7 @@ function crearConsultorio(){
     </form>
             <?php
 }
+//imprime en la pagina el menu de creacion de doctor
 function crearDoctor(){
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);
@@ -136,6 +138,7 @@ function crearDoctor(){
 			<input class='button' type="submit" name="enviarDoctor" value="Guardar">
 		</form> <?php
 }
+//imprime en la pagina el menu de creacion de clinica
 function crearClinica(){?>
     <form method="post" action="crearCita.php">
                         Nombre
@@ -149,6 +152,7 @@ function crearClinica(){?>
 		</form>
                     <?php
 }
+//imprime en la pagina el menu de creacion de usuario
 function crearUsuario(){
      include("../config.php");
     ?>
@@ -167,6 +171,7 @@ function crearUsuario(){
 			<input class='button'  type="submit" name="enviarUsuario" value="Guardar">
 		</form><?php
 }
+//ejecuta comandos a la base de datos para actualizacion de una cita
 function enviarCita(){
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);
@@ -185,6 +190,7 @@ function enviarCita(){
     else {echo "Hora Ocupada por otro usuario";}
     echo "Insertado";
     mysql_close($conn);}
+//ejecuta comandos a la base de datos para actualizacion de una clinica
 function enviarClinica(){
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);
@@ -198,6 +204,7 @@ function enviarClinica(){
     
     echo "Insertado";
 mysql_close($conn);}
+//ejecuta comandos a la base de datos para actualizacion de un usuario
 function enviarUsuario(){
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);
@@ -210,6 +217,7 @@ function enviarUsuario(){
     echo "Insertado";
     mysql_close($conn);
     }
+//ejecuta comandos a la base de datos para actualizacion de un doctor
 function enviarDoctor(){
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);
@@ -223,6 +231,7 @@ function enviarDoctor(){
             mysql_close($conn);
     
 }
+//ejecuta comandos a la base de datos para actualizacion de un consultorio
 function enviarConsultorio(){
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);

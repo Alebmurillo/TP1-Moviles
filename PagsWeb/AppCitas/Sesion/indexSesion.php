@@ -1,4 +1,6 @@
- <?php
+ 
+
+<?php
 include '../login/db_connect.php';
 include '../login/functions.php';
 sec_session_start(); //Nuestra manera personalizada segura de iniciar sesión php.
@@ -67,7 +69,7 @@ echo 'Solicitud no válida';
         <img src="../Style/images/landscape.png" alt="" width="1000" height="300" />
 			<div class="title">
 				<h2>Clinic Cloud Calendar</h2>
-				<span class="byline">Lema bonito que luis debe inventar</span> </div>
+				<span class="byline">Web App</span> </div>
 			
 		</div>
 	</div>

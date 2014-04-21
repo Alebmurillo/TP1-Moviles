@@ -30,7 +30,7 @@
 		<div class="container">                    
 			<div class="title">
 				<h2>Clinic Cloud Calendar</h2>
-				<span class="byline">Lema bonito que luis debe inventar</span> </div>
+				<span class="byline">WEB APP</span> </div>
 			
 		</div>
 	</div>

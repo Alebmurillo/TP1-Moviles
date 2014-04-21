@@ -1,5 +1,7 @@
 <?php
-
+//e: $clinicName: Nombre de la clinica a editar
+//s: 
+// imprime la ventana de modificacion de consultorio
 function editRoom($clinicName) {
    include("../config.php");
    $table = "consultorio";
@@ -48,6 +50,9 @@ function editRoom($clinicName) {
         mysql_free_result($result);
    
 }
+//e: 
+//s: 
+//ejecuta los comandos de eliminacion de consultorio
 function deleteRoom(){
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);
@@ -55,6 +60,9 @@ function deleteRoom(){
     $indexDelete =$_POST['id'];
     $querry = mysql_query("DELETE FROM consultorio WHERE idconsultorio = ". mysql_real_escape_string($indexDelete)); 
 }
+//e: $clinicName: Nombre de la clinica a editar
+//s: 
+// elecuta los comandos de actualizacion de la db del consultorio
 function updateRoom(){  
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);
@@ -62,7 +70,9 @@ function updateRoom(){
     mysql_query("UPDATE consultorio SET  numConsultorio=". mysql_real_escape_string($_POST['numConsultorio']).", idClinica =". mysql_real_escape_string($_POST['clinic'])." WHERE idConsultorio=". mysql_real_escape_string($_POST['id']));
 
 }
-
+//e: $clinicName: Nombre de la clinica a editar
+//s: 
+// imprime la ventana de modificacion de doctor
 function editDoctor($doctorName){
 	include("../config.php");
 	$table = "doctor";
@@ -120,6 +130,9 @@ function editDoctor($doctorName){
     }
     mysql_free_result($result);
 }
+//e: $doctorName: Nombre de la clinica a editar
+//s: 
+// imprime la ventana de modificacion de clinica
 function editClinic($clinicName){
 	include("../config.php");
 	$table = "clinica";
@@ -176,6 +189,9 @@ function editClinic($clinicName){
     }
     mysql_free_result($result);
 }
+//e: $userName: Nombre de la clinica a editar
+//s: 
+// imprime la ventana de modificacion de usuario
 function editUser($userName){
 	include("../config.php");
 	$table = "user";
@@ -232,6 +248,9 @@ function editUser($userName){
     }
     mysql_free_result($result);
 }
+//e: userName: Nombre de la clinica a editar
+//s: 
+// imprime la ventana de modificacion de cita
 function editDate($userName){
         include("../config.php");
         
@@ -295,6 +314,7 @@ function editDate($userName){
     mysql_free_result($result);
     
 }
+// ejecuta los comandos de actualizacion de la db de cita
 function updateDate(){  
     include("../config.php");
     $id = $_POST['id'];
@@ -308,6 +328,7 @@ function updateDate(){
 	mysql_query("UPDATE appointment SET date='". mysql_real_escape_string($_POST['date'])."', startTime ='". mysql_real_escape_string($_POST['stime'])."', doctor=". mysql_real_escape_string($_POST['doctor']).",user=". mysql_real_escape_string($_POST['user'])." WHERE idAppointment=". mysql_real_escape_string($_POST['id']));
       
 }
+// ejecuta los comandos de eliminacion de la db del cita
 function deleteDate(){
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);
@@ -315,8 +336,7 @@ function deleteDate(){
     $indexDelete =$_POST['id'];
     $querry = mysql_query("DELETE FROM appointment WHERE idAppointment = ". mysql_real_escape_string($indexDelete)); 
 }
-
-
+// ejecuta los comandos de actualizacion de la db del doctor
 function updateDoctor(){  
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);
@@ -329,6 +349,7 @@ function updateDoctor(){
 	mysql_query("UPDATE doctor SET nameDoctor='". mysql_real_escape_string($_POST['nameDoctor'])."', tel =". mysql_real_escape_string($_POST['tel']).", cel=". mysql_real_escape_string($_POST['cel']).",especialidad=". mysql_real_escape_string($_POST['especialidad']).", idconsultorio=". mysql_real_escape_string($_POST['consultorio'])." WHERE iddoctor=". mysql_real_escape_string($_POST['id']));
       
 }
+// ejecuta los comandos de eliminacion de la db del doc
 function deleteDoctor(){
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);
@@ -336,8 +357,7 @@ function deleteDoctor(){
     $indexDelete =$_POST['id'];
     $querry = mysql_query("DELETE FROM doctor WHERE iddoctor = ". mysql_real_escape_string($indexDelete)); 
 }
-
-
+// ejecuta los comandos de actualizacion de la db de clinica
 function updateClinic(){  
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);
@@ -350,6 +370,7 @@ function updateClinic(){
 	mysql_query("UPDATE clinica SET name='". mysql_real_escape_string($_POST['name'])."', longitud ='". mysql_real_escape_string($_POST['longitud'])."', latitud='". mysql_real_escape_string($_POST['latitud'])."' WHERE idclinic=". mysql_real_escape_string($_POST['id']));
       
 }
+// ejecuta los comandos de eliminacion de la db de clinica
 function deleteClinic(){
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);
@@ -357,7 +378,7 @@ function deleteClinic(){
     $indexDelete =$_POST['id'];
     $querry = mysql_query("DELETE FROM clinica WHERE idclinic = ". mysql_real_escape_string($indexDelete)); 
 }
-
+// ejecuta los comandos de actualizacion de la db del usuario
 function updateUser(){  
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);
@@ -370,6 +391,7 @@ function updateUser(){
 	mysql_query("UPDATE user SET nameUser='". mysql_real_escape_string($_POST['nameUser'])."', tel =". mysql_real_escape_string($_POST['tel']).", facebook='". mysql_real_escape_string($_POST['facebook'])."', sex='". mysql_real_escape_string($_POST['sex'])."' WHERE idUser=". mysql_real_escape_string($_POST['id']));
     
 }
+// ejecuta los comandos de eliminacion de la db de usuario
 function deleteUser(){
     include("../config.php");
     $conn = mysql_connect($server,  $db_user, $db_pass);

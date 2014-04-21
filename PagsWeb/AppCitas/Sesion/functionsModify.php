@@ -1,4 +1,5 @@
 <?php
+//imprime en la pagina el menu de actualizacion de un consultorio
 function showUpdateRoom(){
     
     
@@ -43,6 +44,7 @@ echo "</option>";
 <input class= 'button' type="submit" name="DeleteRoom" value="Delete">
 <?php  
 }
+//imprime en la pagina el menu de actualizacion de una cita
 function showUpdateAppointment(){
     include("../config.php");
 	$id = $_GET['id'];
@@ -110,6 +112,7 @@ function showUpdateAppointment(){
                 <input class= 'button' type="submit" name="DeleteDate" value="Delete">
                         <?php
 }
+//imprime en la pagina el menu de actualizacion de doc
 function showUpdateDoctor(){
 include("../config.php");
 	$id = $_GET['id'];
@@ -160,6 +163,7 @@ $rows = mysql_query( "SELECT idConsultorio, name, numConsultorio FROM consultori
 <input class= 'button' type="submit" name="DeleteDoctor" value="Delete">
 <?php  
 }
+//imprime en la pagina el menu de actualizacion de clinica
 function showUpdateClinic(){
 include("../config.php");
 	$id = $_GET['id'];
@@ -187,6 +191,7 @@ include("../config.php");
 <input class= 'button' type="submit" name="DeleteClinic" value="Delete">
 <?php  
 }
+//imprime en la pagina el menu de actualizacion de usuario
 function showUpdateUser(){
     
     
