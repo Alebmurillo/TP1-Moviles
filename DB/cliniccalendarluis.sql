@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 19-04-2014 a las 09:41:16
+-- Tiempo de generación: 21-04-2014 a las 06:05:58
 -- Versión del servidor: 5.6.12-log
 -- Versión de PHP: 5.4.16
 
@@ -39,35 +39,21 @@ CREATE TABLE IF NOT EXISTS `appointment` (
   PRIMARY KEY (`idAppointment`),
   UNIQUE KEY `id` (`idAppointment`),
   KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=78 ;
 
 --
 -- Volcado de datos para la tabla `appointment`
 --
 
 INSERT INTO `appointment` (`idAppointment`, `date`, `startTime`, `doctor`, `user`, `place`, `endTime`) VALUES
-(1, '2014-04-09', '00:00:02', 0, 0, 0, '00:00:00'),
-(2, '2014-04-03', '01:03:00', 1, 1, 6, '11:33:00'),
-(3, '2014-04-04', '08:30:00', 4, 2, 7, '09:00:00'),
-(4, '2014-01-30', '20:00:00', 9, 7, 6, '22:30:00'),
-(5, '2014-04-02', '12:59:00', 4, 8, 10, '13:00:00'),
-(6, '0000-00-00', '00:00:00', 1, 1, 6, '00:00:00'),
-(7, '2014-04-01', '13:59:00', 5, 7, 13, '14:59:00'),
-(8, '2014-04-03', '03:58:00', 9, 7, 7, '04:10:00'),
-(9, '2014-01-01', '01:59:00', 5, 8, 15, '02:59:00'),
-(10, '0000-00-00', '00:00:00', 1, 1, 1, '00:00:00'),
-(11, '0000-00-00', '00:00:00', 10, 1, 1, '00:00:00'),
-(12, '0000-00-00', '00:00:00', 1, 1, 1, '00:00:00'),
-(13, '0000-00-00', '00:00:00', 1, 1, 1, '00:00:00'),
-(14, '0000-00-00', '00:00:00', 1, 1, 1, '00:00:00'),
-(15, '0000-00-00', '00:00:00', 1, 10, 1, '00:00:00'),
-(16, '0000-00-00', '00:00:00', 1, 11, 1, '00:00:00'),
-(17, '0000-00-00', '00:00:00', 1, 10, 1, '00:00:00'),
-(18, '0000-00-00', '00:00:00', 1, 10, 1, '00:00:00'),
-(19, '0000-00-00', '00:00:00', 1, 10, 1, '00:00:00'),
-(20, '0000-00-00', '00:00:00', 10, 11, 5, '00:00:00'),
-(21, '0000-00-00', '00:00:00', 1, 10, 1, '00:00:00'),
-(22, '0000-00-00', '00:00:00', 1, 10, 1, '00:00:00');
+(55, '2014-04-21', '08:00:00', 2, 11, 2, '00:00:00'),
+(59, '2014-04-20', '08:00:00', 2, 15, 2, '00:00:00'),
+(60, '2014-04-20', '08:00:00', 1, 17, 1, '00:00:00'),
+(61, '2014-04-20', '13:00:00', 5, 17, 5, '00:00:00'),
+(62, '2014-04-20', '08:00:00', 3, 18, 3, '00:00:00'),
+(71, '2014-04-21', '13:00:00', 1, 11, 1, '00:00:00'),
+(75, '2014-04-20', '10:00:00', 2, 11, 2, '00:00:00'),
+(77, '2014-04-23', '08:00:00', 2, 11, 2, '00:00:00');
 
 -- --------------------------------------------------------
 
@@ -88,15 +74,15 @@ CREATE TABLE IF NOT EXISTS `clinica` (
 --
 
 INSERT INTO `clinica` (`idClinic`, `name`, `latitud`, `longitud`) VALUES
-(1, 'La Lily', '56.871', '78'),
-(2, 'KILL Luis', '34.1', '53'),
-(3, 'Muelita Feliz', '89', '98'),
-(4, 'La 89', '776', '9'),
-(5, 'Solmerth', '93.2', '234.1'),
-(6, 'jj', '7', '8'),
-(7, 'Ultra', '11', '22'),
-(8, 'Azowr', '33', '44'),
-(9, 'Azowr', '33', '44');
+(1, 'La Lily', '9.9835619', '-84.0450022'),
+(2, 'KILL Luis', '9.55', '9.86555'),
+(3, 'Muelita Feliz', '9.94', '9.8'),
+(4, 'La 89', '9.23', '9.21'),
+(5, 'Solmerth', '9.4', '9.4'),
+(6, 'jj', '9.12', '9.66'),
+(7, 'Ultra', '9.27', '9.22'),
+(8, 'Azowr', '9.186', '9.59'),
+(9, 'Azowr', '9.47', '9.68');
 
 -- --------------------------------------------------------
 
@@ -116,11 +102,11 @@ CREATE TABLE IF NOT EXISTS `consultorio` (
 --
 
 INSERT INTO `consultorio` (`idConsultorio`, `idClinica`, `numConsultorio`) VALUES
-(1, 0, 65),
-(2, 0, 65),
-(3, 0, 789),
-(4, 0, 0),
-(5, 0, 56),
+(1, 1, 65),
+(2, 2, 65),
+(3, 3, 789),
+(4, 5, 0),
+(5, 6, 56),
 (6, 3, 67),
 (7, 2, 1),
 (8, 3, 765),
@@ -146,6 +132,8 @@ CREATE TABLE IF NOT EXISTS `doctor` (
   `cel` int(11) NOT NULL,
   `facebook` varchar(500) DEFAULT NULL,
   `especialidad` int(11) NOT NULL,
+  `idconsultorio` int(11) NOT NULL,
+  `iduser` int(11) NOT NULL,
   PRIMARY KEY (`iddoctor`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
@@ -153,14 +141,14 @@ CREATE TABLE IF NOT EXISTS `doctor` (
 -- Volcado de datos para la tabla `doctor`
 --
 
-INSERT INTO `doctor` (`iddoctor`, `nameDoctor`, `tel`, `cel`, `facebook`, `especialidad`) VALUES
-(1, 'fab', 88253585, 2314524, NULL, 3),
-(2, 'ale', 88253585, 2314524, NULL, 3),
-(3, 'Lily', 2314524, 83479540, NULL, 3),
-(4, 'Ruffus', 24944280, 45720384, NULL, 3),
-(5, 'Kimmy', 4536976, 78574379, NULL, 1),
-(9, 'Oscar Saborio', 56885446, 76578654, NULL, 4),
-(10, 'Elisa Brenes', 2391384, 3204824, NULL, 1);
+INSERT INTO `doctor` (`iddoctor`, `nameDoctor`, `tel`, `cel`, `facebook`, `especialidad`, `idconsultorio`, `iduser`) VALUES
+(1, 'fab', 88253585, 2314524, NULL, 3, 1, 11),
+(2, 'ale', 88253585, 2314524, NULL, 3, 2, 0),
+(3, 'Lily', 2314524, 83479540, NULL, 3, 3, 18),
+(4, 'Ruffus', 24944280, 45720384, NULL, 3, 4, 0),
+(5, 'Kimmy', 4536976, 78574379, NULL, 1, 5, 0),
+(9, 'Oscar Saborio', 56885446, 76578654, NULL, 4, 6, 0),
+(10, 'Elisa Brenes', 2391384, 3204824, NULL, 1, 7, 0);
 
 -- --------------------------------------------------------
 
@@ -186,7 +174,17 @@ CREATE TABLE IF NOT EXISTS `especialidadesdoctor` (
   `nombre` varchar(40) NOT NULL,
   PRIMARY KEY (`idEspecialidad`),
   UNIQUE KEY `id` (`idEspecialidad`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Volcado de datos para la tabla `especialidadesdoctor`
+--
+
+INSERT INTO `especialidadesdoctor` (`idEspecialidad`, `nombre`) VALUES
+(1, 'odontologia'),
+(2, 'pediatria'),
+(3, 'neurologia'),
+(4, 'oftalmologia');
 
 -- --------------------------------------------------------
 
@@ -261,7 +259,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(100) NOT NULL,
   PRIMARY KEY (`idUser`),
   UNIQUE KEY `id` (`idUser`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 --
 -- Volcado de datos para la tabla `user`
@@ -269,9 +267,11 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`idUser`, `nameUser`, `tel`, `facebook`, `sex`, `password_hash`, `api_key`, `email`) VALUES
 (1, 'test', 111111, 'facebook', 'masculino', '1', '1', '1@1.com'),
-(10, 'luis', 0, '', 'masculino', '$2a$10$46f16220b9825af352f61uzsGMLjGsNzCsMuW2SNRkmpCp7yIH6O6', '61335ce70ffc298d27bb7b902f32f7b2', 'Luisrcarrillo2205@gmail.com'),
 (11, 'roberto', 0, '', 'masculino', '$2a$10$85602da91b29b2c41bdb5uQU5UahGCOGyIkvHrEQKW.7PLK6Ab7my', '67760c355252d830f2c4837cfe23e196', 'a@gmail.com'),
-(12, 'gufi', 0, '', 'masculino', '$2a$10$26ab0b5d98e5d22666729u5SPuUIBVqOXAVZIJpoCoaYuZeCec3HG', 'aab65dcc263983a9c30f52928000206b', 'd@gmail.com');
+(12, 'gufi', 0, '', 'masculino', '$2a$10$26ab0b5d98e5d22666729u5SPuUIBVqOXAVZIJpoCoaYuZeCec3HG', 'aab65dcc263983a9c30f52928000206b', 'd@gmail.com'),
+(13, 'ale', 0, '', 'femenino', '$2a$10$45deef3755197303a223aeQFT0aFjDAUuH/xXjCl0EOhuWo.tQIGK', '625ae68dea4cd55a1d5650d535c09333', 'ale@gmail.com'),
+(18, 'Luis', 0, '', 'male', '$2a$10$eeb8ec17d38a255fe84c0e7ZxmH6wRPTICARR6LsSjp8XRN7LVFTG', '3a41f6a765866b979c1717033ddc17b8', 'changi007@hotmail.com'),
+(19, 'reaper', 0, '', 'masculino', '$2a$10$2bd1a7d7c24fb394a367du1JcXibgWPhK4Hyc9AN7z.x4umHu8VWK', '66eede779a38de81c73417c3e4324f67', 'e@f.com');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
