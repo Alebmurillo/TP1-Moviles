@@ -31,6 +31,7 @@ public class PrincipalActivity extends FragmentActivity {
 	MainLayout mLayout;  
 	private ListView lvMenu;  
 	private String[] lvMenuItems;  
+	private String URLespecialidades="http://192.168.0.189:80/api/v1/especialidades";
 	Button btMenu;  
 	TextView tvTitle;  
 	ArrayList<String> listaEspecialidades,listaId ;
@@ -182,7 +183,7 @@ public class PrincipalActivity extends FragmentActivity {
 
 			try {
 				httpHandler sh= new httpHandler(); 
-				String jsonStr = sh.post("http://192.168.0.189:80/api/v1/especialidades");
+				String jsonStr = sh.post(URLespecialidades);
 				Log.d("Response: ", "> " + jsonStr);		 
 
 				if (jsonStr != null) {

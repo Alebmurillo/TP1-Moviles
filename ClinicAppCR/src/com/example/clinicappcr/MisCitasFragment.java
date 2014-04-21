@@ -36,6 +36,8 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 
 	private String URL = "http://192.168.0.189:80/api/v1/citas";
 	private String deleteURL = "http://192.168.0.189:80/api/v1/eliminarcita";
+	private String URLdoctores="http://192.168.0.189:80/api/v1/doctores_json";
+	private String URLclinicas="http://192.168.0.189:80/api/v1/clinicas_json";
 	String usuarioActual = "";
 	Button btCrear;
 	static final int DIALOG_CONFIRM = 0;
@@ -262,7 +264,7 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 				httpHandler sh = new httpHandler();
 				sh.addNameValue("especialista", "");
 				String jsonStr = sh
-						.postPairs("http://192.168.0.189:80/Citas/doctores_json.php");
+						.postPairs(URLdoctores);
 				Log.d("Response: ", "> " + jsonStr);
 
 				if (jsonStr != null) {
@@ -291,7 +293,7 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 				}
 
 				jsonStr = sh
-						.post("http://192.168.0.189:80/Citas/clinicas_json.php");
+						.post(URLclinicas);
 				if (jsonStr != null) {
 					// System.out.println(jsonStr);
 					listaClinicas = new ArrayList<String>();
@@ -402,6 +404,8 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 		// TODO Auto-generated method stub
 		ListView lv = getListView();
 		contactList.remove(posicionActual);
+		listIdCitas.remove(posicionActual);
+
 		((BaseAdapter) getListAdapter()).notifyDataSetChanged();
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Exito")

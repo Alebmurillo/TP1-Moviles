@@ -95,13 +95,15 @@ public class Register extends Activity implements OnRegisterUsuario {
 	@Override
 	public void onRegisterFail(String msg) {
 		// TODO Auto-generated method stub
-		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+		
+		
+		/*AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 		alertDialog.setTitle("ERROR");
 		alertDialog.setMessage(msg);
 		registerErrorMsg.setText(msg);
 		
 		// Set the Icon for the Dialog
-		alertDialog.show();
+		alertDialog.show();*/
 	}
 }
 

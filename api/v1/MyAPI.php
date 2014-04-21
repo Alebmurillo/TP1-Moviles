@@ -226,8 +226,7 @@ class MyAPI extends API {
         mysql_close();
         echo json_encode($json);
     }
-
-    protected function doctores_jason() {
+    protected function doctores_json() {
         include_once("config.php");
         $especialista = $_POST['especialista'];
 

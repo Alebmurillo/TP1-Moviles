@@ -32,10 +32,7 @@ import android.widget.Spinner;
 public class VentanaCrearCita extends DialogFragment {
 
 	private Spinner mspinnerDoctor,spinnerfechas,spinnerhoras;
-	//private EditText mEditStartDate;	
-	//private EditText mEditEndtDate;
-	//private EditText mEditPlace;
-	//private Spinner spinner1, spinner2;
+	
 	private String URL="http://192.168.0.189:80/api/v1/crearCita";
 	@Override
 	public void onAttach(Activity activity){
