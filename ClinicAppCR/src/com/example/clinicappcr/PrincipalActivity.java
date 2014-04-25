@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -31,7 +32,7 @@ public class PrincipalActivity extends FragmentActivity {
 	MainLayout mLayout;  
 	private ListView lvMenu;  
 	private String[] lvMenuItems;  
-	private String URLespecialidades="http://192.168.0.189:80/api/v1/especialidades";
+	private String URLespecialidades;
 	Button btMenu;  
 	TextView tvTitle;  
 	ArrayList<String> listaEspecialidades,listaId ;
@@ -66,7 +67,7 @@ public class PrincipalActivity extends FragmentActivity {
 		mLayout = (MainLayout) this.getLayoutInflater().inflate(  
 				R.layout.activity_principal, null);  
 		setContentView(mLayout);  
-
+		URLespecialidades=getString(R.string.IPserver) +"/api/v1/especialidades";
 		// 1. get passed intent 
         //Intent intent = getIntent(); 		
 		//Bundle bundle = intent.getExtras();		 

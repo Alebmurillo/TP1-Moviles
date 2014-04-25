@@ -34,10 +34,10 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 		ICitaCreadaListener {
 
-	private String URLcitas = "http://192.168.0.189:80/api/v1/getCitas";
-	private String URLdeleteCitas = "http://192.168.0.189:80/api/v1/eliminarCita";
-	private String URLdoctores="http://192.168.0.189:80/api/v1/getDoctores";
-	private String URLclinicas="http://192.168.0.189:80/api/v1/clinicas_json";
+	private String URLcitas ;
+	private String URLdeleteCitas;
+	private String URLdoctores;
+	private String URLclinicas;
 	String usuarioActual = "";
 	Button btCrear;
 	static final int DIALOG_CONFIRM = 0;
@@ -52,6 +52,10 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		contactList = new ArrayList<HashMap<String, String>>();
+		URLcitas=getString(R.string.IPserver) +"/api/v1/getCitas";
+		URLdeleteCitas=getString(R.string.IPserver) +"/api/v1/eliminarCita";
+		URLdoctores=getString(R.string.IPserver) +"/api/v1/getDoctores";
+		URLclinicas=getString(R.string.IPserver) +"/api/v1/clinicas_json";
 		// Calling async task to get json
 
 	}

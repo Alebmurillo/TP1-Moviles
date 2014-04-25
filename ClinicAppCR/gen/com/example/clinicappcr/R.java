@@ -518,21 +518,22 @@ containing a value of this type.
     }
     public static final class string {
         public static final int  espacio=0x7f07003a;
-        public static final int Buscar=0x7f070045;
-        public static final int Crear=0x7f070043;
+        public static final int Buscar=0x7f070046;
+        public static final int Crear=0x7f070044;
         public static final int Email=0x7f070038;
-        public static final int Guardar=0x7f070041;
-        public static final int Login=0x7f07004b;
-        public static final int Menu=0x7f070042;
-        public static final int MisCitas=0x7f07003e;
-        public static final int Password=0x7f07003f;
-        public static final int Registrarse=0x7f07003b;
-        public static final int Sexo=0x7f070047;
-        public static final int Username=0x7f07003d;
-        public static final int action_crear_cita=0x7f070040;
-        public static final int action_menu_toggle=0x7f070044;
+        public static final int Guardar=0x7f070042;
+        public static final int IPserver=0x7f07003b;
+        public static final int Login=0x7f07004c;
+        public static final int Menu=0x7f070043;
+        public static final int MisCitas=0x7f07003f;
+        public static final int Password=0x7f070040;
+        public static final int Registrarse=0x7f07003c;
+        public static final int Sexo=0x7f070048;
+        public static final int Username=0x7f07003e;
+        public static final int action_crear_cita=0x7f070041;
+        public static final int action_menu_toggle=0x7f070045;
         public static final int action_settings=0x7f070037;
-        public static final int already=0x7f07003c;
+        public static final int already=0x7f07003d;
         public static final int app_id=0x7f070035;
         public static final int app_name=0x7f070034;
         /**   Title for notification shown when GooglePlayServices needs to be
@@ -558,8 +559,8 @@ containing a value of this type.
         [CHAR LIMIT=70] 
          */
         public static final int auth_client_using_bad_version_title=0x7f07002d;
-        public static final int basic_map_demo_description=0x7f07004a;
-        public static final int basic_map_demo_label=0x7f070049;
+        public static final int basic_map_demo_description=0x7f07004b;
+        public static final int basic_map_demo_label=0x7f07004a;
         public static final int com_facebook_choose_friends=0x7f07000f;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f070000;
         public static final int com_facebook_internet_permission_error_message=0x7f070013;
@@ -657,13 +658,13 @@ containing a value of this type.
          */
         public static final int common_signin_button_text_long=0x7f07002c;
         public static final int enviar=0x7f070039;
-        public static final int facebook=0x7f07004c;
+        public static final int facebook=0x7f07004d;
         public static final int hello_world=0x7f070036;
         /**  Location client code resources (prefix with location_client) 
          */
         public static final int location_client_powered_by_google=0x7f070033;
-        public static final int title_activity_map=0x7f070046;
-        public static final int vr_normal_button=0x7f070048;
+        public static final int title_activity_map=0x7f070047;
+        public static final int vr_normal_button=0x7f070049;
     }
     public static final class style {
         /** 

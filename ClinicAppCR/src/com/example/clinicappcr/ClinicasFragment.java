@@ -37,7 +37,7 @@ public class ClinicasFragment extends ListFragment {
 	EditText eSearch;
 	ArrayList<HashMap<String, String>> especialistasList;
 	String searchTxt;
-	private String URLclinicas="http://192.168.0.189:80/api/v1/clinicas_json";
+	private String URLclinicas;
 	List<String> listaClinicas,listaIdClinicas,listaLatitud,listaLongitud ;
 	ArrayList<HashMap<String, String>> clinicList;
 
@@ -45,7 +45,8 @@ public class ClinicasFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		clinicList = new ArrayList<HashMap<String, String>>();	
+		clinicList = new ArrayList<HashMap<String, String>>();
+		URLclinicas=getString(R.string.IPserver) +"/api/v1/clinicas_json";
 
 	}
 	

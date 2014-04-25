@@ -33,7 +33,7 @@ public class VentanaCrearCita extends DialogFragment {
 
 	private Spinner mspinnerDoctor,spinnerfechas,spinnerhoras;
 	
-	private String URL="http://192.168.0.189:80/api/v1/crearCita";
+	private String URL;
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
@@ -56,6 +56,8 @@ public class VentanaCrearCita extends DialogFragment {
 
 		View ventanaRoot= inflater.inflate(R.layout.crear_cita, null);
 		//mListener;
+		URL=getString(R.string.IPserver) +"/api/v1/crearCita";
+
 		Calendar cal = Calendar.getInstance(); 
 		// tvfechaactual = (TextView)ventanaRoot.findViewById(R.id.textView1);
 			SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd"); 

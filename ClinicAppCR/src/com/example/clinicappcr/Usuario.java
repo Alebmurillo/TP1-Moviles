@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.example.clinicappcr.httpHandler.OnExecuteHttpPostAsyncListener;
 
@@ -12,12 +13,19 @@ public class Usuario {
    private static Usuario instance = null;
    protected Usuario() {
       // Exists only to defeat instantiation.
+	   
+
+
    }
    public static Usuario getInstance() {
       if(instance == null) {
          instance = new Usuario();
       }
       return instance;
+   }
+   public void setURL(){
+	   loginURL=context.getString(R.string.IPserver) +"/api/v1/login";
+	   registerURL=context.getString(R.string.IPserver) +"/api/v1/register";
    }
 
 
@@ -32,9 +40,10 @@ public class Usuario {
 	private static String KEY_EMAIL = "email";
 	//private static String KEY_CREATED_AT = "created_at";
 	//private static String KEY_USER = "user";
+	//URLespecialidades=getString(R.string.IPserver) +"/api/v1/especialidades";
 
-	private static String loginURL = "http://192.168.0.189:80/api/v1/login";
-	private static String registerURL = "http://192.168.0.189:80/api/v1/register";
+	private static String loginURL ;
+	private static String registerURL ;
 
 	private static String login_tag = "login";
 	private static String register_tag = "register";
@@ -275,6 +284,7 @@ public class Usuario {
 	}
 
 	private OnLoginUsuario ListenerLoginUsuario;
+	private Context context;
 
 	public void setOnLoginUsuario(OnLoginUsuario l) {
 		ListenerLoginUsuario = l;
@@ -302,6 +312,11 @@ public class Usuario {
 
 	public void setUID(String uID) {
 		UID = uID;
+	}
+	public void setContext(Context applicationContext) {
+		// TODO Auto-generated method stub
+		context=applicationContext;
+		
 	}
 
 }

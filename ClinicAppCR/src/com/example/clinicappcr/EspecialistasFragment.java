@@ -36,13 +36,15 @@ public class EspecialistasFragment extends ListFragment {
 	ArrayList<HashMap<String, String>> especialistasList;
 	String searchTxt;
 	private Spinner spinner1;	
-	private String URL="http://192.168.0.189:80/api/v1/getDoctores";
+	private String URL;
+	//private String URL="http://172.26.105.223:80/api/v1/getDoctores";
 	List<String> listaEspecialidades,listaId ;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		especialistasList = new ArrayList<HashMap<String, String>>();	
+		URL=getString(R.string.IPserver) +"/api/v1/getDoctores";
 
 	}
 
@@ -109,7 +111,7 @@ public class EspecialistasFragment extends ListFragment {
 			jsonStr = sh.postPairs(URL);
 			Log.d("Response: ", "> " + jsonStr);
 			if (jsonStr != null) {
-
+				System.out.println("ESPECIALISTAS "+jsonStr);
 				try {
 					JSONObject json = new JSONObject(jsonStr);
 					JSONArray listaEspecialistas  = json.getJSONArray("emp_info");

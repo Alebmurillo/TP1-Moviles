@@ -61,6 +61,8 @@ public class Login extends Activity implements OnLoginUsuario, OnLoginFacebook, 
 				String password = inputPassword.getText().toString();
 				
 				usuario = Usuario.getInstance();
+				usuario.setContext(getApplication().getApplicationContext());
+				usuario.setURL();
 				usuario.setOnLoginUsuario(Login.this);
 				usuario.login(Login.this, email, password);
 				//falta comprobar usuario
