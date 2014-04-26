@@ -44,5 +44,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/Guardar" />
+    
+    <Button
+        android:id="@+id/btn_cancelar"
+        style="@style/com_facebook_loginview_silver_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Cancelar" />
 
 </LinearLayout>

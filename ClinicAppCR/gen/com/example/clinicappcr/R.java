@@ -424,18 +424,19 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f020042;
     }
     public static final class id {
-        public static final int FrameLayout1=0x7f040036;
-        public static final int LinearLayout1=0x7f040032;
+        public static final int FrameLayout1=0x7f040037;
+        public static final int LinearLayout1=0x7f040033;
         public static final int TextViewTestInfo=0x7f040026;
-        public static final int action_menu=0x7f040043;
-        public static final int action_settings=0x7f040042;
+        public static final int action_menu=0x7f040044;
+        public static final int action_settings=0x7f040043;
         public static final int activity_main_content_fragment=0x7f040008;
         public static final int activity_main_content_title=0x7f040009;
-        public static final int btnBuscar=0x7f040035;
-        public static final int btnLogin=0x7f040039;
-        public static final int btnRegister=0x7f04003f;
+        public static final int btnBuscar=0x7f040036;
+        public static final int btnLogin=0x7f04003a;
+        public static final int btnRegister=0x7f040040;
+        public static final int btn_cancelar=0x7f04002b;
         public static final int btn_guardar=0x7f04002a;
-        public static final int button_crear=0x7f040033;
+        public static final int button_crear=0x7f040034;
         public static final int com_facebook_login_activity_progress_bar=0x7f040012;
         public static final int com_facebook_picker_activity_circle=0x7f040011;
         public static final int com_facebook_picker_checkbox=0x7f040014;
@@ -456,23 +457,23 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_login_button=0x7f040024;
         public static final int com_facebook_usersettingsfragment_logo_image=0x7f040022;
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f040023;
-        public static final int entryEspecialistas=0x7f040034;
-        public static final int flogin=0x7f04003a;
+        public static final int entryEspecialistas=0x7f040035;
+        public static final int flogin=0x7f04003b;
         public static final int hybrid=0x7f040006;
         public static final int imageView1=0x7f04000f;
         public static final int large=0x7f040002;
-        public static final int link_to_login=0x7f040040;
-        public static final int link_to_register=0x7f04003b;
-        public static final int login_error=0x7f04003c;
+        public static final int link_to_login=0x7f040041;
+        public static final int link_to_register=0x7f04003c;
+        public static final int login_error=0x7f04003d;
         public static final int map=0x7f04000d;
         public static final int menu_listview=0x7f040007;
         public static final int nombreClinica=0x7f04000c;
         public static final int none=0x7f040003;
         public static final int normal=0x7f040001;
         public static final int picker_subtitle=0x7f04001f;
-        public static final int register_error=0x7f040041;
+        public static final int register_error=0x7f040042;
         public static final int satellite=0x7f040004;
-        public static final int sexo=0x7f04003e;
+        public static final int sexo=0x7f04003f;
         public static final int small=0x7f040000;
         public static final int spinner1=0x7f040025;
         public static final int spinner2=0x7f040027;
@@ -481,16 +482,16 @@ containing a value of this type.
         public static final int textView1=0x7f04000a;
         public static final int textView2=0x7f04000b;
         public static final int textView4=0x7f040028;
-        public static final int txtEmail=0x7f040037;
-        public static final int txtPass=0x7f040038;
-        public static final int txtUserName=0x7f04003d;
-        public static final int view_doctor=0x7f04002c;
-        public static final int view_especialidad=0x7f040030;
-        public static final int view_fecha=0x7f04002d;
-        public static final int view_hora=0x7f04002e;
-        public static final int view_lugar=0x7f04002b;
-        public static final int view_nDoctor=0x7f04002f;
-        public static final int view_tel=0x7f040031;
+        public static final int txtEmail=0x7f040038;
+        public static final int txtPass=0x7f040039;
+        public static final int txtUserName=0x7f04003e;
+        public static final int view_doctor=0x7f04002d;
+        public static final int view_especialidad=0x7f040031;
+        public static final int view_fecha=0x7f04002e;
+        public static final int view_hora=0x7f04002f;
+        public static final int view_lugar=0x7f04002c;
+        public static final int view_nDoctor=0x7f040030;
+        public static final int view_tel=0x7f040032;
         public static final int vr_normal_button=0x7f04000e;
     }
     public static final class integer {
@@ -528,23 +529,24 @@ containing a value of this type.
         public static final int map=0x7f0b0001;
     }
     public static final class string {
-        public static final int  espacio=0x7f07003a;
-        public static final int Buscar=0x7f070046;
-        public static final int Crear=0x7f070044;
+        public static final int  espacio=0x7f07003b;
+        public static final int Buscar=0x7f070047;
+        public static final int Cancelar=0x7f070039;
+        public static final int Crear=0x7f070045;
         public static final int Email=0x7f070038;
-        public static final int Guardar=0x7f070042;
-        public static final int IPserver=0x7f07003b;
-        public static final int Login=0x7f07004c;
-        public static final int Menu=0x7f070043;
-        public static final int MisCitas=0x7f07003f;
-        public static final int Password=0x7f070040;
-        public static final int Registrarse=0x7f07003c;
-        public static final int Sexo=0x7f070048;
-        public static final int Username=0x7f07003e;
-        public static final int action_crear_cita=0x7f070041;
-        public static final int action_menu_toggle=0x7f070045;
+        public static final int Guardar=0x7f070043;
+        public static final int IPserver=0x7f07003c;
+        public static final int Login=0x7f07004d;
+        public static final int Menu=0x7f070044;
+        public static final int MisCitas=0x7f070040;
+        public static final int Password=0x7f070041;
+        public static final int Registrarse=0x7f07003d;
+        public static final int Sexo=0x7f070049;
+        public static final int Username=0x7f07003f;
+        public static final int action_crear_cita=0x7f070042;
+        public static final int action_menu_toggle=0x7f070046;
         public static final int action_settings=0x7f070037;
-        public static final int already=0x7f07003d;
+        public static final int already=0x7f07003e;
         public static final int app_id=0x7f070035;
         public static final int app_name=0x7f070034;
         /**   Title for notification shown when GooglePlayServices needs to be
@@ -570,8 +572,8 @@ containing a value of this type.
         [CHAR LIMIT=70] 
          */
         public static final int auth_client_using_bad_version_title=0x7f07002d;
-        public static final int basic_map_demo_description=0x7f07004b;
-        public static final int basic_map_demo_label=0x7f07004a;
+        public static final int basic_map_demo_description=0x7f07004c;
+        public static final int basic_map_demo_label=0x7f07004b;
         public static final int com_facebook_choose_friends=0x7f07000f;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f070000;
         public static final int com_facebook_internet_permission_error_message=0x7f070013;
@@ -668,14 +670,14 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f07002c;
-        public static final int enviar=0x7f070039;
-        public static final int facebook=0x7f07004d;
+        public static final int enviar=0x7f07003a;
+        public static final int facebook=0x7f07004e;
         public static final int hello_world=0x7f070036;
         /**  Location client code resources (prefix with location_client) 
          */
         public static final int location_client_powered_by_google=0x7f070033;
-        public static final int title_activity_map=0x7f070047;
-        public static final int vr_normal_button=0x7f070049;
+        public static final int title_activity_map=0x7f070048;
+        public static final int vr_normal_button=0x7f07004a;
     }
     public static final class style {
         /** 

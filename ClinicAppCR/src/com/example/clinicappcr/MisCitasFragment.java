@@ -217,7 +217,7 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 
 					AlertDialog.Builder builder = new AlertDialog.Builder(
 							getActivity());
-							builder.setTitle("Cita")
+							builder.setTitle("Detalles")
 							.setMessage("Cita a las "+contactList.get(position).get("hora")+
 									" el "+contactList.get(position).get("fecha")+
 									" con el doctor "+contactList.get(position).get("doctor")+"")

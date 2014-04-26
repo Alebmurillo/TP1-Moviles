@@ -62,9 +62,9 @@ public class VentanaCrearCita extends DialogFragment {
 	        //tvfechaactual.setText(formattedDate1);
 	        listFechas= new ArrayList<String>();
 	        listHoras= new ArrayList<String>();
-	        listFechas.add(formattedDate1);
+	        //listFechas.add(formattedDate1);
 	        
-	        for (int i =0; i<15;i++){
+	        for (int i =0; i<20;i++){
 	            cal.add(Calendar.DATE, 1);
 	            String newdate = df1.format(cal.getTime());
 	            //System.out.println(newdate);
@@ -129,6 +129,15 @@ public class VentanaCrearCita extends DialogFragment {
 			public void onClick(View v) {
 				//GUARDAR LA CITA			
 				new SetCitas().execute();
+				
+				
+			}
+		});		
+		
+		ventanaRoot.findViewById(R.id.btn_cancelar).setOnClickListener(new OnClickListener() {					
+			@Override
+			public void onClick(View v) {
+				dismiss();
 				
 				
 			}
