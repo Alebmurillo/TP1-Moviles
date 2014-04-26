@@ -1,6 +1,5 @@
 package com.example.clinicappcr;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,13 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-
-
-
 import android.app.ListFragment;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,64 +23,65 @@ import android.widget.EditText;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 
-public class EspecialistasFragment extends ListFragment {  
+public class EspecialistasFragment extends ListFragment {
 
 	Button btBuscar;
 	EditText eSearch;
 	ArrayList<HashMap<String, String>> especialistasList;
 	String searchTxt;
-	private Spinner spinner1;	
+	private Spinner spinner1;
 	private String URL;
-	//private String URL="http://172.26.105.223:80/api/v1/getDoctores";
-	List<String> listaEspecialidades,listaId ;
-	
+	// private String URL="http://172.26.105.223:80/api/v1/getDoctores";
+	List<String> listaEspecialidades, listaId;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		especialistasList = new ArrayList<HashMap<String, String>>();	
-		URL=getString(R.string.IPserver) +"/api/v1/getDoctores";
+		especialistasList = new ArrayList<HashMap<String, String>>();
+		URL = getString(R.string.IPserver) + "/api/v1/getDoctores";
 
 	}
 
-	@Override  
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,  
-			Bundle savedInstanceState) {  
-		View view = inflater.inflate(R.layout.fragment_especialistas, null); 
-		
-		listaId=getArguments().getStringArrayList("id");
-		listaEspecialidades=getArguments().getStringArrayList("nombreEspecialidad");
-		
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.fragment_especialistas, null);
+
+		listaId = getArguments().getStringArrayList("id");
+		listaEspecialidades = getArguments().getStringArrayList("nombreEspecialidad");
+
 		spinner1 = (Spinner) view.findViewById(R.id.spinner1);
-		
-		
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_spinner_item, listaEspecialidades);
-		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+				getActivity(), android.R.layout.simple_spinner_item,
+				listaEspecialidades);
+		dataAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner1.setAdapter(dataAdapter);
 
-		
-		
-		
 		eSearch = (EditText) view.findViewById(R.id.entryEspecialistas);
-		btBuscar = (Button) view.findViewById(R.id.btnBuscar);  
-		btBuscar.setOnClickListener(new OnClickListener() { 
-			//Busqueda de especialidades
-			@Override  
-			public void onClick(View v) {	
-				
-					
-				int posicion =spinner1.getSelectedItemPosition();
-				searchTxt =listaId.get(posicion);
-				//searchTxt= eSearch.getText().toString();				
+		btBuscar = (Button) view.findViewById(R.id.btnBuscar);
+		btBuscar.setOnClickListener(new OnClickListener() {
+			// Busqueda de especialidades
+			@Override
+			public void onClick(View v) {
+
+				int posicion = spinner1.getSelectedItemPosition();
+				searchTxt = listaId.get(posicion);
 				especialistasList = new ArrayList<HashMap<String, String>>();
 				new GetEspecialistas().execute();
-			}  
-		}); 
-		return view;  
-	}  
+			}
+		});
+		
+		int posicion = spinner1.getSelectedItemPosition();
+		searchTxt = listaId.get(posicion);
+		especialistasList = new ArrayList<HashMap<String, String>>();
+		new GetEspecialistas().execute();
+		return view;
+	}
 
 	private ProgressDialog pDialog;
-	private SimpleAdapter adapter ;
+	private SimpleAdapter adapter;
 
 	private class GetEspecialistas extends AsyncTask<Void, Void, Void> {
 
@@ -111,14 +106,14 @@ public class EspecialistasFragment extends ListFragment {
 			jsonStr = sh.postPairs(URL);
 			Log.d("Response: ", "> " + jsonStr);
 			if (jsonStr != null) {
-				System.out.println("ESPECIALISTAS "+jsonStr);
 				try {
 					JSONObject json = new JSONObject(jsonStr);
-					JSONArray listaEspecialistas  = json.getJSONArray("emp_info");
+					JSONArray listaEspecialistas = json
+							.getJSONArray("emp_info");
 					for (int j = 0; j < listaEspecialistas.length(); j++) {
 						JSONArray cita = listaEspecialistas.getJSONArray(j);
 
-						String id = cita.get(0).toString();	
+						String id = cita.get(0).toString();
 						String nombre = cita.get(1).toString();
 						String tel = cita.get(2).toString();
 						String especialidad = cita.get(5).toString();
@@ -140,6 +135,7 @@ public class EspecialistasFragment extends ListFragment {
 				}
 			} else {
 				Log.e("ServiceHandler", "Couldn't get any data from the url");
+				
 			}
 
 			return null;
@@ -154,19 +150,14 @@ public class EspecialistasFragment extends ListFragment {
 			/**
 			 * Updating parsed JSON data into ListView
 			 * */
-			adapter = new SimpleAdapter(
-					getActivity(), especialistasList,
-					R.layout.fila_especialista, new String[] {"nombre",
-						"especialidad","tel" }, new int[] {R.id.view_nDoctor,R.id.view_especialidad, R.id.view_tel });
+			adapter = new SimpleAdapter(getActivity(), especialistasList,
+					R.layout.fila_especialista, new String[] { "nombre",
+							"especialidad", "tel" }, new int[] {
+							R.id.view_nDoctor, R.id.view_especialidad,
+							R.id.view_tel });
 			setListAdapter(adapter);
 		}
 
 	}
-	
-	
-
-	
-	
-	
 
 }

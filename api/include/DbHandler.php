@@ -321,9 +321,9 @@ class DbHandler {
     public function getDoctores($especialista){  
  
         if ($especialista == "") {
-           $stmt = $this->conn->prepare("SELECT iddoctor,nameDoctor,tel,cel,facebook,especialidad, idconsultorio FROM doctor ");
+           $stmt = $this->conn->prepare("SELECT doctor.iddoctor,doctor.nameDoctor,doctor.tel,doctor.cel,doctor.facebook, especialidadesdoctor.nombre, doctor.idconsultorio FROM doctor INNER JOIN especialidadesdoctor ON doctor.especialidad = especialidadesdoctor.idEspecialidad ");
         } else{
-            $stmt = $this->conn->prepare("SELECT iddoctor,nameDoctor,tel,cel,facebook,especialidad, idconsultorio FROM doctor WHERE especialidad = ? ");
+            $stmt = $this->conn->prepare("SELECT doctor.iddoctor,doctor.nameDoctor,doctor.tel,doctor.cel,doctor.facebook, especialidadesdoctor.nombre, doctor.idconsultorio FROM doctor INNER JOIN especialidadesdoctor ON doctor.especialidad = especialidadesdoctor.idEspecialidad WHERE doctor.especialidad = ? ");
             $stmt->bind_param("s", $especialista);            
         }
         
