@@ -175,23 +175,10 @@ public class ClinicasFragment extends ListFragment {
 				        itemintent.putExtras(extras);
 					   
 					   ClinicasFragment.this.startActivity(itemintent);
-					   /*AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				        builder.setTitle("Error")
-				        .setMessage(String.valueOf(position))
-				        .setCancelable(false)
-				        .setNegativeButton("Close",new DialogInterface.OnClickListener() {
-				            public void onClick(DialogInterface dialog, int id) {
-				                dialog.cancel();
-				            }
-				        });
-				        AlertDialog alert = builder.create();
-				        alert.show();*/
 				    
 				   }
-				 }); 
-			
-		}
-		
+				 }); 		
+		}		
 	}
 
 	

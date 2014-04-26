@@ -29,7 +29,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_gravity="bottom|right"
-        android:background="#80000000"
+        android:background="@android:color/white"
         android:orientation="vertical"
         android:padding="5dp" >
 
@@ -41,6 +41,39 @@
             android:text="Detalle"
             android:textSize="30dp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp" >
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre:"
+                android:textSize="22dp" />
+
+            <TextView
+                android:id="@+id/nombreClinica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.50"
+                android:text="TextView"
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <fragment
+            android:id="@+id/map"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:layout_marginTop="50dp"
+            class="com.google.android.gms.maps.SupportMapFragment" />
+
         <Button
             android:id="@+id/vr_normal_button"
             style="@style/com_facebook_loginview_silver_style"
@@ -50,11 +83,12 @@
             android:padding="8dp"
             android:text="@string/vr_normal_button" />
 
-        <fragment
-            android:id="@+id/map"
+        <ImageView
+            android:id="@+id/imageView1"
             android:layout_width="wrap_content"
-            android:layout_height="300dp"
-            class="com.google.android.gms.maps.SupportMapFragment" />
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_bg" />
 
     </LinearLayout>
 
