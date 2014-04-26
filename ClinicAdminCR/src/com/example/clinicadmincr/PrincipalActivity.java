@@ -134,7 +134,7 @@ public class PrincipalActivity extends FragmentActivity {
 
 		if (selectedItem.compareTo("Doctor Citas") == 0) {  
 			fragment = new MisCitasFragment();  
-		} else if (selectedItem.compareTo("Consultorios") == 0) {  
+		}/* else if (selectedItem.compareTo("Consultorios") == 0) {  
 			fragment = new ConsultoriosFragment();  
 			//aqui
 			Bundle args = new Bundle();
@@ -146,7 +146,7 @@ public class PrincipalActivity extends FragmentActivity {
 		else if (selectedItem.compareTo("Especialistas") == 0) {  
 			fragment = new EspecialistasFragment(); 		
 
-		}  
+		}  */
 
 		if (fragment != null) {  
 			ft.replace(R.id.activity_main_content_fragment, fragment,"misCitas");  

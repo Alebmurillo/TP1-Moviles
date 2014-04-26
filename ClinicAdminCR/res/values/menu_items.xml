@@ -2,7 +2,6 @@
 <resources>  
     <string-array name="menu_items">  
         <item >Doctor Citas</item>  
-        <item >Consultorios</item> 
-        <item >Especialistas</item>   
+        
     </string-array>  
 </resources>  
