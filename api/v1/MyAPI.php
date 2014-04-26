@@ -113,7 +113,7 @@ class MyAPI extends API {
     }
     
     /**
-     * url: /login
+     * url: /loginDoctor
      * method: POST
      * parametros: email password
      */
@@ -199,7 +199,7 @@ class MyAPI extends API {
   
     
     /**
-     * url: /citas
+     * url: /getCitas
      * method: POST    obtiene las citas de un usuario
      * parametros: usuario (apikey) 
      * method:GET obtiene todas las citas de la tabla
@@ -218,7 +218,12 @@ class MyAPI extends API {
         $json['emp_info'] = $citasListas;       
         echo json_encode($json);  
     }
-    
+     /**
+     * url: /getCitasDoctor
+     * method: POST    obtiene las citas de un doctor
+     * parametros: usuario (apikey) 
+     * method:GET obtiene todas las citas de la tabla
+     */
     protected function getCitasDoctor(){
         $doctor_id="";
         if (isset($_POST["usuario"])) {
@@ -237,8 +242,7 @@ class MyAPI extends API {
     
     /**
      * url: /especialidades
-     * method: POST    obtiene las especialidades
-     * parametros: usuario (apikey) 
+     * parametros:
      * method:GET obtiene todas las citas de la tabla
      */
     protected function especialidades(){
@@ -271,7 +275,6 @@ class MyAPI extends API {
      * url: /eliminarCita
      * method: POST    elimina una cita
      * parametros: user(apikey)  id 
-     * method:GET obtiene todas los doctores
      */
     protected function eliminarCita() {
         include_once("config.php");
