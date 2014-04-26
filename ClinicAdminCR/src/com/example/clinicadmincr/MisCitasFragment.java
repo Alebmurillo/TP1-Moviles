@@ -9,35 +9,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.AdapterView.OnItemClickListener;
 
-import com.example.clinicadmincr.R;
 import com.example.clinicadmincr.httpHandler.OnExecuteHttpPostAsyncListener;
 
 public class MisCitasFragment extends ListFragment {
 
-	private String URLcitas = "http://192.168.0.189:80/api/v1/getCitasDoctor";
-	private String URLdeleteCitas = "http://192.168.0.189:80/api/v1/eliminarCita";
-	private String URLdoctores = "http://192.168.0.189:80/api/v1/getDoctores";
-	private String URLclinicas = "http://192.168.0.189:80/api/v1/clinicas_json";
+	private String URLcitas;
+	private String URLdeleteCitas;
+	private String URLdoctores;
+	private String URLclinicas;
 	String usuarioActual = "";
 	Button btCrear;
 	static final int DIALOG_CONFIRM = 0;
@@ -52,6 +42,10 @@ public class MisCitasFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		contactList = new ArrayList<HashMap<String, String>>();
+		URLcitas = getString(R.string.IPserver) + "/api/v1/getCitasDoctor";
+		URLdeleteCitas = getString(R.string.IPserver) + "/api/v1/eliminarCita";
+		URLdoctores = getString(R.string.IPserver) + "/api/v1/getDoctores";
+		URLclinicas = getString(R.string.IPserver) + "/api/v1/clinicas_json";
 		// Calling async task to get json
 
 	}

@@ -61,7 +61,12 @@ public class ClinicasFragment extends ListFragment {
 
 	private ProgressDialog pDialog;
 	private SimpleAdapter adapter;
-
+/**
+ * 
+ * @author Luis
+ *Hace la consulta al api para obtener las clinicas
+ *ademas hace el manejo del JSON
+ */
 	private class GetClinicas extends AsyncTask<Void, Void, Void> {
 
 		@Override
@@ -80,7 +85,6 @@ public class ClinicasFragment extends ListFragment {
 			// Creating service handler class instance
 			httpHandler sh = new httpHandler();
 			String jsonStr;
-			// sh.addNameValue("clin", searchTxt);
 			searchTxt = "";
 			jsonStr = sh.post(URLclinicas);
 			Log.d("Response: ", "> " + jsonStr);

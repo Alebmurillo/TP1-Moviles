@@ -30,7 +30,7 @@ public class PrincipalActivity extends FragmentActivity {
 	MainLayout mLayout;  
 	private ListView lvMenu;  
 	private String[] lvMenuItems;  
-	private String URLClinicas="http://192.168.0.189:80/api/v1/clinicas_json";
+	private String URLClinicas;
 	Button btMenu;  
 	TextView tvTitle;  
 	ArrayList<String> listaClinicas,listaId ;
@@ -61,6 +61,7 @@ public class PrincipalActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) { 		 
 
 		super.onCreate(savedInstanceState); 	 
+		URLClinicas=getString(R.string.IPserver) +"/api/v1/clinicas_json";
 
 		mLayout = (MainLayout) this.getLayoutInflater().inflate(  
 				R.layout.activity_principal, null);  
@@ -86,18 +87,6 @@ public class PrincipalActivity extends FragmentActivity {
 		});  
 		
 		new GetClinincas().execute();
-
-
-		/*btMenu = (Button) findViewById(R.id.button_crear);  
-		btMenu.setOnClickListener(new OnClickListener() {  
-			@Override  
-			public void onClick(View v) {  
-
-				VentanaCrearCita fragment = new VentanaCrearCita();
-				fragment.show(getFragmentManager(), "crear");
-
-			}  
-		});  */
 
 		tvTitle = (TextView) findViewById(R.id.activity_main_content_title);
 		FragmentManager fm = getFragmentManager();  
