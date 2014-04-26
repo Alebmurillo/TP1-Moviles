@@ -24,6 +24,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -48,20 +50,24 @@ public class VentanaCrearCita extends DialogFragment {
 	ArrayList<String> listFechas ;
 	List<String> listHoras ;
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		getDialog().setTitle("Crear Cita");
-		
 
 		View ventanaRoot= inflater.inflate(R.layout.crear_cita, null);
+		//mListener;
 		URL=getString(R.string.IPserver) +"/api/v1/crearCita";
+
 		Calendar cal = Calendar.getInstance(); 
+		// tvfechaactual = (TextView)ventanaRoot.findViewById(R.id.textView1);
 			SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd"); 
 	        String formattedDate1 = df1.format(cal.getTime());
+	        //tvfechaactual.setText(formattedDate1);
 	        listFechas= new ArrayList<String>();
 	        listHoras= new ArrayList<String>();
+	        listFechas.add(formattedDate1);
 	        
-	        for (int i =0; i<20;i++){
+	        for (int i =0; i<15;i++){
 	            cal.add(Calendar.DATE, 1);
 	            String newdate = df1.format(cal.getTime());
+	            //System.out.println(newdate);
 	            listFechas.add(newdate);	        	
 	        }
 	        for (int i =8; i<18;i++){
@@ -69,6 +75,7 @@ public class VentanaCrearCita extends DialogFragment {
 	            Builder.append('0');
 	            Builder.append(String.valueOf(i));
 	            Builder.append(":00:00");
+	            //System.out.println(Builder.toString());
 	            listHoras.add(Builder.toString());	        	
 	        }
 	        
@@ -78,7 +85,6 @@ public class VentanaCrearCita extends DialogFragment {
 		spinnerfechas = (Spinner) ventanaRoot.findViewById(R.id.spinner2);
 		listIdDoctores=getArguments().getStringArrayList("idDoc");
 		listDoctores=getArguments().getStringArrayList("nombreDoc");
-				
 		
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_spinner_item, listDoctores);
@@ -93,20 +99,35 @@ public class VentanaCrearCita extends DialogFragment {
 		dataAdapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_spinner_item, listHoras);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerhoras.setAdapter(dataAdapter);				
+		spinnerhoras.setAdapter(dataAdapter);
+
+		mspinnerDoctor.setOnItemSelectedListener(new OnItemSelectedListener() {	        
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				//tvfechaactual.setText(spinnerfechas.getSelectedItem().toString());				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+	    });
+		//mspinnerDoctor = (Spinner) ventanaRoot.findViewById(R.id.spinner1);
+		//spinnerfechas = (Spinner) ventanaRoot.findViewById(R.id.spinner2);
+		//mEditStartDate = (EditText) ventanaRoot.findViewById(R.id.editStartDate);
+		//mEditEndtDate = (EditText) ventanaRoot.findViewById(R.id.edithora);
+		//mEditPlace = (EditText) ventanaRoot.findViewById(R.id.editPlace);
 
 		ventanaRoot.findViewById(R.id.btn_guardar).setOnClickListener(new OnClickListener() {					
 			@Override
 			public void onClick(View v) {
 				//GUARDAR LA CITA			
-				new SetCitas().execute();				
-			}
-		});		
-		
-		ventanaRoot.findViewById(R.id.btn_cancelar).setOnClickListener(new OnClickListener() {					
-			@Override
-			public void onClick(View v) {
-				dismiss();			
+				new SetCitas().execute();
+				
+				
 			}
 		});		
 
@@ -137,16 +158,24 @@ public class VentanaCrearCita extends DialogFragment {
 		contact.put("lugar", array.get(1));
 		contact.put("fecha", array.get(2));
 		contact.put("hora", array.get(3));
+		System.out.println(array.get(4));
 		contact.put("id", array.get(4));
 
 		if(mListener != null){
 			mListener.citaCreada(contact);
+			//System.out.println("LLAMANDO INTERFACE");
 
 		}    
+
+
+		//Intent i = new Intent();
+		//i.putStringArrayListExtra("cita", array);
+		//getTargetFragment().onActivityResult(getTargetRequestCode(), INT_CODE, i);
 	}
 
 
 	private ProgressDialog pDialog;
+	//private SimpleAdapter adapter ;
 	private class SetCitas extends AsyncTask<Void, Void, ArrayList<String>> {
 
 		@Override
@@ -164,9 +193,12 @@ public class VentanaCrearCita extends DialogFragment {
 		protected ArrayList<String> doInBackground(Void... arg0) {
 
 			int posicion =mspinnerDoctor.getSelectedItemPosition();
+			int posicionClinic=spinnerfechas.getSelectedItemPosition();
 			ArrayList<String> result = new ArrayList<String>();
 			String doctor =listIdDoctores.get(posicion);
+			//String place =listIdClinicas.get(posicionClinic);
 			String startdate = spinnerfechas.getSelectedItem().toString();
+			//final String place =mEditPlace.getText().toString();
 			String hora = spinnerhoras.getSelectedItem().toString();
 
 			try {
@@ -174,13 +206,16 @@ public class VentanaCrearCita extends DialogFragment {
 
 				handler.addNameValue("user", Usuario.getInstance().getUID() );
 				handler.addNameValue("doctor", doctor );
+				//handler.addNameValue("place", place );
 				handler.addNameValue("fecha",startdate );
 				handler.addNameValue("hora", hora );
 
 				String jsonStr = handler.postPairs(URL);  
+				//System.out.println(jsonStr);
 				if (jsonStr != null) {
 					try {
 						JSONObject json = new JSONObject(jsonStr);
+						//System.out.println(json.toString());
 						if((Integer.parseInt(json.getString("success")) == 1)){
 							JSONArray listaCitas  = json.getJSONArray("emp_info");
 							int last =listaCitas.length()-1;
@@ -220,7 +255,9 @@ public class VentanaCrearCita extends DialogFragment {
 		@Override
 		protected void onPostExecute(ArrayList<String>  result) {
 			super.onPostExecute(result);
+			//System.out.print(result);
 			if(result!=null){
+				System.out.println("***************"+result+"");
 				sendResult(0,result.get(0),result.get(1),result.get(2),result.get(3),result.get(4));
 				// Dismiss the progress dialog				
 				dismiss();
