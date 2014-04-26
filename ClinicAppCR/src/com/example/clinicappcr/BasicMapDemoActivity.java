@@ -146,7 +146,7 @@ public class BasicMapDemoActivity extends FragmentActivity
     	LatLng pos = new LatLng(lat, lon);
         mMap.addMarker(new MarkerOptions().position(pos).title(nombreMarker));
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 18));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 11));
     }
 
 	@Override
