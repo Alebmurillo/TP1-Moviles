@@ -97,8 +97,6 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 			Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_citas, null);
-
-		//
 		new GetInfo().execute();
 
 		btCrear = (Button) view.findViewById(R.id.button_crear);

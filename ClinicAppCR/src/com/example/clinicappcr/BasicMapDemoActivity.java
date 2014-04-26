@@ -82,7 +82,10 @@ public class BasicMapDemoActivity extends FragmentActivity
         longitud = arguments.getString("longitud");
         nombreMarker=arguments.getString("nombre");
         setUpMapIfNeeded();
-        
+        TextView t = new TextView(this); 
+
+        t=(TextView)findViewById(R.id.nombreClinica); 
+        t.setText(nombreMarker);
       
     }
 
