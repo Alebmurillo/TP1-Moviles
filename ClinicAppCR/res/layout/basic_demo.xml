@@ -23,25 +23,40 @@
   <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <fragment
-  android:id="@+id/map"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  class="com.google.android.gms.maps.SupportMapFragment"/>
+
     <LinearLayout
-      android:layout_gravity="bottom|right"
-      android:background="#80000000"
-      android:orientation="vertical"
-      android:padding="5dp"
-      android:layout_height="150px"
-      android:layout_width="150px">
-      <Button
-        android:id="@+id/vr_normal_button"
-        android:padding="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="openWaze"
-        android:text="@string/vr_normal_button"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|right"
+        android:background="#80000000"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Detalle"
+            android:textSize="30dp" />
+
+        <Button
+            android:id="@+id/vr_normal_button"
+            style="@style/com_facebook_loginview_silver_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="openWaze"
+            android:padding="8dp"
+            android:text="@string/vr_normal_button" />
+
+        <fragment
+            android:id="@+id/map"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            class="com.google.android.gms.maps.SupportMapFragment" />
+
     </LinearLayout>
+
   </RelativeLayout>
 </LinearLayout>

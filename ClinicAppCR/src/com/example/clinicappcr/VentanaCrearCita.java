@@ -49,9 +49,6 @@ public class VentanaCrearCita extends DialogFragment {
 	List<String> listIdDoctores ;
 	ArrayList<String> listFechas ;
 	List<String> listHoras ;
-	//List<String> listClinicas ;
-	//List<String> listIdClinicas ;
-	// private TextView tvfechaactual;
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View ventanaRoot= inflater.inflate(R.layout.crear_cita, null);

@@ -25,7 +25,7 @@
     <string name="vr_normal_button">Ir con Waze</string>
   <string name="basic_map_demo_label">Mapa de Clinica</string>
   <string name="basic_map_demo_description">Launches a map</string>
-  <string name="Login">login</string>
+  <string name="Login">Login</string>
   <string name="facebook">Facebook login</string>
 
 </resources>

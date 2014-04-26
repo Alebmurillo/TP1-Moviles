@@ -97,9 +97,6 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 			Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_citas, null);
-		// final FragmentManager fm = getFragmentManager();
-		// final VentanaCrearCita fragment = new VentanaCrearCita();
-		// fragment.setTargetFragment(this, 0);
 
 		//
 		new GetInfo().execute();
@@ -112,7 +109,6 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 				FragmentManager fm = getFragmentManager();
 				VentanaCrearCita fragment = new VentanaCrearCita();
 				fragment.setListener(MisCitasFragment.this);
-				// System.out.println(getFragmentManager().findFragmentByTag("misCitas"));
 				fragment.setTargetFragment(getFragmentManager()
 						.findFragmentByTag("misCitas"), 0);
 
