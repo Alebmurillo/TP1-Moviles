@@ -217,10 +217,12 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 
 					AlertDialog.Builder builder = new AlertDialog.Builder(
 							getActivity());
-							builder.setTitle("Precaucion")
-							.setMessage("Desea Eliminar la cita?")
+							builder.setTitle("Cita")
+							.setMessage("Cita a las "+contactList.get(position).get("hora")+
+									" el "+contactList.get(position).get("fecha")+
+									" con el doctor "+contactList.get(position).get("doctor")+"")
 							.setCancelable(false)
-							.setPositiveButton("Si",
+							.setPositiveButton("Eliminar Cita",
 									new DialogInterface.OnClickListener() {
 										public void onClick(
 												DialogInterface dialog, int id) {
