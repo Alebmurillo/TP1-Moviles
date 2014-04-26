@@ -1,16 +1,9 @@
 package com.example.clinicappcr;
 
-
-
 import java.util.ArrayList;
-import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -45,11 +38,7 @@ public class PrincipalActivity extends FragmentActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		//
 		int id = item.getItemId();
-		/*if (id == R.id.action_crear) {
-			VentanaCrearCita fragment = new VentanaCrearCita();
-			fragment.show(getFragmentManager(), "crear");
-			return true;
-		}*/
+		
 		if (id == R.id.action_menu) {
 			toggleMenu(this.getCurrentFocus());  
 			return true;
@@ -68,11 +57,6 @@ public class PrincipalActivity extends FragmentActivity {
 				R.layout.activity_principal, null);  
 		setContentView(mLayout);  
 		URLespecialidades=getString(R.string.IPserver) +"/api/v1/especialidades";
-		// 1. get passed intent 
-        //Intent intent = getIntent(); 		
-		//Bundle bundle = intent.getExtras();		 
-        // 5. get status value from bundle
-        //String status = bundle.getString("status");
 		
 		lvMenuItems = getResources().getStringArray(R.array.menu_items);  
 		lvMenu = (ListView) findViewById(R.id.menu_listview);  
@@ -88,18 +72,6 @@ public class PrincipalActivity extends FragmentActivity {
 		});  
 		
 		new GetEspecialidades().execute();
-
-
-		/*btMenu = (Button) findViewById(R.id.button_crear);  
-		btMenu.setOnClickListener(new OnClickListener() {  
-			@Override  
-			public void onClick(View v) {  
-
-				VentanaCrearCita fragment = new VentanaCrearCita();
-				fragment.show(getFragmentManager(), "crear");
-
-			}  
-		});  */
 
 		tvTitle = (TextView) findViewById(R.id.activity_main_content_title);
 		FragmentManager fm = getFragmentManager();  
@@ -142,7 +114,6 @@ public class PrincipalActivity extends FragmentActivity {
 		else if (selectedItem.compareTo("Especialistas") == 0) {  
 			fragment = new EspecialistasFragment(); 
 
-			//aqui
 			Bundle args = new Bundle();
 			args.putStringArrayList("id", listaId);
 			args.putStringArrayList("nombreEspecialidad", listaEspecialidades);
@@ -188,7 +159,6 @@ public class PrincipalActivity extends FragmentActivity {
 				Log.d("Response: ", "> " + jsonStr);		 
 
 				if (jsonStr != null) {
-					System.out.println(jsonStr);
 
 					listaEspecialidades= new ArrayList<String>();
 					listaId= new ArrayList<String>();
@@ -206,7 +176,6 @@ public class PrincipalActivity extends FragmentActivity {
 
 							listaEspecialidades.add(nombre);
 							listaId.add(id);
-							//System.out.println("" +nombre+ " "+ id+"");
 
 						}
 					} catch (JSONException e) {

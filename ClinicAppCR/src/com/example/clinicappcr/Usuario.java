@@ -13,8 +13,6 @@ public class Usuario {
    private static Usuario instance = null;
    protected Usuario() {
       // Exists only to defeat instantiation.
-	   
-
 
    }
    public static Usuario getInstance() {
@@ -38,10 +36,7 @@ public class Usuario {
 	private static String KEY_UID = "apiKey";
 	private static String KEY_NAME = "name";
 	private static String KEY_EMAIL = "email";
-	//private static String KEY_CREATED_AT = "created_at";
-	//private static String KEY_USER = "user";
-	//URLespecialidades=getString(R.string.IPserver) +"/api/v1/especialidades";
-
+	
 	private static String loginURL ;
 	private static String registerURL ;
 
@@ -52,8 +47,6 @@ public class Usuario {
 
 	public void login(Activity activity, String email, String password) {
 		this.activity = activity;
-		System.out.println(email);
-		System.out.println( password);
 		httpHandler httpclient = new httpHandler(activity);
 		httpclient.addNameValue("tag", login_tag);
 		httpclient.addNameValue("email", email);
@@ -97,8 +90,6 @@ public class Usuario {
 	
 	public void loginFacebook(Activity activity, String email, String password) {
 		this.activity = activity;
-		System.out.println(email);
-		System.out.println( password);
 		httpHandler httpclient = new httpHandler(activity);
 		httpclient.addNameValue("tag", login_tag);
 		httpclient.addNameValue("email", email);
@@ -116,8 +107,7 @@ public class Usuario {
 									if (Usuario.this.saveLogin(	Usuario.this.activity, json)){
 										ListenerLoginFacebook.onLoginFacebookFinish(json, "Login correcto");
 									}else{
-										//ListenerLoginFacebook
-												//.onLoginFacebookFail("Login incorrecto");
+										
 									}
 								} else {
 									ListenerLoginFacebook
@@ -146,8 +136,6 @@ public class Usuario {
 	
 	public void register(Activity activity, String username, String email, String password, String sexo) {
 		this.activity = activity;
-		System.out.println(email);
-		System.out.println( password);
 		httpHandler httpclient = new httpHandler(activity);
 		httpclient.addNameValue("tag", register_tag);
 		httpclient.addNameValue("nombre", username);
@@ -162,7 +150,6 @@ public class Usuario {
 							String ResponseBody) {
 						try {
 							JSONObject json = new JSONObject(ResponseBody);
-							System.out.println("----------"+json.toString());
 							if (json.getString(KEY_SUCCESS) != null) {
 								if ((Integer.parseInt(json
 										.getString(KEY_SUCCESS)) == 1)) {
@@ -196,7 +183,6 @@ public class Usuario {
 		
 
 		boolean save = false;
-		this.logout(activity);
 		try {
 			
 			Object name = json.get(KEY_NAME);
@@ -205,47 +191,15 @@ public class Usuario {
 			setEmail(email.toString());
 			setName(name.toString());
 
-			setUID(apiKey.toString());
-			// DBLogin dblogin = new DBLogin(activity);
-			// dblogin.addUser(user.getString(KEY_NAME),
-			// user.getString(KEY_EMAIL), json.getString(KEY_UID),
-			// user.getString(KEY_CREATED_AT));
-			// dblogin.close();
+			setUID(apiKey.toString());			
 			save = true;
 		} catch (JSONException e) {
 		}
 		return save;
 	}
+	
 
-	public void logout(Activity activity) {
-		// DBLogin dblogin = new DBLogin(activity);
-		// dblogin.resetTables();
-		// dblogin.close();
-	}
-
-	public boolean isUserLoggedIn(Activity activity) {
-		// DBLogin db = new DBLogin(activity);
-		// int count = db.getRowCount();
-		// db.close();
-		// if(count > 0){
-		// user logged in
-		// return true;
-		// }
-		return false;
-	}
-
-	public void readUser(Activity activity) {
-		// DBLogin dblogin = new DBLogin(activity);
-		// Cursor cursor = dblogin.getCursorUsuario();
-		// if(cursor.moveToNext()){
-		// this.setName(cursor.getString(0));
-		// this.setEmail(cursor.getString(1));
-		// this.setUID(cursor.getString(2));
-		// }
-		// cursor.close();
-		// dblogin.close();
-
-	}
+	
 	
 	
 	public interface OnLoginFacebook {

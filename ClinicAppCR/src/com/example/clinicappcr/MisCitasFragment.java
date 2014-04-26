@@ -34,7 +34,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 		ICitaCreadaListener {
 
-	private String URLcitas ;
+	private String URLcitas;
 	private String URLdeleteCitas;
 	private String URLdoctores;
 	private String URLclinicas;
@@ -52,10 +52,10 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		contactList = new ArrayList<HashMap<String, String>>();
-		URLcitas=getString(R.string.IPserver) +"/api/v1/getCitas";
-		URLdeleteCitas=getString(R.string.IPserver) +"/api/v1/eliminarCita";
-		URLdoctores=getString(R.string.IPserver) +"/api/v1/getDoctores";
-		URLclinicas=getString(R.string.IPserver) +"/api/v1/clinicas_json";
+		URLcitas = getString(R.string.IPserver) + "/api/v1/getCitas";
+		URLdeleteCitas = getString(R.string.IPserver) + "/api/v1/eliminarCita";
+		URLdoctores = getString(R.string.IPserver) + "/api/v1/getDoctores";
+		URLclinicas = getString(R.string.IPserver) + "/api/v1/clinicas_json";
 		// Calling async task to get json
 
 	}
@@ -81,9 +81,6 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 			contact.put("fecha", array.get(2));
 			contact.put("hora", array.get(3));
 			contactList.add(contact);
-			System.out.println("YA NOTIFIQUE");
-			// adapter.notifyDataSetChanged();
-			System.out.println("ok");
 		}
 	}
 
@@ -106,11 +103,11 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 
 				FragmentManager fm = getFragmentManager();
 				VentanaCrearCita fragment = new VentanaCrearCita();
+
 				fragment.setListener(MisCitasFragment.this);
 				fragment.setTargetFragment(getFragmentManager()
 						.findFragmentByTag("misCitas"), 0);
 
-				System.out.println("Listo");
 				Bundle args = new Bundle();
 				args.putStringArrayList("idDoc", listaId);
 				args.putStringArrayList("nombreDoc", listaNombresDoc);
@@ -151,11 +148,9 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 			Log.d("Response: ", "> " + jsonStr);
 
 			if (jsonStr != null) {
-				System.out.println(jsonStr.toString());
 				listIdCitas = new ArrayList<String>();
 				try {
 					JSONObject json = new JSONObject(jsonStr);
-					System.out.println("CITAS= "+json.toString());
 
 					JSONArray listaCitas = json.getJSONArray("emp_info");
 					for (int j = 0; j < listaCitas.length(); j++) {
@@ -165,7 +160,6 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 						String hora = cita.get(2).toString();
 						String doctor = cita.get(3).toString();
 						String lugar = cita.get(4).toString();
-						
 
 						// tmp hashmap for single contact
 						HashMap<String, String> contact = new HashMap<String, String>();
@@ -213,14 +207,20 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
 					posicionActual = position;
-					//Intent itemintent = new Intent(getActivity(),	BasicMapDemoActivity.class);
 
 					AlertDialog.Builder builder = new AlertDialog.Builder(
 							getActivity());
-							builder.setTitle("Detalles")
-							.setMessage("Cita a las "+contactList.get(position).get("hora")+
-									" el "+contactList.get(position).get("fecha")+
-									" con el doctor "+contactList.get(position).get("doctor")+"")
+					builder.setTitle("Detalles")
+							.setMessage(
+									"Cita a las "
+											+ contactList.get(position).get(
+													"hora")
+											+ " el "
+											+ contactList.get(position).get(
+													"fecha")
+											+ " con el Doctor "
+											+ contactList.get(position).get(
+													"doctor") + "")
 							.setCancelable(false)
 							.setPositiveButton("Eliminar Cita",
 									new DialogInterface.OnClickListener() {
@@ -263,8 +263,7 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 			try {
 				httpHandler sh = new httpHandler();
 				sh.addNameValue("especialista", "");
-				String jsonStr = sh
-						.postPairs(URLdoctores);
+				String jsonStr = sh.postPairs(URLdoctores);
 				Log.d("Response: ", "> " + jsonStr);
 
 				if (jsonStr != null) {
@@ -292,10 +291,8 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 							"Couldn't get any data from the url");
 				}
 
-				jsonStr = sh
-						.post(URLclinicas);
+				jsonStr = sh.post(URLclinicas);
 				if (jsonStr != null) {
-					// System.out.println(jsonStr);
 					listaClinicas = new ArrayList<String>();
 					listaIdClinicas = new ArrayList<String>();
 					try {
@@ -320,7 +317,6 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 							"Couldn't get any data from the url");
 				}
 
-				// System.out.println(txt);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -329,13 +325,7 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 
 		@Override
 		protected void onPostExecute(Void result) {
-			super.onPostExecute(result);
-			System.out.println("POST");
-			// Dismiss the progress dialog
-
-			/**
-			 * Updating parsed JSON data into ListView
-			 * */
+			super.onPostExecute(result);		
 
 		}
 
@@ -346,7 +336,6 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 		contactList.add(contact);
 		listIdCitas.add(contact.get("id"));
 		// TODO Auto-generated method stub
-		//System.out.println("NOTIFICANDO");
 		((BaseAdapter) getListAdapter()).notifyDataSetChanged();
 
 	}
@@ -356,29 +345,26 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 		httpHandler httpclient = new httpHandler(activity);
 		httpclient.addNameValue("user", Usuario.getInstance().getUID());
 		httpclient.addNameValue("id", idCita);
-		System.out.println("ESTA ES LA ID=   "+idCita);
-		// httpclient.addNameValue("hora", hora);
 		httpclient
 				.setOnExecuteHttpPostAsyncListener(new OnExecuteHttpPostAsyncListener() {
 					@Override
 					public void onExecuteHttpPostAsyncListener(
 							String ResponseBody) {
 						try {
-							System.out.println(ResponseBody);
 							JSONObject json = new JSONObject(ResponseBody);
 							if (json.getString("success") != null) {
 								if ((Integer.parseInt(json.getString("success")) == 1)) {
 									// se elimino correctamente
-									ListenerCitaEliminada
-											.onDeleteCorrect(json,"Se elimino Correctamente la Cita");
+									ListenerCitaEliminada.onDeleteCorrect(json,
+											"Se elimino Correctamente la Cita");
 								} else {
 									// no se elimnno
-									ListenerCitaEliminada
-									.onDeleteWrong(json.getString("message"));
+									ListenerCitaEliminada.onDeleteWrong(json
+											.getString("message"));
 								}
 							} else {
 								ListenerCitaEliminada
-								.onDeleteWrong("error al eliminar");
+										.onDeleteWrong("error al eliminar");
 							}
 						} catch (JSONException e) {
 							ListenerCitaEliminada
@@ -403,49 +389,48 @@ public class MisCitasFragment extends ListFragment implements OnDeleteCita,
 	@Override
 	public void onDeleteCorrect(JSONObject json, String msg) {
 		// TODO Auto-generated method stub
-		ListView lv = getListView();
 		contactList.remove(posicionActual);
 		listIdCitas.remove(posicionActual);
 
 		((BaseAdapter) getListAdapter()).notifyDataSetChanged();
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Exito")
-        .setMessage(msg)
-        .setCancelable(false)
-        .setNegativeButton("Close",new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    
+		builder.setTitle("Exito")
+				.setMessage(msg)
+				.setCancelable(false)
+				.setNegativeButton("Close",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						});
+		AlertDialog alert = builder.create();
+		alert.show();
 
 	}
-	private int posicionActual=0;
+
+	private int posicionActual = 0;
 
 	@Override
 	public void onDeleteWrong(String msg) {
 		// TODO Auto-generated method stub
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Error")
-        .setMessage(msg)
-        .setCancelable(false)
-        .setNegativeButton("Close",new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    
+		builder.setTitle("Error")
+				.setMessage(msg)
+				.setCancelable(false)
+				.setNegativeButton("Close",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						});
+		AlertDialog alert = builder.create();
+		alert.show();
 
 	}
 
 	@Override
 	public void onConfirmDelete() {
 		// TODO Auto-generated method stub
-		System.out.println("POSICION ACTUAL=  " + posicionActual);
 		MisCitasFragment.this.eliminarCita(getActivity(),
 				listIdCitas.get(posicionActual));
 

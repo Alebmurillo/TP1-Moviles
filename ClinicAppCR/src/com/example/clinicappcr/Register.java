@@ -62,9 +62,10 @@ public class Register extends Activity implements OnRegisterUsuario {
 				String password = inputPassword.getText().toString();
 				String sexo = spinner1.getSelectedItem().toString();
 				usuario = Usuario.getInstance();
+				usuario.setContext(getApplication().getApplicationContext());
+				usuario.setURL();
 				usuario.setOnRegisterUsuario(Register.this);
 				usuario.register(Register.this, username, email, password,sexo);
-				//falta registrar usuario
 				
 			}
 
@@ -97,13 +98,13 @@ public class Register extends Activity implements OnRegisterUsuario {
 		// TODO Auto-generated method stub
 		
 		
-		/*AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 		alertDialog.setTitle("ERROR");
 		alertDialog.setMessage(msg);
 		registerErrorMsg.setText(msg);
 		
 		// Set the Icon for the Dialog
-		alertDialog.show();*/
+		alertDialog.show();
 	}
 }
 

@@ -98,7 +98,6 @@ public class httpHandler  {
 				String text = EntityUtils.toString(ent);				
 				setResponseBody(text);
 ////
-				System.out.println(getResponseBody());
 				activity.runOnUiThread(returnRes);
 			}catch(HttpResponseException hre){
 				ListenerExecuteHttpPostAsync.onErrorHttpPostAsyncListener("Se ha producido un error al conectar con el servidor");
@@ -141,7 +140,6 @@ public class httpHandler  {
 		}
 		catch(Exception e)
 		{
-			System.out.println(e);
 			return e.toString();
 		}
 	}
@@ -158,7 +156,6 @@ public class httpHandler  {
 		}
 		catch(Exception e)
 		{
-			System.out.println(e);
 			return e.toString();
 		}
 	}
