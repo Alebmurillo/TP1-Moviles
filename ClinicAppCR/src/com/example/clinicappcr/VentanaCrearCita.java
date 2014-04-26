@@ -62,9 +62,9 @@ public class VentanaCrearCita extends DialogFragment {
 	        //tvfechaactual.setText(formattedDate1);
 	        listFechas= new ArrayList<String>();
 	        listHoras= new ArrayList<String>();
-	        //listFechas.add(formattedDate1);
+	        listFechas.add(formattedDate1);
 	        
-	        for (int i =0; i<20;i++){
+	        for (int i =0; i<15;i++){
 	            cal.add(Calendar.DATE, 1);
 	            String newdate = df1.format(cal.getTime());
 	            //System.out.println(newdate);
@@ -85,9 +85,6 @@ public class VentanaCrearCita extends DialogFragment {
 		spinnerfechas = (Spinner) ventanaRoot.findViewById(R.id.spinner2);
 		listIdDoctores=getArguments().getStringArrayList("idDoc");
 		listDoctores=getArguments().getStringArrayList("nombreDoc");
-		//listIdClinicas=getArguments().getStringArrayList("idClinic");
-		//listClinicas=getArguments().getStringArrayList("nombreClinic");
-		
 		
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_spinner_item, listDoctores);
@@ -129,15 +126,6 @@ public class VentanaCrearCita extends DialogFragment {
 			public void onClick(View v) {
 				//GUARDAR LA CITA			
 				new SetCitas().execute();
-				
-				
-			}
-		});		
-		
-		ventanaRoot.findViewById(R.id.btn_cancelar).setOnClickListener(new OnClickListener() {					
-			@Override
-			public void onClick(View v) {
-				dismiss();
 				
 				
 			}

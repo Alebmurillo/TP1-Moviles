@@ -27,8 +27,6 @@ public class VentanaCrearCita extends DialogFragment {
 	private Spinner mspinnerDoctor, mspinnerClinica;
 	private EditText mEditStartDate;
 	private EditText mEditEndtDate;
-	// private EditText mEditPlace;
-	// private Spinner spinner1, spinner2;
 	private String URL = "http://192.168.0.189:80/Citas/test.php";
 
 	@Override

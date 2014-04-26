@@ -26,5 +26,6 @@
   <string name="basic_map_demo_description">Launches a map</string>
   <string name="Login">login</string>
   <string name="facebook">Facebook login</string>
+  <string name="cdoc">"Calendario de Doctor "</string>
 
 </resources>
