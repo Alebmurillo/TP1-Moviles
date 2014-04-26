@@ -353,8 +353,8 @@ class DbHandler {
         if ($user_id == "") {
            $stmt = $this->conn->prepare("SELECT appointment.date,appointment.startTime,doctor.nameDoctor,clinica.name,appointment.idAppointment FROM appointment INNER JOIN doctor ON appointment.doctor=doctor.iddoctor INNER JOIN clinica ON appointment.place=clinica.idClinic ");
         } else{
-            $stmt = $this->conn->prepare("SELECT appointment.date,appointment.startTime,doctor.nameDoctor,clinica.name,appointment.idAppointment FROM appointment INNER JOIN doctor ON appointment.doctor=doctor.iddoctor INNER JOIN clinica ON appointment.place=clinica.idClinic WHERE appointment.user = ? AND appointment.date >= ?");
-            $stmt->bind_param("is", $user_id,$hoy);            
+            $stmt = $this->conn->prepare("SELECT appointment.date,appointment.startTime,doctor.nameDoctor,clinica.name,appointment.idAppointment FROM appointment INNER JOIN doctor ON appointment.doctor=doctor.iddoctor INNER JOIN clinica ON appointment.place=clinica.idClinic WHERE appointment.user = ? AND appointment.date >= ? ORDER BY appointment.date ASC");
+            $stmt->bind_param("is", $user_id,$hoy);             
         }        
          $response = array();
          $result=$stmt->execute();
@@ -381,7 +381,7 @@ class DbHandler {
         if ($doctor_id == "") {
             $stmt = $this->conn->prepare("SELECT appointment.date,appointment.startTime,user.nameUser,clinica.name,appointment.idAppointment FROM appointment INNER JOIN user ON appointment.user=user.idUser INNER JOIN clinica ON appointment.place=clinica.idClinic  ");
         } else{
-            $stmt = $this->conn->prepare("SELECT appointment.date,appointment.startTime,user.nameUser,clinica.name,appointment.idAppointment FROM appointment INNER JOIN user ON appointment.user=user.idUser INNER JOIN clinica ON appointment.place=clinica.idClinic WHERE appointment.doctor = ? AND appointment,date >= ? ");
+            $stmt = $this->conn->prepare("SELECT appointment.date,appointment.startTime,user.nameUser,clinica.name,appointment.idAppointment FROM appointment INNER JOIN user ON appointment.user=user.idUser INNER JOIN clinica ON appointment.place=clinica.idClinic WHERE appointment.doctor = ? AND appointment.date >= ? ORDER BY appointment.date ASC");
             $stmt->bind_param("is", $doctor_id,$hoy);            
         }        
          $response = array();
