@@ -101,20 +101,6 @@ public class VentanaCrearCita extends DialogFragment {
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinnerhoras.setAdapter(dataAdapter);
 
-		mspinnerDoctor.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				// TODO Auto-generated method stub
-				// tvfechaactual.setText(spinnerfechas.getSelectedItem().toString());
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
 		
 		ventanaRoot.findViewById(R.id.btn_guardar).setOnClickListener(
 				new OnClickListener() {
@@ -123,6 +109,13 @@ public class VentanaCrearCita extends DialogFragment {
 						// GUARDAR LA CITA
 						new SetCitas().execute();
 
+					}
+				});
+		ventanaRoot.findViewById(R.id.btn_cancelar).setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						dismiss();
 					}
 				});
 
