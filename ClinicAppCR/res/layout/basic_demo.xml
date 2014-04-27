@@ -31,6 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textColor="@android:color/white"
                 android:text="Detalle"
                 android:textSize="30dp" />
 
@@ -44,12 +45,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nombre:"
+                    android:textColor="@android:color/white"
                     android:textSize="22dp" />
 
                 <TextView
                     android:id="@+id/nombreClinica"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="wrap_content"                
+                    android:textColor="@android:color/white"                    
                     android:layout_weight="0.50"
                     android:text="TextView"
                     android:textSize="18dp" />
@@ -71,9 +74,11 @@
                 style="@style/com_facebook_loginview_silver_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:onClick="openWaze"
                 android:padding="8dp"
                 android:text="@string/vr_normal_button" />
+
         </LinearLayout>
     </RelativeLayout>
 
