@@ -1,6 +1,7 @@
- 
 
 <?php
+ //Pagina de eleccion de funcion a realizar
+
 include '../login/db_connect.php';
 include '../login/functions.php';
 sec_session_start(); //Nuestra manera personalizada segura de iniciar sesión php.
@@ -73,40 +74,35 @@ echo 'Solicitud no válida';
 			
 		</div>
 	</div>
-<div id="page" class="container">
-<div id="extra" class="container">			
-        <div id="two-column">
+<div id="page" class="container">		
             <?php
             if (login_check($mysqli)){ ?>
-                <div class="tbox1">
                         <div class="box">
-                           <h3>Create</h3> 
-                                <ul class="actions">
-                                    <li><a href="crear.php?table=clinic" class="button">Clinic</a></li>
-                                    <li><a href="crear.php?table=date" class="button">Date</a></li>
-                                    <li><a href="crear.php?table=room" class="button">Room</a></li>
-                                    <li><a href="crear.php?table=doctor" class="button">Doctor</a></li>
-                                </ul>
-                           </div>
-                        </div>
-                
-                <div class="tbox2">
+                           <h2 class >Clinic</h2> 
+                                    <a href="crear.php?table=clinic" class="button">Add</a>
+                                    <a href="update.php?table=clinic" class="button">View</a>
+                                    
+                                </div><br>
                         <div class="box">
-                                <h3>Edit</h3> 
-                                <ul class="actions">
-                                    <li><a href="update.php?table=clinic" class="button">Clinic</a></li>
-                                    <li><a href="update.php?table=date" class="button">Date</a></li>
-                                    <li><a href="update.php?table=room" class="button">Room</a></li>
-                                    <li><a href="update.php?table=doctor" class="button">Doctor</a></li>
-                                </ul>
-                                </div>
-                        </div>
+                           <h2>Appointment</h2> 
+                                   <a href="crear.php?table=date" class="button">Add</a>
+                                   <a href="update.php?table=date" class="button">View</a>                                    
+                                </div><br>
+                        <div class="box">
+                            <h2>Room</h2> 
+                                    <a href="crear.php?table=room" class="button">Add</a>
+                                    <a href="update.php?table=room" class="button">View</a>   
+                            </div>
+    <br>
+                            <div class="box">
+                            <h2>Doctor</h2> 
+                                    <a href="crear.php?table=doctor" class="button">Add</a>
+                                    <a href="update.php?table=doctor" class="button">View</a>
+                        </div><br>
          <?php   } 
          else {echo "Please Log in";}?>
-                </div>
+              
     </div>
-        </div>
-
 </div>
 
 <div id="copyright" class="container">

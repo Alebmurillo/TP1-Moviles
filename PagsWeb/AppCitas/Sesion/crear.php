@@ -2,7 +2,7 @@
 include("functionsCreate.php");
 include("../Login/functions.php");
 include("../Login/db_connect.php");
-
+//funciones de actualizacion de datos en la DB
 if(isset($_POST["enviarCita"]))
 {    
     enviarCita();

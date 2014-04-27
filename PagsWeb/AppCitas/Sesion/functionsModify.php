@@ -1,8 +1,6 @@
 <?php
 //imprime en la pagina el menu de actualizacion de un consultorio
-function showUpdateRoom(){
-    
-    
+function showUpdateRoom(){   
     include("../config.php");
 	$id = $_GET['id'];
 	$conn = mysql_connect($server,  $db_user, $db_pass);
@@ -26,7 +24,7 @@ function showUpdateRoom(){
 <?php 
 $clinic=$row['idClinic'];
 $rows = mysql_query( "SELECT idClinic, name FROM clinica, consultorio WHERE idClinica=".$clinic, $conn );
-
+//muestras las clinicas que coinciden con el nombre buscado
 while($row = mysql_fetch_array($rows, MYSQL_ASSOC))
                 {
 

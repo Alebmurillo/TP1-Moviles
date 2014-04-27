@@ -36,7 +36,7 @@ if(isset($_GET['error'])) {
 		<div class="container">                    
 			<div class="title">
 				<h2>Clinic Cloud Calendar Web Platform</h2>
-				<span class="byline">Lema bonito que luis debe inventar</span> </div>
+				<span class="byline">Web </span> </div>
 			
 		</div>
 	</div>

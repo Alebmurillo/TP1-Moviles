@@ -1,3 +1,8 @@
+
+<?Php
+//Pagina de actualizacion de datos
+?>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -29,17 +34,13 @@
 	<div id="banner">
 		<div class="container">                    
 			<div class="title">
-				<h2>Clinic Cloud Calendar</h2>
+                            <h2>Clinic Cloud Calendar</h2>
 				<span class="byline">WEB APP</span> </div>
 			
 		</div>
 	</div>
  <div id="page" class="container">
-    <form method="post" action="update.php">
-        <ul class="actions">
-             </div>
-                    <ul class="actions">
-                    <form action="update.php?table=room" method="post" name="login_form">
+    
            <?php     
             include("functionsEdit.php");
             include("../Login/functions.php");
@@ -117,9 +118,11 @@
                 echo "Deleted";                
             }
            
-               if (isset($_GET['table'])){
+               if (isset($_GET['table'])){?>
+                   <form method="post" action="update.php"><?php
                if ($_GET['table'] == 'clinic'){?>                  
                 <h2>Search Clinic by Name</h2>
+                <br>
                 <input type="text" name="clinicName" /><br />
                 <li><input class="button" type="submit" name="searchClinic" value="Search"></li>
                 <?php
@@ -127,6 +130,7 @@
                }
                if ($_GET['table'] == 'date'){?>                  
                 <h2>Search Date by User name</h2>
+                <br>
                 <input type="text" name="userName" /><br />
                 <li><input class="button" type="submit" name="searchDate" value="Search"></li>
 
@@ -136,6 +140,7 @@
                if ($_GET['table'] == 'room'){ 
                 ?>                  
                 <h2>Search Room by Clinic name</h2>
+                <br>
                 <input type="text" name="roomName" /><br />
                 <li><input class="button" type="submit" name="searchRoom" value="Search"></li>
 
@@ -145,6 +150,7 @@
                if ($_GET['table'] == 'doctor'){              
                ?>                  
                 <h2>Search Doctor by Name</h2>
+                <br>
                 <input type="text" name="doctorName" /><br />
                 <li><input class="button" type="submit" name="searchDoctor" value="Search"></li>
 
@@ -153,20 +159,22 @@
                if ($_GET['table'] == 'user'){
                    ?>                  
                 <h2>Search User by Name</h2>
+                
                 <input type="text" name="userName" /><br />
                 <li><input class="button" type="submit" name="searchUser" value="Search"></li>
 
-           <?php           }}}
+           <?php           }?>
+                </form><?php }}
          
            else{
                echo "Please Log In";
            }
            ?>
-            </form>
-           </ul>
-		</form>
+            
    	</div>
-</div>
+    </div>
+    <br>
+        <br>
 <div id="copyright" class="container">
 	<p>Copyright (c) 2014 CloudCalendars.com. All rights reserved. | Photos by <a href="http://fotogrph.com/">Fotogrph</a> | Design by <a href="http://www.freecsstemplates.org/" rel="nofollow">FreeCSSTemplates.org</a>.</p>
 </div>
