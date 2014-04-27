@@ -59,11 +59,11 @@ public class Login extends Activity implements OnLoginDoctor, OnLoginFacebook, O
 				String password = inputPassword.getText().toString();
 				
 				Doctor = Doctor.getInstance();
-				Doctor.setOnLoginDoctor(Login.this);
-				Doctor.login(Login.this, email, password);
-				//falta comprobar Doctor
+				Doctor.setContext(getApplication().getApplicationContext());
+				Doctor.setURL();
 
-				
+				Doctor.setOnLoginDoctor(Login.this);
+				Doctor.login(Login.this, email, password);		
 			
 			}
 		});
@@ -83,38 +83,18 @@ public class Login extends Activity implements OnLoginDoctor, OnLoginFacebook, O
 
     	        if (enableButtons && user != null) {
     	        	
-    	        	JSONObject json=user.getInnerJSONObject();
-    	        	//System.out.println(json.toString());
-
-    	        	String nombre=user.getFirstName().toString();
-					//System.out.println(nombre);
 					String id=user.getId().toString();
-					//System.out.println(id);
-					String gender=user.asMap().get("gender").toString();
-					//System.out.println(gender);
-					//String email=user.getUsername().toString().concat("@clinic.com");
 					String email=user.asMap().get("email").toString();
-					//System.out.println(email);
 					Doctor = Doctor.getInstance();
+					Doctor.setContext(getApplication().getApplicationContext());
+					Doctor.setURL();
 					Doctor.setOnRegisterFacebook(Login.this);
 					Doctor.loginFacebook(Login.this, email, id);
-					System.out.println("bien");
     	        	
     	            
     	        } else {
     	            
-    	        }
-                // It's possible that we were waiting for this.user to be populated in order to post a
-                // status update.
-                //handlePendingAction();
-                
-                
-                /*String email =json. ;
-				String password = inputPassword.getText().toString();
-				
-				Doctor = Doctor.getInstance();
-				Doctor.setOnLoginDoctor(Login.this);
-				Doctor.login(Login.this, email, password);*/
+    	        }               
             }
         });	
 

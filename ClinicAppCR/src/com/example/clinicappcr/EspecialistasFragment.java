@@ -82,7 +82,11 @@ public class EspecialistasFragment extends ListFragment {
 
 	private ProgressDialog pDialog;
 	private SimpleAdapter adapter;
-
+/**
+ * 
+ * @author Luis
+ *Hace la consulta de los especialistas al api y el manejo del JSON
+ */
 	private class GetEspecialistas extends AsyncTask<Void, Void, Void> {
 
 		@Override

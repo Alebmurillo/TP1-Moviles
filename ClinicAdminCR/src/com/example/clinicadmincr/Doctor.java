@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.example.clinicadmincr.httpHandler.OnExecuteHttpPostAsyncListener;
 import com.example.clinicadmincr.Doctor;
@@ -11,7 +12,7 @@ import com.example.clinicadmincr.httpHandler;
 
 public class Doctor {
 		
-		   private static Doctor instance = null;
+	   private static Doctor instance = null;
 		   protected Doctor() {
 		      // Exists only to defeat instantiation.
 		   }
@@ -21,6 +22,17 @@ public class Doctor {
 		      }
 		      return instance;
 		   }
+		   public void setURL(){
+			   loginURL=context.getString(R.string.IPserver) +"/api/v1/loginDoctor";
+			   System.out.println(loginURL);
+		   }
+		   
+		   private Context context;
+		   public void setContext(Context applicationContext) {
+				// TODO Auto-generated method stub
+				context=applicationContext;
+				
+			}
 
 
 			
@@ -35,7 +47,7 @@ public class Doctor {
 			//private static String KEY_CREATED_AT = "created_at";
 			//private static String KEY_USER = "user";
 
-			private static String loginURL = "http://192.168.0.189:80/api/v1/login";
+			private static String loginURL ;
 
 			private static String login_tag = "login";
 
