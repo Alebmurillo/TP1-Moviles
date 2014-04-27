@@ -51,7 +51,7 @@ public class VentanaCrearCita extends DialogFragment {
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		getDialog().setTitle("Crear Cita");
 		View ventanaRoot = inflater.inflate(R.layout.crear_cita, null);
 		// mListener;
 		URL = getString(R.string.IPserver) + "/api/v1/crearCita";
