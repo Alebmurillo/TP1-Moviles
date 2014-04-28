@@ -1,13 +1,24 @@
 package com.example.clinicappcr;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,12 +30,19 @@ import com.example.clinicappcr.Usuario.OnRegisterUsuario;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
+import com.parse.LogInCallback;
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.parse.ParseException;
+import com.parse.ParseTwitterUtils;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 public class Login extends Activity implements OnLoginUsuario, OnLoginFacebook,
 		OnRegisterUsuario {
 
 	private TextView lblGotoRegister;
-	private Button btnLogin;
+	private Button btnLogin,btnLoginTwitter;
 	private LoginButton btnFLogin;
 
 	private EditText inputEmail;
@@ -32,12 +50,73 @@ public class Login extends Activity implements OnLoginUsuario, OnLoginFacebook,
 	private TextView loginErrorMsg;
 	private Usuario usuario;
 	private GraphUser user;
+	private ParseUser twitteruser;
+	 private boolean twitterlogin;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
+    	twitterlogin=false;
 
+		Parse.initialize(this, "TpsAPz5K0d3QWDqJsACbhQuavVjhQADNSwhO4WT3", "uxJCKGIc5BmwZ7KNz7fIbMUeINwZSiZMwc4ju9zm");
+
+		ParseUser user = new ParseUser();
+		user.setUsername("my name");
+		user.setPassword("my pass");
+		user.setEmail("email@example.com");
+		  
+		// other fields can be set just like with ParseObject
+		user.put("phone", "650-555-0000");
+		  
+		user.signUpInBackground(new SignUpCallback() {
+		  public void done(ParseException e) {
+		    if (e == null) {
+		      // Hooray! Let them use the app now.
+		    } else {
+		      // Sign up didn't succeed. Look at the ParseException
+		      // to figure out what went wrong
+		    }
+		  }
+		});
+		
+		ParseTwitterUtils.initialize("0ewrjAnFbGXIhFfFKP0ckqUni", "y5nhrbvLcBQ2w3glleYOrb3ecmToB79SbLVdnpAGVndrRWL4j5");
+		btnLoginTwitter = (Button)findViewById(R.id.btnLoginTwitter);
+		btnLoginTwitter.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View view) {
+				ParseTwitterUtils.logIn(Login.this, new LogInCallback() {
+					 
+					@Override
+					  public void done(ParseUser user, ParseException err) {
+						 
+					    if (user == null) {
+					      Log.d("MyApp", "Uh oh. The user cancelled the Twitter login.");
+					    					      
+					    } else {
+					    	twitteruser=user;
+					    	twitteruser.getObjectId();
+					    	twitterlogin=true;
+					    	System.out.println(ParseTwitterUtils.getTwitter().getScreenName());
+					    	
+					    	String id = ParseTwitterUtils.getTwitter().getUserId();
+					    	
+							String email = ParseTwitterUtils.getTwitter().getScreenName().concat("@twitter.com");
+							usuario = Usuario.getInstance();
+							usuario.setContext(getApplication().getApplicationContext());
+							usuario.setURL();
+							usuario.setOnRegisterFacebook(Login.this);
+							usuario.loginFacebook(Login.this, email, id);
+							
+					    }
+
+					  }
+					});
+				
+			}
+		});
+		
 		inputEmail = (EditText) findViewById(R.id.txtEmail);
 		inputPassword = (EditText) findViewById(R.id.txtPass);
 		btnLogin = (Button) findViewById(R.id.btnLogin);
@@ -49,6 +128,7 @@ public class Login extends Activity implements OnLoginUsuario, OnLoginFacebook,
 			public void onClick(View view) {
 				String email = inputEmail.getText().toString();
 				String password = inputPassword.getText().toString();
+		    	twitterlogin=false;
 
 				usuario = Usuario.getInstance();
 				usuario.setContext(getApplication().getApplicationContext());
@@ -75,7 +155,8 @@ public class Login extends Activity implements OnLoginUsuario, OnLoginFacebook,
 								.isOpened());
 
 						if (enableButtons && user != null) {
-							
+					    	twitterlogin=false;
+
 							String id = user.getId().toString();
 							String email = user.asMap().get("email").toString();
 							usuario = Usuario.getInstance();
@@ -158,10 +239,23 @@ public class Login extends Activity implements OnLoginUsuario, OnLoginFacebook,
 	@Override
 	public void onLoginFacebookFail(String msg) {
 		// TODO Auto-generated method stub
-		String nombre = user.getFirstName().toString();
-		String id = user.getId().toString();
-		String gender = user.asMap().get("gender").toString();
-		String email = user.asMap().get("email").toString();
+		String nombre ="";
+		String id ="";
+		String gender="";
+		String email ="";
+		if(!twitterlogin){
+			 nombre = user.getFirstName().toString();
+			 id = user.getId().toString();
+			 gender = user.asMap().get("gender").toString();
+			 email = user.asMap().get("email").toString();
+		}else if(twitterlogin){
+			 twitterlogin=false;
+
+			nombre = ParseTwitterUtils.getTwitter().getScreenName();
+			 id = ParseTwitterUtils.getTwitter().getUserId();
+			 email = ParseTwitterUtils.getTwitter().getScreenName().concat("@twitter.com");
+		}
+
 
 		usuario = Usuario.getInstance();
 		usuario.setOnRegisterUsuario(Login.this);
@@ -203,4 +297,12 @@ public class Login extends Activity implements OnLoginUsuario, OnLoginFacebook,
 
 		alertDialog.show();
 	}
+	
+
+	
+	
+	
+	
+	
+	
 }

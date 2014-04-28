@@ -66,6 +66,15 @@
             android:paddingLeft="15dip"
             android:paddingRight="15dip"
             android:text="@string/Login" />
+        <Button
+            android:id="@+id/btnLoginTwitter"
+            style="@style/com_facebook_loginview_silver_style"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:text="@string/LoginTwitter" />
+        
 
         <com.facebook.widget.LoginButton
             android:id="@+id/flogin"
