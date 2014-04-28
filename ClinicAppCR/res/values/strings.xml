@@ -9,7 +9,7 @@
      <string name="Cancelar">Cancelar</string>
     <string name="enviar">enviar</string>
     <string name=" espacio"></string>
-    <string name="IPserver">http://192.168.1.5:80</string>
+    <string name="IPserver">http://192.168.0.189:80</string>
     <string name="Registrarse">Registrarse</string>
     <string name="already">Ya tienes cuenta! Login?</string>
     <string name="Username">Username</string>
@@ -27,6 +27,8 @@
   <string name="basic_map_demo_label">Mapa de Clinica</string>
   <string name="basic_map_demo_description">Launches a map</string>
   <string name="Login">Login</string>
+    <string name="LoginTwitter">Login with Twitter</string>
+  
   <string name="facebook">Facebook login</string>
 
 </resources>
