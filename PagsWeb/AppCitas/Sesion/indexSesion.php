@@ -67,7 +67,7 @@ echo 'Solicitud no válida';
 	</div>
 	<div id="banner">
 		<div class="container">                    
-        <img src="../Style/images/landscape.png" alt="" width="1000" height="300" />
+        <img src="../Style/images/banner_004.jpg" alt="" width="1200" height="300" />
 			<div class="title">
 				<h2>Clinic Cloud Calendar</h2>
 				<span class="byline">Web App</span> </div>
