@@ -8,8 +8,8 @@
     <string name="Email">Email</string>
      <string name="Cancelar">Cancelar</string>
     <string name="enviar">enviar</string>
-    <string name=" espacio"></string>
-    <string name="IPserver">http://192.168.0.189:80</string>
+    <string name=" espacio"></string>   
+    <string name="IPserver">http://192.168.1.2:80</string>
     <string name="Registrarse">Registrarse</string>
     <string name="already">Ya tienes cuenta! Login?</string>
     <string name="Username">Username</string>
